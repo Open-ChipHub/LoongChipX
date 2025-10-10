@@ -1,0 +1,4 @@
+#ifndef _BL_ENRRY_CONFIG_H
+#define _BL_ENRRY_CONFIG_H
+#define ENTRY_ADDR 0x9000000000bd1000
+#endif

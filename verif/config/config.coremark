@@ -1,0 +1,8 @@
+bios_mode=auto
+kernel=../../../ext/simu-coremark-user/coremark.exe
+wave_begin=0
+#wave_end=3000
+save_num=10
+log_level=info
+log_dir=logs
+

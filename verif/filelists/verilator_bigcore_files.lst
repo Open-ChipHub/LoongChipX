@@ -1,0 +1,9 @@
+
+-f ${LCX_HOME}/design/filelists/common_files.lst
+-f ${LCX_HOME}/design/sys/filelists/ccx_files.lst
+-f ${LCX_HOME}/design/sys/filelists/llc_files.lst
+-f ${LCX_HOME}/design/sys/filelists/core_364_files.lst
+
+
+${LCX_HOME}/design/soc/rtl/cpu_subsystem.v
+${LCX_HOME}/verif/common/vsrc/Top_verilator.v

@@ -1,0 +1,1406 @@
+Magic 271485
+Revision Verdi_O-2018.09-SP2
+
+; Window Layout <x> <y> <width> <height> <signalwidth> <valuewidth>
+viewPort 2540 38 3840 1892 346 65
+
+; File list:
+; openDirFile [-d delimiter] [-s time_offset] [-rf auto_bus_rule_file] path_name file_name
+openDirFile -d / "" "/home/airxs/user/cpu/dev/soc-lab-core364/verif/vcs/hello/inter.fsdb"
+
+; file time scale:
+; fileTimeScale ### s|ms|us|ns|ps
+
+; signal spacing:
+signalSpacing 5
+
+; windowTimeUnit is used for zoom, cursor & marker
+; waveform viewport range
+zoom 18436.651651 19654.511490
+cursor 1644940.000000
+marker 2.000000
+
+; user define markers
+; userMarker time_pos marker_name color linestyle
+; visible top row signal index
+top 405
+; marker line index
+markerPos 437
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+activeDirFile "" "/home/airxs/user/cpu/dev/soc-lab-core364/verif/vcs/hello/inter.fsdb"
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[0]
+saveRunSig "ir_inst1[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst2_data[0]
+saveRunSig "ir_inst2[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst3_data[0]
+saveRunSig "ir_inst3[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst0_data[0]
+saveRunSig "ir_inst0[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_read_data[0]
+saveRunSig "is_inst0[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_read_data[0]
+saveRunSig "is_inst1[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_read_data[0]
+saveRunSig "is_inst2[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_read_data[0]
+saveRunSig "is_inst3[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[0]
+saveRunSig "aiq0_issue_inst0[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[0]
+saveRunSig "aiq1_issue_inst0[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[0]
+saveRunSig "biq_inst[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[0]
+saveRunSig "lsiq_pipe3_inst[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[0]
+saveRunSig "lsiq_pipe4_inst[31:0]"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/biq_pipe2_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe2_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq0_pipe0_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe0_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq1_pipe1_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe1_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/sliq_pipe3_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe3_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq_pipe3_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/sliq_pipe3_inst_vld" keep
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq_pipe4_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe4_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/sdiq_pipe5_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe5_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/viq0_pipe6_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe6_inst_vld"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe0_data[0]
+saveRunSig "aiq0_p0_inst[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe1_data[0]
+saveRunSig "aiq1_p1_inst[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[0]
+saveRunSig "biq_p2_inst[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe3_data[0]
+saveRunSig "lsiq_p3_inst[31:0]"
+
+; Run Time Signal and Member
+; userBusMem member ...
+; saveRunSig name
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[31]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[30]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[29]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[28]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[27]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[26]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[25]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[24]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[23]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[22]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[21]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[20]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[19]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[18]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[17]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[16]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[15]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[14]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[13]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[12]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[11]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[10]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[9]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[8]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[7]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[6]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[5]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[4]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[3]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[2]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[1]
+userBusMem /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe4_data[0]
+saveRunSig "lsiq_p4_inst[31:0]"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq0_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe0_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq1_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe1_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/biq2_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe2_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq3_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe3_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq4_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe4_inst_vld"
+
+; rename signal list
+; addRenameSig new_name org_name
+
+addRenameSig "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/sdiq5_inst_vld" "/soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/rf_pipe5_inst_vld"
+
+; event list
+; addEvent event_name event_expression
+; curEvent event_name
+
+
+
+COMPLEX_EVENT_BEGIN
+
+
+COMPLEX_EVENT_END
+
+
+
+; toolbar current search type
+; curSTATUS search_type
+curSTATUS ByChange
+
+
+addGroup "G1"
+activeDirFile "" "/home/airxs/user/cpu/dev/soc-lab-core364/verif/vcs/hello/inter.fsdb"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/pll_core_clk
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/pad_cpu_rst_b
+addGroup "BUS" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/axi_ar_addr[39:0]
+addSignal -h 21 /soc_top/axi_ar_valid
+addSignal -h 21 /soc_top/axi_r_valid
+addSignal -h 21 -UNSIGNED -HEX /soc_top/axi_r_data[127:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/axi_aw_addr[39:0]
+addSignal -h 21 /soc_top/axi_aw_valid
+addSignal -h 21 -UNSIGNED -HEX /soc_top/axi_ar_addr[39:0]
+addSignal -h 21 /soc_top/axi_ar_valid
+addSignal -h 21 /soc_top/axi_r_valid
+addSignal -h 21 -UNSIGNED -HEX /soc_top/axi_r_data[127:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/axi_aw_addr[39:0]
+addSignal -h 21 /soc_top/axi_aw_valid
+addGroup "IFU"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifctrl/if_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifctrl/if_cancel
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_pcgen/pcgen_chgflw
+addSubGroup "IFU-pcgen"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifctrl/if_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_pcgen/if_pre_fetch_pc[39:0]
+addSubGroup "IFU-itlb"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_pcgen/ifu_mmu_va[62:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_pcgen/if_mmu_pc[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_pcgen/ifu_mmu_va_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/mmu_ifu_pc_pa[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/mmu_ifu_pavld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/iutlb_hit_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/iutlb_bypass_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/regs_mmu_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/cp0_mach_mode
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/iutlb_off_hit
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/iutlb_page_fault
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/iutlb_hit_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/mmu_ifu_pavld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/ref_cur_st[2:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/iutlb_miss_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/arb_iutlb_grant
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/jtlb_iutlb_ref_cmplt
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_iutlb/jtlb_iutlb_pgflt
+endSubGroup "IFU-itlb"
+endSubGroup "IFU-pcgen"
+addSubGroup "IFU-jTLB"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_jtlb/jtlb_ptw_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/ptw_pmp_deny
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/lsu_mmu_data_vld
+endSubGroup "IFU-jTLB"
+addSubGroup "IFU-PTW"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/ptw_cur_st[4:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/jtlb_ptw_vpn[26:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/ptw_data_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/mmu_lsu_data_req
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/ptw_req_addr[39:0]
+endSubGroup "IFU-PTW"
+addSubGroup "IFU-PTW-read"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/mmu_lsu_data_req
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/mmu_lsu_data_req_addr[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/lsu_mmu_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/lsu_mmu_data_vld
+endSubGroup "IFU-PTW-read"
+addSubGroup "IFU-refill" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/refill_cur_state[3:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipctrl_l1_refill_miss_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/refill_start
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipb_l1_refill_grnt
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipb_l1_refill_rdata[127:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipb_l1_refill_data_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifdp/cp0_ifu_icache_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifctrl/l1_refill_ifctrl_trans_cmplt
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifctrl/l1_refill_ifctrl_refill_on
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/refill_cur_state[3:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ifctrl_l1_refill_inv_on
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/ipdp_ipctrl_ip_expt_vld
+endSubGroup "IFU-refill"
+addSubGroup "IFU-IF"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_pcgen/if_fetch_pc[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifctrl/ifctrl_ifdp_pipedown
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifdp/mmu_ifu_pa[27:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifdp/mmu_ifu_pgflt
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifdp/mmu_xx_mmu_en
+endSubGroup "IFU-IF"
+addSubGroup "IFU-ICache"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_icache_if/ifu_icache_tag_cen_b
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_icache_if/ifu_icache_index[15:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_icache_if/pcgen_icache_if_index[15:0]
+endSubGroup "IFU-ICache"
+addSubGroup "IFU-IP"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ip_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ip_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ipdp_ipctrl_vpc[38:0]
+addSubGroup "IFU-IP-br" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_con_br[1]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_con_br[3]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_con_br[5]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_con_br[7]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_ab_br[1]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_ab_br[3]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_ab_br[5]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_ab_br[7]
+addSignal -expanded -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_pcall[7:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_pcall[7]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_pcall[5]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_pcall[3]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipdp/pipe_hn_pcall[1]
+endSubGroup "IFU-IP-br"
+addSubGroup "IFU-missq" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/icache_way0_hit
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/icache_way1_hit
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ifdp_ipctrl_tsize
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_pcgen/ifu_mmu_va[62:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipctrl_l1_refill_miss_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ip_icache_refill
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ip_refill_pre
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ifctrl_ipctrl_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ipctrl/ifdp_ipctrl_refill_on
+endSubGroup "IFU-missq"
+addSubGroup "IFU-refill" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/refill_cur_state[3:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/refill_start
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipb_l1_refill_grnt
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipb_l1_refill_rdata[127:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/ipb_l1_refill_data_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifdp/cp0_ifu_icache_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_l1_refill/l1_refill_ifctrl_refill_on
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ifctrl/l1_refill_ifctrl_trans_cmplt
+endSubGroup "IFU-refill"
+endSubGroup "IFU-IP"
+addSubGroup "IFU-IB"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibctrl/bypass_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibctrl/ibuf_create_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibctrl/if_ib_pc[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibdp/ifu_idu_ib_inst0_data[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibdp/inst0_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibdp/ifu_idu_ib_inst1_data[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibdp/inst1_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibdp/ifu_idu_ib_inst2_data[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibdp/inst2_vld
+endSubGroup "IFU-IB"
+addGroup "DEC"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/ifu_idu_ib_inst0_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/ifu_idu_ib_inst1_data[72:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/ifu_idu_ib_inst1_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/ifu_idu_ib_inst2_data[72:0]
+addGroup "IDU"
+addSubGroup "IDU-ID"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_dp/id_inst0_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_ctrl/id_inst0_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_dp/id_inst0_illegal
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_dp/id_inst1_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_ctrl/id_inst1_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_dp/id_inst1_illegal
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_dp/id_inst2_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_ctrl/id_inst2_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_dp/id_inst2_illegal
+endSubGroup "IDU-ID"
+addSubGroup "IDU-IR"
+addSubGroup "IDU-IR-alloc_reg" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/rtu_idu_alloc_preg0[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/idu_rtu_ir_preg0_alloc_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/rtu_idu_alloc_preg1[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/idu_rtu_ir_preg1_alloc_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/rtu_idu_alloc_preg2[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/idu_rtu_ir_preg2_alloc_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/rtu_idu_alloc_preg3[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/idu_rtu_ir_preg3_alloc_vld
+endSubGroup "IDU-IR-alloc_reg"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/ctrl_ir_stall
+addSignal -h 21 -UNSIGNED -HEX /ir_inst0[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/ir_inst0_vld
+addSignal -h 21 -UNSIGNED -HEX /ir_inst1[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/ir_inst1_vld
+addSignal -h 21 -UNSIGNED -HEX /ir_inst2[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/ir_inst2_vld
+addSignal -h 21 -UNSIGNED -HEX /ir_inst3[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_ctrl/ir_inst3_vld
+endSubGroup "IDU-IR"
+addSubGroup "IDU-IS"
+addSignal -h 21 -UNSIGNED -HEX /is_inst0[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/is_inst0_vld
+addSignal -h 21 -UNSIGNED -HEX /is_inst1[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/is_inst1_vld
+addSignal -h 21 -UNSIGNED -HEX /is_inst2[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/is_inst2_vld
+addSignal -h 21 -UNSIGNED -HEX /is_inst3[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/is_inst3_vld
+addSubGroup "IDU-IS-IQ" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_top_is_inst0_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_top_is_inst1_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_top_is_inst2_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_top_is_inst3_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_aiq0_create0_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_aiq0_create1_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_aiq1_create0_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_aiq1_create1_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_biq_create0_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_biq_create1_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_lsiq_create0_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_lsiq_create1_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_sdiq_create0_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_ctrl/ctrl_sdiq_create1_en
+endSubGroup "IDU-IS-IQ"
+endSubGroup "IDU-IS"
+addSubGroup "IDU-IS-aiq" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_read_data[226:0]
+addSignal -h 21 -UNSIGNED -HEX /aiq0_issue_inst0[31:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_dp_issue_entry[7:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq0_xx_issue_en
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_read_data[213:0]
+addSignal -h 21 -UNSIGNED -HEX /aiq1_issue_inst0[31:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_dp_issue_entry[7:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/aiq1_xx_issue_en
+endSubGroup "IDU-IS-aiq"
+addSubGroup "IDU-IS-biq" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_read_data[81:0]
+addSignal -h 21 -UNSIGNED -HEX /biq_inst[31:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_dp_issue_entry[11:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/biq_xx_issue_en
+endSubGroup "IDU-IS-biq"
+addSubGroup "IDU-IS-lsiq"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_entry[11:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe3_issue_read_data[162:0]
+addSignal -h 21 -UNSIGNED -HEX /lsiq_pipe3_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_xx_pipe3_issue_en
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_entry[11:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_dp_pipe4_issue_read_data[162:0]
+addSignal -h 21 -UNSIGNED -HEX /lsiq_pipe4_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/lsiq_xx_pipe4_issue_en
+endSubGroup "IDU-IS-lsiq"
+addSubGroup "IDU-IS-stiq" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/sdiq_dp_issue_read_data[26:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/sdiq_dp_issue_entry[11:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/sdiq_xx_issue_en
+endSubGroup "IDU-IS-stiq"
+addSubGroup "IDU-RF" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /aiq0_p0_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq0_pipe0_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /aiq1_p1_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq1_pipe1_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /biq_p2_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/biq_pipe2_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /lsiq_p3_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq_pipe3_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /lsiq_p4_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq_pipe4_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/sdiq_pipe5_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/viq0_pipe6_inst_vld
+addSubGroup "IDU-RF-dec" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/pipe0_decd_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq0_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/pipe1_decd_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/aiq1_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/pipe2_decd_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/biq2_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/pipe3_decd_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq3_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/pipe4_decd_opcode[31:0]
+endSubGroup "IDU-RF-dec"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/lsiq4_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_ctrl/sdiq5_inst_vld
+endSubGroup "IDU-RF"
+addGroup "ROB"
+addSubGroup "ROB-writeback"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_prf_pregfile/idu_had_wb_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_prf_pregfile/preg1_wb_vld[2:0]
+endSubGroup "ROB-writeback"
+addSubGroup "ROB-create" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst0_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/idu_rtu_rob_create0_en
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst1_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/idu_rtu_rob_create1_en
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst2_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/idu_rtu_rob_create2_en
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_dp/is_inst3_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/idu_rtu_rob_create3_en
+endSubGroup "ROB-create"
+addSubGroup "ROB-retire"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/rtu_pad_retire0_pc[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/retire_inst0_cur_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/rob_retire_inst0_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/rtu_pad_retire1_pc[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/retire_inst1_cur_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/rob_retire_inst1_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/rtu_pad_retire2_pc[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/retire_inst2_cur_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_rob/x_ct_rtu_rob_rt/rob_retire_inst2_vld
+endSubGroup "ROB-retire"
+addGroup "G11"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/inst_trace/sim_cycles[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/pll_core_clk
+addGroup "EXE"
+addSubGroup "EXE-rbus" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe0_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe0_dstreg[4:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe0_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe1_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe1_dstreg[4:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe1_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/special_rbus_ex1_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/special_rbus_ex1_dreg[4:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/special_rbus_ex1_data_vld
+endSubGroup "EXE-rbus"
+addSubGroup "EXE-ALU"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/rbus_pipe0_rslt_vld
+addSubGroup "EXE-ALU-0"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu0/alu_ex1_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu0/alu_ex1_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu0/alu_rbus_ex1_pipex_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu0/alu_ex1_dst_preg[6:0]
+endSubGroup "EXE-ALU-0"
+addSubGroup "EXE-ALU-1" -e FALSE
+endSubGroup "EXE-ALU-1"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu1/alu_ex1_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu1/alu_ex1_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu1/alu_rbus_ex1_pipex_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu1/alu_rbus_ex1_pipex_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_alu1/alu_rbus_ex1_pipex_preg[6:0]
+endSubGroup "EXE-ALU"
+addSubGroup "EXE-SPECIAL"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_special/special_ex1_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_special/special_ex1_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_special/special_rbus_ex1_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_special/special_rbus_ex1_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_special/special_rbus_ex1_preg[6:0]
+endSubGroup "EXE-SPECIAL"
+addSubGroup "EXE-BJU"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/bju_br_tarpc[38:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/ex1_pipe2_opcode[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/ex1_pipe2_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/iu_ifu_branch_pc[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/iu_ifu_chgflw_vld
+endSubGroup "EXE-BJU"
+addSubGroup "EXE-MULT" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_mult/mult_ex1_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_mult/mult_ex2_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_mult/mult_ex3_inst_vld
+endSubGroup "EXE-MULT"
+addSubGroup "EXE-DIV" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_div/div_cur_state[5:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_div/div_ex1_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_div/div_ex2_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_div/div_ex4_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_div/div_wb0_inst_vld
+endSubGroup "EXE-DIV"
+addSubGroup "EXE-CP0"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/idu_cp0_rf_sel
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/idu_cp0_rf_preg[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/idu_cp0_rf_opcode[31:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/idu_cp0_rf_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/idu_cp0_rf_func[4:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/idu_cp0_rf_src0[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/cp0_ex1_select
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/cp0_ex2_select
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/cp0_ex3_select
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/crmd_local_en
+addSubGroup "EXE-CP0-CSR"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/cp0_yy_priv_mode[1:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/csreentry[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/csrera[63:0]
+endSubGroup "EXE-CP0-CSR"
+endSubGroup "EXE-CP0"
+addGroup "LSU"
+addSubGroup "LSU-bus"
+addSignal -h 21 -UNSIGNED /soc_top/mem_if/state_q[2:0]
+addSubGroup "LSU-bus-write"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/mem_if/aw_addr[39:0]
+addSignal -h 21 /soc_top/mem_if/aw_valid
+addSignal -h 21 -UNSIGNED -HEX /soc_top/mem_if/w_data[127:0]
+addSignal -h 21 /soc_top/mem_if/w_valid
+endSubGroup "LSU-bus-write"
+addSubGroup "LSU-bus-read"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/mem_if/ar_addr[39:0]
+addSignal -h 21 /soc_top/mem_if/ar_valid
+addSignal -h 21 -UNSIGNED -HEX /soc_top/mem_if/r_data[127:0]
+addSignal -h 21 /soc_top/mem_if/r_valid
+endSubGroup "LSU-bus-read"
+endSubGroup "LSU-bus"
+addSubGroup "G11"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/inst_trace/sim_cycles[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/pll_core_clk
+endSubGroup "G11"
+addSubGroup "LSU-sq" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/x_ct_lsu_sq_entry_0/sq_entry_create_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/x_ct_lsu_sq_entry_0/sq_entry_create_dp_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/x_ct_lsu_sq_entry_0/sq_entry_fwd_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_chk_ld_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/sq_entry_vld[11:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/sd_ex1_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/sq_data_settle[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/sq_pop_addr[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/sq_pop_inst_size[2:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb_ce/wmb_ce_create_dp_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb_ce/sq_pop_bytes_vld[15:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/wmb_ce_data128[127:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_aw_addr[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_aw_req
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_dcache_arb_ld_data_high_din[127:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_dcache_arb_ld_data_low_din[127:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_ld_da_fwd_data[127:0]
+endSubGroup "LSU-sq"
+addSubGroup "LSU-wmb"
+addSubGroup "LSU-wmb-write"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_aw_addr[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_aw_req
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_w_data[127:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_w_vld
+endSubGroup "LSU-wmb-write"
+addSubGroup "LSU-wmb-read" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_ar_addr[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_ar_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/biu_lsu_r_vld
+endSubGroup "LSU-wmb-read"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/wmb_ce_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/wmb_sq_pop_grnt
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_ce_data_vld[3:0]
+endSubGroup "LSU-wmb"
+addSubGroup "LSU-store"
+addSubGroup "LSU-store-data"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sd_ex1/sd_ex1_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sd_ex1/sd_ex1_src0_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sd_ex1/sd_ex1_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sd_ex1/lsu_idu_ex1_sdiq_pop_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sd_ex1/idu_lsu_rf_pipe5_gateclk_sel
+endSubGroup "LSU-store-data"
+addSubGroup "LSU-store-ag"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/store_ag_pc[15:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_inst_code[31:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_va[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_dc/st_ag_dc_rot_sel[3:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_expt_vld
+endSubGroup "LSU-store-ag"
+addSubGroup "LSU-store-ag-dTLB"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_pa[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/mmu_lsu_pa1_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_utlb_miss
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_page_fault
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_page_ca
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_dutlb/x_ct_mmu_dutlb_read1/mmu_lsu_ca_x
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/st_ag_page_ca
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/mmu_lsu_ca1
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_ag/mmu_lsu_pa1_vld
+endSubGroup "LSU-store-ag-dTLB"
+addSubGroup "LSU-store-dc"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_dc/st_dc_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_dc/st_dc_rot_sel[3:0]
+endSubGroup "LSU-store-dc"
+addSubGroup "LSU-store-da"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_da/st_da_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_da/st_da_dcache_miss
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_da/st_da_idu_pop_vld
+endSubGroup "LSU-store-da"
+addSubGroup "LSU-store-wb"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_wb/st_wb_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_st_wb/st_wb_expt_vld
+endSubGroup "LSU-store-wb"
+endSubGroup "LSU-store"
+addSubGroup "LSU-rb"
+addSubGroup "LSU-rb-ar_read"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/rb_biu_ar_addr[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/rb_biu_ar_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/bus_arb_rb_ar_grnt
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/rb_biu_ar_size[2:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/rb_biu_req_addr[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/biu_lsu_r_data[127:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/biu_lsu_r_vld
+endSubGroup "LSU-rb-ar_read"
+addSubGroup "LSU-rb-ar_read-end" -e FALSE
+endSubGroup "LSU-rb-ar_read-end"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/ld_da_rb_create_dp_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/ld_da_rb_cmit
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/ld_da_addr[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/ld_da_rb_create_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/st_da_addr[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/st_da_rb_create_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/st_da_rb_create_dp_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/st_da_rb_cmit
+endSubGroup "LSU-rb"
+addSubGroup "LSU-Load"
+addSubGroup "LSU-Load-ag"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_ag/load_ag_pc[15:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_ag/ld_ag_inst_code[31:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_ag/ld_ag_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_ag/ld_ag_va[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_ag/ld_ag_lsid[11:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_ag/ld_ag_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_ag/ld_ag_page_fault
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/ptw_jtlb_ref_pgflt
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_mmu_top/x_ct_mmu_ptw/ptw_page_flt
+endSubGroup "LSU-Load-ag"
+addSubGroup "LSU-Load-dc"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_addr1[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_addr0[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_fwd_sq_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_fwd_wmb_vld
+addSubGroup "LSU-Load-dc-lq" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_lq_create_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_lq_create1_vld
+endSubGroup "LSU-Load-dc-lq"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_mmu_req
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_va[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_utlb_miss_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_da_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/ld_dc_dcache_hit
+endSubGroup "LSU-Load-dc"
+addSubGroup "LSU-Load-da"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_wb_data_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_pre_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_pre_data_addr[39:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_pre_data_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_pre_preg[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_dcache_hit
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_fwd_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_dc/sq_ld_dc_fwd_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_da_wb_cmplt_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_pre_inst_vld
+endSubGroup "LSU-Load-da"
+addSubGroup "LSU-Load-wb"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/lsu_rtu_wb_pipe3_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_preg_wb_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/lsu_idu_wb_pipe3_wb_preg_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/lsu_idu_wb_pipe3_wb_preg[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/lsu_idu_wb_pipe3_wb_preg_vld
+endSubGroup "LSU-Load-wb"
+endSubGroup "LSU-Load"
+addGroup "Load_lsiq" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_rb_data_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_rb_create_vld_unmask
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_rb_create_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_idu_pop_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_da/ld_da_idu_pop_entry[11:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_lsiq/x_ct_idu_is_lsiq_entry0/vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_is_lsiq/lsiq_entry_vld[11:0]
+addGroup "Phy_reg_writeback" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_pst_preg/iu_rtu_ex2_pipe0_wb_preg_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_pst_preg/iu_rtu_ex2_pipe1_wb_preg_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_rtu_top/x_ct_rtu_pst_preg/lsu_rtu_wb_pipe3_wb_preg_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/rbus_pipe0_rslt_preg[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/rbus_pipe1_rslt_preg[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_data_preg[6:0]
+addGroup "G11#1"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/pll_core_clk
+addGroup "iu_rbus" -e FALSE
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/lsu_iu_wb_pipe4_wb_preg_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/lsu_iu_wb_pipe4_wb_preg[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/lsu_iu_wb_pipe4_wb_iid[6:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/lsu_iu_wb_pipe4_wb_preg_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/rtu_iu_retire0_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/rtu_iu_retire1_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/rtu_iu_retire2_iid[6:0]
+addGroup "pipe_res_wb" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe0_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe0_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe0_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe1_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe1_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/alu_rbus_ex1_pipe1_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/bju_rbus_ex2_pipe2_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/bju_rbus_ex2_pipe2_pc[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/bju_rbus_ex2_pipe2_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/special_rbus_ex1_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/special_rbus_ex1_iid[6:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/special_rbus_ex1_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/lsu_iu_wb_pipe3_wb_preg_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/lsu_iu_wb_pipe3_wb_preg_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_rbus/lsu_iu_wb_pipe3_wb_iid[6:0]
+addGroup "G19"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/ex2_pipe2_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/ex2_pipe2_chgflw_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/rb_ld_wb_data_ptr[7:0]
+addGroup "G16"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/bju_jmp_mispred
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/ex1_pipe2_src0[39:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_iu_top/x_ct_iu_bju/idu_iu_rf_bju_gateclk_sel
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_fwd/x_ct_idu_rf_fwd_preg_pipe2_src0/fwd_src_sel[5:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_rf_dp/rf_pipe2_data[42]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/rb_ld_wb_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_pre_data_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_data[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_wb_pre_data_no_da[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/ld_da_wb_data_req
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/wmb_ld_wb_data_req
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_ld_wb/rb_ld_wb_data[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_rb/rb_ld_wb_data_req
+addGroup "G17"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_ifu_top/x_ct_ifu_ibdp/inst0_expt_vld
+addGroup "G18"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/crmd_local_en
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/iui_regs_sel
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/iui_regs_src0[3]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/iui_regs_src0[4]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/iui_regs_src0[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/iui_inst_csrrw
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/iui_ex1_src0[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/iui_inst_csrrw
+addGroup "G20"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/ctrl_fence_id_inst_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/dp_fence_id_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/fence_ctrl_inst0_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/fence_ctrl_inst1_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/fence_ctrl_inst2_vld
+addGroup "G21"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_iui/iui_ex1_src1[63:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/dp_fence_id_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/ctrl_fence_id_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/fence_ctrl_inst0_vld
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/fence_inst1_cp0_csr_data[45:40]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_id_fence/fence_inst0_cp0_csr_data[53:48]
+addGroup "G22"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_cp0_top/x_ct_cp0_regs/csreentry[63:0]
+addGroup "G23"
+
+; getSignalForm Scope Hierarchy Status
+; active file of getSignalForm
+

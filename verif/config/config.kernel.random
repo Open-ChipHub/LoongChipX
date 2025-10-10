@@ -1,0 +1,12 @@
+random_test=1
+random_test_dir=/home/airxs/user/cpu/dev/soc-lab-core364/verif/verilator/RandomInstGen/
+bios_mode=auto
+kernel=../../../ext/simu-kernel/vmlinux
+log_dir=logs
+log_insn_trace=1
+#wave_begin=80000
+#wave_end=100000
+save_num=10
+ipc_monitor_alert=0
+with_serial=1
+
