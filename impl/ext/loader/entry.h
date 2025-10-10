@@ -1,0 +1,6 @@
+#ifndef _BL_ENRRY_CONFIG_H
+#define _BL_ENRRY_CONFIG_H
+ 
+#define KERNEL_ENTRY 0x9000000000bf0000
+ 
+#endif
