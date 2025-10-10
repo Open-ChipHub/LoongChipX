@@ -1,4 +1,4 @@
-
+# LoongChipX Project .gitignore
 *.o
 *.a
 *.so
@@ -56,9 +56,6 @@
 **/logs
 **/obj_dir
 *.err
-
-
-
 
 
 
