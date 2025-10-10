@@ -27,13 +27,13 @@
 
 # Vivado
 /impl/work-xlnx/
-/ip/*/*.cache/
-/ip/*/*.gen/
-/ip/*/*.hw/
-/ip/*/*.ip_user_files/
-/ip/*/*.runs/
-/ip/*/*.srcs/
-/ip/*/*.xpr
+/ip/amd/*/*.cache/
+/ip/amd/*/*.gen/
+/ip/amd/*/*.hw/
+/ip/amd/*/*.ip_user_files/
+/ip/amd/*/*.runs/
+/ip/amd/*/*.srcs/
+/ip/amd/*/*.xpr
 
 
 # VCS
