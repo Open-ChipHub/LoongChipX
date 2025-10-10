@@ -1,0 +1,12 @@
+
+-f ${LCX_HOME}/design/filelists/common_files.lst
+-f ${LCX_HOME}/design/sys/filelists/ccx_files.lst
+-f ${LCX_HOME}/design/sys/filelists/llc_files.lst
+
+-f ${LCX_HOME}/design/sys/filelists/core_364_files.lst
+${LCX_HOME}/design/soc/rtl/cpu_subsystem.v
+
+#-f ${LCX_HOME}/design/sys/filelists/core_164_files.lst
+#${LCX_HOME}/design/soc/rtl/cpu_subsystem_little.v
+
+${LCX_HOME}/design/soc/rtl/soc_top_xlnx.v
