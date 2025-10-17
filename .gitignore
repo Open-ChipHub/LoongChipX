@@ -26,6 +26,13 @@
 *.vlog
 *.pc
 
+verif/RandomInstGen
+
+*trace.txt
+*output.txt
+*.obj.S
+*.verdi.lst
+
 # Vivado
 /impl/work-xlnx/
 /ip/amd/*/*.cache/
