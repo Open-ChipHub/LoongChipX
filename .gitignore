@@ -24,6 +24,7 @@
 *.coe
 *.mif
 *.vlog
+*.pc
 
 # Vivado
 /impl/work-xlnx/
