@@ -207,7 +207,7 @@ aq_vfmau_mult  x_aq_vfmau_mult (
   .vfmau_vpu_ex5_fflags          (vfmau_vpu_ex5_fflags         ),
   .vfmau_vpu_ex5_fpr_result      (vfmau_vpu_ex5_fpr_result     ),
   .vpu_group_0_xx_ex1_srcv0_type (vpu_group_0_xx_ex1_srcv0_type),
-  .vpu_group_0_xx_ex1_srcv1_type (vpu_group_0_xx_ex1_srcv1_type & {20{~ex1_scaleb}}),
+  .vpu_group_0_xx_ex1_srcv1_type (vpu_group_0_xx_ex1_srcv1_type & {48{~ex1_scaleb}}),
   .vpu_group_0_xx_ex1_srcv2_type (vpu_group_0_xx_ex1_srcv2_type)
 );
 
