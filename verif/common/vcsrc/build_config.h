@@ -9,9 +9,9 @@
 #define WITH_PMCNT 1
 #endif
 #define WITH_WATCH_PADDR
-#define USE_DRAM_SIM
-//#define MONITOR_DRAM_SIM
-//#define WITH_RECORD_PC
-//#define FCSR_COMPARE
+// #define USE_DRAM_SIM
+// #define MONITOR_DRAM_SIM
+// #define WITH_RECORD_PC
+// #define FCSR_COMPARE
 
 #endif // __CONFIG_BUILD_H 
