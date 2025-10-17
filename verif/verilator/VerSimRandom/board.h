@@ -1,0 +1,1 @@
+`define HETE_ARCH_LITTLE 1

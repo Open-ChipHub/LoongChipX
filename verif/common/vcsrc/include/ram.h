@@ -17,7 +17,6 @@
 using namespace std;
 
 class RAM {
-    uint8_t* base;
     FILE* debugcon;
     bool with_io = true;
     bool addr_loop = false;
@@ -25,6 +24,7 @@ class RAM {
     qemu_irq_handler cpu_irq_handler;
     string log_dir;
 public:
+    uint8_t* base;
     uint64_t size;
 
 RAM(uint64_t size, string log_dir = ".");

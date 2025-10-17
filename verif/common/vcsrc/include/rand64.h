@@ -81,8 +81,8 @@ class rand64
     uint64_t page_num;
     uint64_t instruction_num;
     RAM* ram;
-    int pagebit_mini = 14;
-    int pagebit_big = 25;
+    int pagebit_mini = 12;
+    int pagebit_big = 21;
     std::mt19937_64 mtrand;
     // mat for each res line
     void prepare_mat();
@@ -93,6 +93,9 @@ public:
     bool enable = false;
     int fill_type = 1;
     int mat_type  = 1;
+
+    FILE* trace_fp = nullptr;
+    FILE* trace_pfn_fp = nullptr;
 
     uint64_t with_tlb;
     // 0: none, 64:64, 128:128, 256:256

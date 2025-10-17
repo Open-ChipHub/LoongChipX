@@ -6,9 +6,10 @@
 #include <functional>
 #include "dramsim3.h"
 #include "VTop.h"
-#include "../vcsrc/ram.h"
-#include "../vcsrc/axi.h"
-#include "../vcsrc/commonprint.h"
+#include "ram.h"
+#include "axi.h"
+#include "commonprint.h"
+
 namespace MemorySim{
 struct AXI_rreq{
   uint64_t addr     ; // 64

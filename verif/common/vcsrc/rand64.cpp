@@ -107,16 +107,16 @@ int rand64::allocate_mat(int line){
 
 void rand64::load_raw(const char* testpath) {
     log_debug("testpath:%s", testpath);
-    auto page        	= res_get_binary((string(testpath) + "page.res").c_str());
-    auto page_size   	= res_get_binary((string(testpath) + "page_size.res").c_str());
-    auto tlb_attr    	= res_get_binary((string(testpath) + "tlb_attr.res").c_str());
-    auto map          	= res_get_binary((string(testpath) + "map.res").c_str());
-    auto mapinit     	= res_get_binary((string(testpath) + "mapinit.res").c_str());
+    auto page           = res_get_binary((string(testpath) + "page.res").c_str());
+    auto page_size      = res_get_binary((string(testpath) + "page_size.res").c_str());
+    auto tlb_attr       = res_get_binary((string(testpath) + "tlb_attr.res").c_str());
+    auto map            = res_get_binary((string(testpath) + "map.res").c_str());
+    auto mapinit        = res_get_binary((string(testpath) + "mapinit.res").c_str());
     auto init_reg       = res_get_hex_tpye1((string(testpath) + "init.reg.res").c_str());
-    auto init_vreg       = res_get_hex_tpye1((string(testpath) + "init.vreg.res").c_str());
-    auto pc          	= res_get_hex_tpye1((string(testpath) + "pc.res").c_str());
-    auto instruction 	= res_get_hex_tpye1((string(testpath) + "instruction.res").c_str());
-    auto illegal_pc 	= res_get_hex_tpye1((string(testpath) + "illegal_pc.res").c_str());
+    auto init_vreg      = res_get_hex_tpye1((string(testpath) + "init.vreg.res").c_str());
+    auto pc             = res_get_hex_tpye1((string(testpath) + "pc.res").c_str());
+    auto instruction    = res_get_hex_tpye1((string(testpath) + "instruction.res").c_str());
+    auto illegal_pc     = res_get_hex_tpye1((string(testpath) + "illegal_pc.res").c_str());
     auto illegal_next_pc= res_get_hex_tpye1((string(testpath) + "illegal_next_pc.res").c_str());
     auto data_init_addr = res_get_hex_tpye2((string(testpath) + "data_init_addr.res").c_str());
     auto data_init_data = res_get_hex_tpye2((string(testpath) + "data_init_data.res").c_str());
@@ -224,6 +224,9 @@ void rand64::load_raw(const char* testpath) {
         }
     }
 
+    trace_fp = fopen("page_trace.txt", "w");
+    trace_pfn_fp = fopen("page_pfn_trace.txt", "w");
+
     this->alloc_pfn();
     this->build_page_index_map();
     this->build_page_table();
@@ -241,7 +244,9 @@ void rand64::alloc_pfn() {
     uint64_t data_start_init = 0x50000000;
     uint64_t data_start = data_start_init;
     /* first page, init and eentry */
-    if (this->raw_page_res[0] != 0x8000 || this->raw_map_res[0] != 1) {
+    if (this->raw_page_res[0] != 0x8000 || this->raw_map_res[0] != 0x1) {
+        printf("this->raw_page_res[0]: %lx\n", this->raw_page_res[0]);
+        printf("this->raw_map_res[0] : %lx\n", this->raw_map_res[0]);
         log_fatal("please check first page");
         abort();
     }
@@ -301,9 +306,6 @@ void rand64::build_page_index_map() {
     {
         this->page_index_map.insert({this->raw_page_res[i], i});
     }
-    // for (auto i : this->page_index_map) {
-    //      log_trace("%lx:%d", i.first, i.second);
-    // }
 }
 
 int get_disjoint_set_id(const vector<int>& tbl,int i){
@@ -405,22 +407,25 @@ void rand64::build_page_table() {
      *            47 || 46 45 44 43 42 41 40 39 38 37 36 || 35 34 33 32 31 30 29 28 27 26 25 || 24 23 22 21 20 19 18 17 16 15 ||    14     || 13 12 11 10  9  8  7  6  5  4  3  2  1  0
      */
 
-    int va_len = 48;
-    int ptbase = 14;
-    int ptwidth = 11;
-    int dir1base = 25;
-    int dir1width = 11;
-    int dir2base = 0;
-    int dir2width = 0;
-    int dir3base = 36;
-    int dir3width = 11 + 1;
+    int va_len = 39;
+    int ptbase = 12;
+    int ptwidth = 9;
+    int dir1base = 21;
+    int dir1width = 9;
+    int dir2base = 30;
+    int dir2width = 9;
+
+    int pte_size = 8;
+
+    // not used
+    int dir3base = 0;
+    int dir3width = 0;
     int dir4base = 0;
     int dir4width = 0;
-    int pte_size = 8;
 
     int page_size = (1 << ptbase);
 
-    uint64_t pt_size = (1 << ptwidth) * pte_size;
+    uint64_t pt_size   = (1 << ptwidth) * pte_size;
     uint64_t dir1_size = (1 << dir1width) * pte_size;
     uint64_t dir2_size = (1 << dir2width) * pte_size;
     uint64_t dir3_size = (1 << dir3width) * pte_size;
@@ -439,6 +444,7 @@ void rand64::build_page_table() {
     uint64_t invalid_pt = ALIGN_UP(invalid_base_high, page_size);
     uint64_t invalid_dir1 = ALIGN_UP(invalid_pt + pt_size, page_size);
     uint64_t invalid_dir2 = ALIGN_UP(invalid_dir1 + dir1_size, page_size);
+    
     uint64_t invalid_dir3 = ALIGN_UP(invalid_dir2 + dir2_size, page_size);
     uint64_t invalid_dir4 = ALIGN_UP(invalid_dir3 + dir3_size, page_size);
 
@@ -451,11 +457,11 @@ void rand64::build_page_table() {
 
     invalid_base_high = ALIGN_UP(invalid_dir4 + dir4_size, page_size);
 
-    uint64_t pgdl = invalid_dir3;
-    uint64_t pgdh = pgdl + dir3_size / 2;
+    uint64_t pgdl = invalid_dir2;
+    uint64_t pgdh = pgdl + page_size;
 
-    log_debug("pgdl:%x", pgdl);
-    log_debug("pgdh:%x", pgdh);
+    fprintf(trace_pfn_fp, "pgdl: %x\n", pgdl);
+    fprintf(trace_pfn_fp, "pgdh: %x\n", pgdh);
 
     // dir2 is unused
     if (dir4width) {
@@ -467,9 +473,17 @@ void rand64::build_page_table() {
     if (dir3width) {
         for (uint64_t i = 0; i < dir3_num; i++)
         {
-            this->ram->write64(invalid_dir3 + i * pte_size, invalid_dir1);
+            this->ram->write64(invalid_dir3 + i * pte_size, invalid_dir2);
         }
     }
+
+    if (dir2width) {
+        for (uint64_t i = 0; i < dir2_num; i++)
+        {
+            this->ram->write64(invalid_dir2 + i * pte_size, invalid_dir1);
+        }
+    }
+
     if (dir1width) {
         for (uint64_t i = 0; i < dir1_num; i++)
         {
@@ -478,7 +492,9 @@ void rand64::build_page_table() {
     }
 
 
-    if (this->pagebit_mini == 0xe) {//16kb
+    if (this->pagebit_mini == 0xc) {       //12kB
+
+    } else if (this->pagebit_mini == 0xe) {//16kb
 
     } else if (this->pagebit_mini == 0x12) {
         // TODO:
@@ -504,25 +520,27 @@ void rand64::build_page_table() {
         bool huge_page = this->raw_page_size_res[i] == this->pagebit_big;
         uint64_t tlb_attr = this->raw_tlb_attr_res[i];
         uint64_t paddr = this->map2pfn[this->raw_map_res[i]];
-        uint64_t dir3_disp = ((vaddr >> dir3base) & ((1 << dir3width) - 1)) * pte_size;
+        uint64_t dir2_disp = ((vaddr >> dir2base) & ((1 << dir2width) - 1)) * pte_size;
         uint64_t dir1_disp = ((vaddr >> dir1base) & ((1 << dir1width) - 1)) * pte_size;
-        uint64_t pt_disp   = ((vaddr >> ptbase) & ((1 << ptwidth) - 1)) * pte_size;
+        uint64_t pt_disp   = ((vaddr >> ptbase)   & ((1 << ptwidth)   - 1)) * pte_size;
 
-        log_trace("vaddr:%lx, paddr:%lx, huge_page:%d, dir3_disp:%lx, dir1_disp:%lx, pt_disp:%lx", vaddr, paddr, huge_page, dir3_disp, dir1_disp, pt_disp);
+        log_trace("vaddr:%lx, paddr:%lx, huge_page:%d, dir3_disp:%lx, dir1_disp:%lx, pt_disp:%lx", vaddr, paddr, huge_page, dir2_disp, dir1_disp, pt_disp);
+        fprintf(trace_fp, "vaddr:%lx, paddr:%lx, huge_page:%d, dir3_disp:%lx, dir1_disp:%lx, pt_disp:%lx\n", vaddr, paddr, huge_page, dir2_disp, dir1_disp, pt_disp);
 
-        uint64_t target_dir1_addr = this->ram->read64(pgdl + dir3_disp);
+        uint64_t target_dir1_addr = this->ram->read64(pgdl + dir2_disp);
         log_trace("target_dir1_addr:%lx", target_dir1_addr);
         if (target_dir1_addr == invalid_dir1) {
             // alloc dir 1
             target_dir1_addr = invalid_base_high;
             invalid_base_high = ALIGN_UP(invalid_base_high + dir1_size, page_size);
 
-            this->ram->write64(pgdl + dir3_disp, target_dir1_addr);
+            this->ram->write64(pgdl + dir2_disp, target_dir1_addr);
             for (uint64_t i = 0; i < dir1_num; i++)
             {
                 this->ram->write64(target_dir1_addr + i * pte_size, invalid_pt);
             }
             log_trace("alloc dir 1, target_dir1_addr:%lx", target_dir1_addr);
+            fprintf(trace_pfn_fp, "alloc dir 1, target_dir1_addr: %lx \n", target_dir1_addr);
         }
         int mat = allocate_mat(i);
 
@@ -542,6 +560,7 @@ void rand64::build_page_table() {
             huge_pte |= mat;
             this->ram->write64(target_dir1_addr + dir1_disp, huge_pte);
             log_trace("set huge dir1 entry, target_dir1_addr + dir1_disp:%lx", target_dir1_addr + dir1_disp);
+            fprintf(trace_pfn_fp, "set huge dir1 entry, target_dir1_addr + dir1_disp: %lx\n", target_dir1_addr + dir1_disp);
         } else {
             uint64_t target_pt_addr = this->ram->read64(target_dir1_addr + dir1_disp);
             if (target_pt_addr == invalid_pt) {
@@ -549,9 +568,11 @@ void rand64::build_page_table() {
                 target_pt_addr = invalid_base_high;
                 invalid_base_high = ALIGN_UP(invalid_base_high + pt_size, page_size);
                 log_trace("alloc pt, target_pt_addr:%lx", target_pt_addr);
+                fprintf(trace_pfn_fp, "alloc pt, target_pt_addr: %lx\n", target_pt_addr);
 
                 this->ram->write64(target_dir1_addr + dir1_disp, target_pt_addr);
                 log_trace("set dir1, target_dir1_addr + dir1_disp:%lx", target_dir1_addr + dir1_disp);
+                fprintf(trace_pfn_fp, "set dir1, target_dir1_addr + dir1_disp: %lx\n", target_dir1_addr + dir1_disp);
             }
             uint64_t pte = paddr;
             pte |= tlbattr2pteattr(tlb_attr);
@@ -731,7 +752,7 @@ uint64_t rand64::setupRAM(RAM* ram) {
         this->ram->write8(paddr, (uint8_t)this->raw_data_init_data_res[i]);
     }
     log_debug("data init ok");
-    this->ram->ram_load_binary(BASE_ADDR, "./exec_binary/rand_boot.bin");
+    this->ram->ram_load_binary(BASE_ADDR, "../../ext/rand-boot/rand_boot.bin");
 
     return 0;
 }

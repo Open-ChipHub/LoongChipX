@@ -47,6 +47,10 @@
 #include "../memory/memorysim.h"
 #include "memorysim.h"
 
+#ifdef CONFIG_DIFFTEST
+#include "emu.h"
+#endif
+
 #ifdef USE_DRAM_SIM
 using namespace MemorySim;
 #else
@@ -55,6 +59,9 @@ using namespace AXISim;
 // Legacy function required only so linking works on Cygwin and MSVC++
 double sc_time_stamp() { return 0; }
 
+#ifdef CONFIG_DIFFTEST
+Emulator *emulator;
+#endif
 
 void cpu_irq_handler(void *opaque, int n, int level) {
     VTop *Top = (VTop *)opaque;
@@ -321,7 +328,7 @@ int main(int argc, char** argv, char** env) {
     // "Top" will be the hierarchical name of the module.
     VTop *Top = new VTop{contextp, "Sim_Top"};
 
-
+    uint64_t sim_cycles = 0;
     bool sym_ret;
     #if defined(WAVE_FST)
     trace = new VerilatedFstC;
@@ -345,6 +352,29 @@ int main(int argc, char** argv, char** env) {
         ram.ram_load_serial(irq, (image_dir + "/checkpoint_serial.bin").c_str());
     }
 
+
+#ifdef CONFIG_DIFFTEST
+    const char simu_trace_file[] = "./simu_trace.txt";
+    const char uart_output_file[] = "./uart_output.txt";
+    const char ram_file[] = "ram.dat";
+    const char data_vlog_file[] = "data.vlog";
+
+    emulator = new Emulator(Top, "./", simu_trace_file, uart_output_file, ram_file, data_vlog_file);
+    emulator->init_emu(&sim_cycles);
+
+    uint8_t* emulator_ram = (uint8_t*)mmap(nullptr, (2ull << 32), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+    if (!emulator_ram) {
+        printf("Mmap Error!\n");
+        exit(1);
+    }
+    
+    /// emulator->init_ram(ram.get_ram_base());
+    /// copy memory to emulator ram by 4GB.
+    /// FIXME: size is 4GB
+    memcpy(emulator_ram, ram.base, (1ull << 32));
+    emulator->init_ram(emulator_ram);
+#endif
+
     // Set VTop's input signals
     Top->reset = !1;
     Top->clk = 0;
@@ -360,7 +390,8 @@ int main(int argc, char** argv, char** env) {
     Top->dump_cycles = 0xffffffffffffffff;
     // Top->dump_cycles = 0x0;
 
-    uint64_t sim_cycles = 0;
+    Top->debug_dump_on = 1;
+
     if(sim_cfg.wave_begin_cycles != 0){
         snapshot->wave = 0;
     }
@@ -370,17 +401,18 @@ int main(int argc, char** argv, char** env) {
     fpr.ipc_moniter_init(6,12,1,ipc_threshold,40000,ins_cnt_end,sim_cfg.run_random);
     fpr.record_start();
         INFO(PRINT_BOLDYELLOW,"[AXI_wrapper] Initializing.\n");
-    #ifdef USE_DRAM_SIM
+#ifdef USE_DRAM_SIM
     MemorySim::AXI_wrapper axi_wrapper(Top,&ram,dramsim_config,sim_cfg.dramsim_output);
-    #else
+#else
     AXISim::AXI_wrapper axi_wrapper(Top,&ram);
-    #endif
+#endif
 
     uint64_t dram_cnt = 0;//Dram用的计数器，用来分半频
 
     dbg_sim_cycles = 0;
 
     sim_wave_on = false;
+    // sim_wave_on = true;
 
     // Simulate until $finish
     while (!contextp->gotFinish() && !sim_finish && sim_cycles < sim_cycles_limit) {
@@ -433,6 +465,10 @@ int main(int argc, char** argv, char** env) {
                 }
             #endif
         }
+
+#ifdef CONFIG_DIFFTEST
+        emulator->process();
+#endif
 
         if (sim_cycles % 100000 == 10000) {
             ram.ram_update_io();

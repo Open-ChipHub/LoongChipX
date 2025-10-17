@@ -21,6 +21,7 @@ export LCX_HOME
 
 VERIF_DIR  := $(LCX_HOME)/verif
 COMMON_DIR := $(LCX_HOME)/verif/common
+DIFFTEST_DIR := $(LCX_HOME)/verif/difftest
 
 ifneq ($(words $(CURDIR)),1)
  $(error Unsupported: GNU Make cannot build in directories containing spaces, build elsewhere: '$(CURDIR)')
@@ -72,7 +73,7 @@ CXXFLAGS += -stdlib=libstdc++
 LDFLAGS += -stdlib=libstdc++
 endif
 
-CXXFLAGS_OPTIMIZE += -O3 
+CXXFLAGS_OPTIMIZE += -O0 -g  
 CXXFLAGS += $(CXXFLAGS_OPTIMIZE)
 
 ifeq ("$(RANDOM_INIT)", "1")
@@ -166,7 +167,19 @@ CXX_SRC :=  $(COMMON_DIR)/memory/memorysim_check.cpp   \
 			$(COMMON_DIR)/vcsrc/sim_config.cpp         \
 			$(COMMON_DIR)/sim_main.cpp
 
-CXXFLAGS += -I$(COMMON_DIR)/memory -I$(COMMON_DIR)/vcsrc -I$(COMMON_DIR)/softfpu
+CXXFLAGS += -I$(COMMON_DIR)/memory -I$(COMMON_DIR)/vcsrc/include -I$(COMMON_DIR)/softfpu
+
+# difftest cpp source 
+DIFF_CXX_SRC := $(DIFFTEST_DIR)/diff_manage.cpp        \
+				$(DIFFTEST_DIR)/difftest.cpp           \
+				$(DIFFTEST_DIR)/emuproxy.cpp           \
+				$(DIFFTEST_DIR)/interface.cpp          \
+				$(DIFFTEST_DIR)/lightsss.cpp           \
+				$(DIFFTEST_DIR)/emu.cpp                
+
+CXX_SRC += $(DIFF_CXX_SRC)
+
+CXXFLAGS += -I$(DIFFTEST_DIR)/include
 
 
 memory:
@@ -186,12 +199,16 @@ build: $(vtop_mk) memory
 print_trace: vcsrc/print_trace.c vcsrc/trace.h
 	gcc vcsrc/print_trace.c -o print_trace
 
-run: build 
+run: build rand-boot
 	mkdir -p logs
 	obj_dir/VTop $(CONFIG) +trace
 
 show-config:
 	$(VERILATOR) -V
+
+rand-boot:
+	make -C $(VERIF_DIR)/ext/rand-boot clean
+	make -C $(VERIF_DIR)/ext/rand-boot compile
 
 hello:
 	make -C $(VERIF_DIR)/ext/simu-hello clean
@@ -229,14 +246,15 @@ verdi:
 
 
 maintainer-copy::
-mostlyclean maintainer-clean::
+mostlyclean maintainer-clean:: clean
 	-rm -rf *.log *.dmp *.vpd coverage.dat core obj_dir find_out_* \
 	$(WAVE) ./obj_dir/find_out_* *exe.report* logs board.h \
 	vcd2fsdbLog verdiLog 
 	$(MAKE) clean -C $(COMMON_DIR)/memory/DRAMsim3  
 
 clean:
-	-rm -rf *exe.report logs board.h
+	-rm -rf *exe.report logs board.h simu_trace.txt uart_output.txt \
+	 files.verdi.lst
 
 clean_all: mostlyclean
 

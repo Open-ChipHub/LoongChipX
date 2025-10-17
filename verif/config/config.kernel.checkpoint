@@ -1,5 +1,5 @@
 load_image=1
-image_dir=/home/airxs/user/cpu/dev/system/soc-lab364-emu-pc
+image_dir=/home/airxs/user/cpu/system/soc-lab164-emu-pc
 bios_mode=auto
 kernel=../../../ext/simu-kernel/vmlinux
 log_dir=logs

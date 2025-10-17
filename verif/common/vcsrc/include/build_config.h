@@ -14,4 +14,19 @@
 // #define WITH_RECORD_PC
 // #define FCSR_COMPARE
 
+#define CONFIG_DIFFTEST 1
+
+#define FORK_INTERVAL 1000
+#define SLOT_SIZE     2
+#define WAIT_INTERVAL 5
+
+#define SIMU_TRACE     1
+#define OUTPUT_PC_INFO 1
+
+#define DEAD_CLOCK_EN  1
+    #define DEAD_CLOCK_SIZE 10000
+
+#define TRACE_COMP     1
+
+
 #endif // __CONFIG_BUILD_H 
