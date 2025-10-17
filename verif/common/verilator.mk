@@ -139,7 +139,7 @@ VERILATOR_DEFINE += -DTRIPLE_CORE
 
 VERILATOR_FILELISTS ?= $(VERIF_DIR)/filelists/verilator_files.lst
 VERILATOR_SRC   += -f $(VERILATOR_FILELISTS)
-VERILATOR_INPUT := $(VERILATOR_DEFINE) --top-module Top ${VERILATOR_SRC} -Wno-CMPCONST -Wno-fatal
+VERILATOR_INPUT ?= $(VERILATOR_DEFINE) --top-module Top ${VERILATOR_SRC} -Wno-CMPCONST -Wno-fatal
 
 ######################################################################
 default: run
@@ -223,19 +223,20 @@ vcd2fsdb:
 	vcd2fsdb logs/latest/wave.vcd -o $(WAVE)
 
 verdi:
-	cat $(COMMON_DIR)/filelists/verilator_files.lst > files.verdi.lst
-	echo -e "\$${LCX_HOME}/verif/common/vsrc/Sim_Top.v" >> files.verdi.lst
+	cat $(VERILATOR_FILELISTS) > files.verdi.lst
+	echo -e "\$${LCX_HOME}/verif/common/vsrc/Top_verdi_dummy.v" >> files.verdi.lst
 	$(VERDI) $(VERDI_DEFINE) -sv -ssy -ssv -ssf $(WAVE) -top Sim_Top -f files.verdi.lst -nologo > /dev/null &
 
 
 maintainer-copy::
 mostlyclean maintainer-clean::
 	-rm -rf *.log *.dmp *.vpd coverage.dat core obj_dir find_out_* \
-	$(WAVE) ./obj_dir/find_out_* *exe.report logs
-	$(MAKE) clean -C $(COMMON_DIR)/memory/DRAMsim3 
+	$(WAVE) ./obj_dir/find_out_* *exe.report* logs board.h \
+	vcd2fsdbLog verdiLog 
+	$(MAKE) clean -C $(COMMON_DIR)/memory/DRAMsim3  
 
 clean:
-	-rm -rf *exe.report logs
+	-rm -rf *exe.report logs board.h
 
 clean_all: mostlyclean
 
