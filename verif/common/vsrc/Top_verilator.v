@@ -1,6 +1,8 @@
 
 `timescale 1ns/1ps 
 
+`include "board.h"
+
 module Top #(
     parameter int unsigned AXI_ID_WIDTH      = 8,
     parameter int unsigned AXI_ADDR_WIDTH    = 40,
@@ -48,6 +50,9 @@ module Top #(
   input    wire   [7 :0]                 core_in_interrupt,
   output   reg    [63:0]                 debug_wave_dump_on,
   output   reg    [63:0]                 dbg_sim_cycles,
+  input    wire                          debug_dump_on,
+  output   wire   [63:0]                 dbg_retire0_pc,
+  output   wire                          dbg_retire0_vld,
   input    wire                          reset,
   input    wire                          clk
 );
@@ -139,7 +144,6 @@ cpu_subsystem  cpu_subsystem (
 //----------------------------------------------------------
 //                Debug sim_cycles
 //----------------------------------------------------------
-
 reg [63:0] sim_cycles;
 always @(posedge clk) begin
   if(reset) begin
@@ -154,247 +158,126 @@ assign dbg_sim_cycles[63:0] = sim_cycles[63:0];
 //----------------------------------------------------------
 //                   Retire Logic
 //----------------------------------------------------------
-`define CPU_CORE cpu_subsystem.core0_subsystem
+wire [63:0] retire0_pc;
+wire        retire0_vld;
+wire [63:0] retire1_pc;
+wire        retire1_vld;
+wire [63:0] retire2_pc;
+wire        retire2_vld;
 
-`ifdef MMU_ON
-`define HALT_PC  40'h1800018000
-`else 
-`define HALT_PC  40'h1c018000
+// wire debug_dump_on = 1'b0;
+
+
+// `define HETE_ARCH_LITTLE 1
+// `define HETE_ARCH_BIG    1
+// `define HETE_ARCH_HYBRID 1
+
+
+`ifdef HETE_ARCH_LITTLE
+`define NO_CYCLE_DEBUG1  1
+`define CORE             cpu_subsystem.core0_subsystem.x_aq_top_0.x_aq_core
+`define CPU_RTU         `CORE.x_aq_rtu_top
+
+assign retire0_pc[63:0]  = `CPU_RTU.rtu_pad_retire_pc[63:0];
+assign retire0_vld       = `CPU_RTU.rtu_pad_retire;
+assign retire1_pc[63:0]  = 64'b0;
+assign retire1_vld       = 1'b0;
+assign retire2_pc[63:0]  = 64'b0;
+assign retire2_vld       = 1'b0;
+
+
+`elsif HETE_ARCH_BIG
+`define NO_CYCLE_DEBUG1  1
+`define CORE             cpu_subsystem.core0_subsystem.core_top_0.x_ct_core
+`define CPU_RTU         `CORE.x_ct_rtu_top
+
+assign retire0_pc[63:0]  = `CPU_RTU.rtu_pad_retire0_pc[63:0];
+assign retire0_vld       = `CPU_RTU.rtu_pad_retire0;
+assign retire1_pc[63:0]  = `CPU_RTU.rtu_pad_retire1_pc[63:0];
+assign retire1_vld       = `CPU_RTU.rtu_pad_retire1;
+assign retire2_pc[63:0]  = `CPU_RTU.rtu_pad_retire2_pc[63:0];
+assign retire2_vld       = `CPU_RTU.rtu_pad_retire2;
+
+
+`else
+
 `endif
 
-always @(posedge clk) begin
-    if ((`CPU_CORE.core0_pad_retire0_pc == `HALT_PC)
-        && `CPU_CORE.core0_pad_retire0
-    || (`CPU_CORE.core0_pad_retire1_pc == `HALT_PC)
-        && `CPU_CORE.core0_pad_retire1
-    || (`CPU_CORE.core0_pad_retire2_pc == `HALT_PC)
-        && `CPU_CORE.core0_pad_retire2
-        ) begin
-        $finish;
-    end
+
+
+
+`ifdef NO_CYCLE_DEBUG1
+static integer FILE1;
+initial
+begin
+FILE1 = $fopen("dbg.exe.report","w");
 end
+
+always @(posedge clk) begin
+  if (retire0_vld && debug_dump_on) begin
+    $fwrite(FILE1, "Cycle: %x -> %x\n", sim_cycles, retire0_pc);
+  end
+  if (retire1_vld && debug_dump_on) begin
+    $fwrite(FILE1, "Cycle: %x -> %x\n", sim_cycles, retire1_pc);
+  end
+  if (retire2_vld && debug_dump_on) begin
+    $fwrite(FILE1, "Cycle: %x -> %x\n", sim_cycles, retire2_pc);
+  end
+  `ifndef CPU_RANDOM_TEST_RETIRE
+   if ((retire0_pc == 64'h0) && retire0_vld ||
+      (retire1_pc == 64'h0) && retire1_vld ||
+      (retire2_pc == 64'h0) && retire2_vld
+      ) begin
+    `ifndef VCS_SIM
+        $display("Retire PC: 0x%x. Cycles: %x", retire0_pc[63:0], sim_cycles[63:0]);
+    `endif
+    $fclose(FILE1);
+    $finish;
+   end
+  `endif
+end
+
+
+
+static integer FILE_PC;
+initial
+begin
+FILE_PC = $fopen("dbg.exe.report.pc","w");
+end
+
+always @(posedge clk) begin
+  if (retire0_vld && debug_dump_on) begin
+    $fwrite(FILE_PC, "%x\n", retire0_pc);
+  end
+  if (retire1_vld && debug_dump_on) begin
+    $fwrite(FILE_PC, "%x\n", retire1_pc);
+  end
+  if (retire2_vld && debug_dump_on) begin
+    $fwrite(FILE_PC, "%x\n", retire2_pc);
+  end
+  `ifndef CPU_RANDOM_TEST_RETIRE
+   if ((retire0_pc == 64'h0) && retire0_vld ||
+      (retire1_pc == 64'h0) && retire1_vld ||
+      (retire2_pc == 64'h0) && retire2_vld
+      ) begin
+    `ifndef VCS_SIM
+        $display("Retire PC: 0x%x. Cycles: %x", retire0_pc[63:0], sim_cycles[63:0]);
+    `endif
+    $fclose(FILE_PC);
+    $finish;
+   end
+  `endif
+end
+`endif // END NO_CYCLE_DEBUG1
+
+
 
 
 //----------------------------------------------------------
 //                   Debug Dump Wave Logic
 //----------------------------------------------------------
-`define CPU_CP0_REGS cpu_subsystem.core0_subsystem.core_top_0.x_ct_core.x_ct_cp0_top.x_ct_cp0_regs
-
-always @(posedge clk) begin
-    if (debug_wave_dump_on[63:0] == 64'h11) begin
-       $display("debug_wave_dump_on!");
-    end else if (debug_wave_dump_on[63:0] == 64'hff) begin
-       $display("debug_wave_dump_off!");
-    end 
-end
-
-
-`define U_DUMP_PC  64'hffffffffffffffff
-// `define U_DUMP_PC  64'h0000000120003d60
-// `define U_DUMP_PC  64'h00000001200412e0
-// `define U_DUMP_PC  64'h0000000008000000
-`define U_DUMP_PC  64'h000000C01C000000
-// `define U_DUMP_PC  64'h000000001C000000
-// `define U_DUMP_PC  64'h00000001201f6140
-// `define U_DUMP_PC  64'h00000001201f5c20
-// `define U_DUMP_PC  64'h00000001201f36c0
-// `define U_DUMP_PC  64'h0000000120001380
-// `define U_DUMP_PC  64'h0000000120008c18
-// `define U_DUMP_PC  64'h90000000009e0ee8
-// `define U_DUMP_PC  64'h9000000000315a58
-// `define U_DUMP_PC  64'h9000000000a0e090 // devtmpfs_init
-
-
-reg [7:0] debug_num;
-
-always @(posedge clk) begin
-    if(reset) begin
-      debug_num <= '0;
-    end
-    else if (((`CPU_CORE.core0_pad_retire0_pc == dump_pc[63:0]) && `CPU_CORE.core0_pad_retire0
-          || (`CPU_CORE.core0_pad_retire1_pc == dump_pc[63:0]) && `CPU_CORE.core0_pad_retire1
-          || (`CPU_CORE.core0_pad_retire2_pc == dump_pc[63:0]) && `CPU_CORE.core0_pad_retire2
-             ) && (debug_wave_dump_on[63:0] != 64'h11))begin
-        debug_num[7:0] <= debug_num[7:0] + 1'b1;
-        $display("Dump Hit %d", debug_num[7:0]);
-    end
-    else  begin
-        debug_num[7:0] <= debug_num[7:0];
-    end
-end
-
-always @(posedge clk) begin
-    if(reset) begin
-      debug_wave_dump_on <= '0;
-    end
-    else if (((`CPU_CORE.core0_pad_retire0_pc == dump_pc[63:0]) && `CPU_CORE.core0_pad_retire0
-          || (`CPU_CORE.core0_pad_retire1_pc == dump_pc[63:0]) && `CPU_CORE.core0_pad_retire1
-          || (`CPU_CORE.core0_pad_retire2_pc == dump_pc[63:0]) && `CPU_CORE.core0_pad_retire2
-             ) && (debug_wave_dump_on[63:0] != 64'h11))begin
-        debug_wave_dump_on <= 64'h11;
-    end
-    else if(|debug_wave_dump_on[63:0]) begin
-        debug_wave_dump_on <= 64'h0;
-    end
-end
-
-//----------------------------------------------------------
-//                   Diff Commit PC
-//----------------------------------------------------------
-`ifdef DBG_GOLD_TRACE
-static integer TRACE_FILE;
-static integer SCAN_FILE;
-initial begin
-  TRACE_FILE = $fopen(`DIFF_GD_FILE, "r");
-  if (TRACE_FILE == 0) begin
-    $display("gold_trace handle was NULL");
-    $finish;
-  end
-end
-
-`define CPU_ROB_RT_EXPT_VLD cpu_subsystem.core0_subsystem.core_top_0.x_ct_core.x_ct_rtu_top.x_ct_rtu_retire.retire_ifu_expt_vld
-
-`define CPU_ROB_RT_EXPT_VEC cpu_subsystem.core0_subsystem.core_top_0.x_ct_core.x_ct_rtu_top.x_ct_rtu_retire.retire_ifu_expt_vec[15:0]
-
-
-logic unsigned [63:0] captured_pc;
-
-wire       retire_dump_vld;
-wire       retire_inst_expt_pagefalut;
-wire       user_space_retire_inst;
-wire       dump_start_retire_next;
-
-reg [63:0] last_captured_pc;
-reg [63:0] retire_inst_num;
-reg        retire_last_inst_expt_pagefalut;
-reg        dump_start_retire_state;
-
-// `define DUMP_START_PC 64'h1200007e0
-// `define DUMP_START_PC 64'h1200006cc
-`define DUMP_START_PC 64'h90000000009be000
-// `define DUMP_START_PC 64'h120008c1c
-
-assign dump_start_retire_next = (`CPU_CORE.core0_pad_retire0_pc[63:0] == `DUMP_START_PC)
-                                && `CPU_CORE.core0_pad_retire0;
-
-always @(posedge clk) begin
-    if(reset) begin
-        dump_start_retire_state <= 1'b0;
-    end else if(!dump_start_retire_state && dump_start_retire_next) begin
-        dump_start_retire_state <= 1'b1;
-    end
-end
-
-assign retire_dump_vld = ((last_captured_pc[63:0] != `CPU_CORE.core0_pad_retire0_pc[63:0]) 
-                           || retire_last_inst_expt_pagefalut)
-                          // user space 
-                          && (`CPU_CORE.core0_pad_retire0_pc[63:0] < 64'h130000000)
-                          && `CPU_CORE.core0_pad_retire0
-                          && !retire_inst_expt_pagefalut
-                          && (dump_start_retire_state);
-
-assign retire_inst_expt_pagefalut = (`CPU_ROB_RT_EXPT_VLD 
-                                       && (`CPU_ROB_RT_EXPT_VEC == 16'h1
-                                           || `CPU_ROB_RT_EXPT_VEC == 16'h2 
-                                           )
-                                    );
-
-assign user_space_retire_inst = (`CPU_CORE.core0_pad_retire0_pc[63:0] < 64'h130000000)
-                                 && `CPU_CORE.core0_pad_retire0;
-
-always @(posedge clk) begin
-  if(reset) begin
-     retire_last_inst_expt_pagefalut <= 0;
-  end else if(retire_inst_expt_pagefalut) begin
-     retire_last_inst_expt_pagefalut <= 1'b1;
-  end else if(user_space_retire_inst) begin
-     retire_last_inst_expt_pagefalut <= 1'b0; 
-  end
-end
-
-always @(posedge clk) begin
-  if(reset) begin
-     retire_inst_num <= 0;
-     last_captured_pc[63:0] <= 0;
-  end else if(`CPU_CORE.core0_pad_retire0) begin
-     retire_inst_num <= retire_inst_num + 1'b1;
-  end
-
-  if (retire_dump_vld) begin
-        SCAN_FILE = $fscanf(TRACE_FILE, "%x\n", captured_pc); 
-        // last_captured_pc[63:0] <= captured_pc[63:0];
-        last_captured_pc[63:0] <= `CPU_CORE.core0_pad_retire0_pc[63:0];
-        if (!$feof(TRACE_FILE)) begin
-            if (captured_pc[63:0] != `CPU_CORE.core0_pad_retire0_pc[63:0]) begin
-                $display("------------------ ERROR ------------------");
-                $display("Error  At  C:%x, I:%d", sim_cycles, retire_inst_num);
-                $display("Retire PC: 0x%x!", `CPU_CORE.core0_pad_retire0_pc[63:0]);
-                $display("Golden PC: 0x%x!", captured_pc[63:0]);
-                $finish;
-            end
-        end
-  end
-end
-
-`endif
-
-//----------------------------------------------------------
-//                Trace Load And Store
-//----------------------------------------------------------
-`define LSU_LOAD_AG   `CORE.x_ct_lsu_top.x_ct_lsu_ld_ag
-`define LSU_LOAD_WB   `CORE.x_ct_lsu_top.x_ct_lsu_ld_wb
-`define LSU_STORE_AG  `CORE.x_ct_lsu_top.x_ct_lsu_st_ag
-`define LSU_STORE_WB  `CORE.x_ct_lsu_top.x_ct_lsu_st_wb
-`define LSU_STORE_SQ  `CORE.x_ct_lsu_top.x_ct_lsu_sq
-`define LSU_STORE_WCE `CORE.x_ct_lsu_top.x_ct_lsu_wmb_ce
-
-`ifdef DBG_TRACE_LSU
-
-`define LSU_TRACE_ST_VADDR_U  40'h123fcf9ec
-`define LSU_TRACE_ST_VADDR_D  40'h123fce000
-
-static integer LSU_FILE;
-
-wire       lsu_trace_store_vld;
-wire       lsu_retire_st_inst;
-wire       lsu_retire_inst_icc;
-wire       lsu_retire_inst_atomic;
-wire       lsu_retire_inst_sync_fence;
-wire [1:0] lsu_retire_inst_type;
-wire [2:0] lsu_retire_inst_size;
-wire [1:0] lsu_retire_inst_mode;
-
-initial
-begin
-    LSU_FILE = $fopen("lsu.load_store.txt","w");
-end
-
-assign lsu_retire_inst_icc         = `LSU_STORE_SQ.sq_pop_icc;
-assign lsu_retire_inst_atomic      = `LSU_STORE_SQ.sq_pop_atomic;
-assign lsu_retire_inst_sync_fence  = `LSU_STORE_SQ.sq_pop_sync_fence;
-assign lsu_retire_inst_type[1:0]   = `LSU_STORE_SQ.sq_pop_inst_type[1:0];
-assign lsu_retire_inst_size[2:0]   = `LSU_STORE_SQ.sq_pop_inst_size[2:0];
-assign lsu_retire_inst_mode[1:0]   = `LSU_STORE_SQ.sq_pop_inst_mode[1:0];
-
-assign lsu_retire_st_inst  =   !lsu_retire_inst_icc
-                           &&  !lsu_retire_inst_atomic
-                           &&  !lsu_retire_inst_sync_fence
-                           &&  (lsu_retire_inst_type[1:0]  ==  2'b00);
-
-assign lsu_trace_store_vld = (`LSU_STORE_SQ.sq_pop_dva[63:0] <= `LSU_TRACE_ST_VADDR_U)
-                             && (`LSU_STORE_SQ.sq_pop_dva[63:0] >= `LSU_TRACE_ST_VADDR_D)
-                             && lsu_retire_st_inst;
-
-always @(posedge clk) begin
-  if (!reset) begin
-      
-  end
-  if (!reset && `LSU_STORE_WCE.wmb_ce_create_dp_vld && lsu_trace_store_vld) begin
-    $fwrite(LSU_FILE, "Cyc: %x, Va: %x, %x\n", sim_cycles, `LSU_STORE_SQ.sq_pop_dva[63:0], `LSU_STORE_SQ.sq_pop_data[63:0]);
-  end
-end
-
-`endif
+assign dbg_retire0_pc[63:0] = retire0_pc[63:0];
+assign dbg_retire0_vld      = retire0_vld;
 
 
 //----------------------------------------------------------
@@ -409,44 +292,14 @@ always @(posedge clk) begin
       last_commit_1_pc[63 :0] <= 64'b0;
       last_commit_2_pc[63 :0] <= 64'b0;
     end
-    if(`CPU_CORE.core0_pad_retire0) begin
-      last_commit_0_pc[63 :0] <= `CPU_CORE.core0_pad_retire0_pc[63:0];  
+    if(retire0_vld) begin
+      last_commit_0_pc[63 :0] <= retire0_pc[63:0];  
     end
-    if(`CPU_CORE.core0_pad_retire1) begin
-      last_commit_1_pc[63 :0] <= `CPU_CORE.core0_pad_retire1_pc[63:0];  
+    if(retire1_vld) begin
+      last_commit_1_pc[63 :0] <= retire1_pc[63:0];  
     end
-    if(`CPU_CORE.core0_pad_retire2) begin
-      last_commit_2_pc[63 :0] <= `CPU_CORE.core0_pad_retire2_pc[63:0];  
-    end
-    // core 1
-    if(`CPU_CORE.core1_pad_retire0) begin
-      last_commit_0_pc[63 :0] <= `CPU_CORE.core1_pad_retire0_pc[63:0];  
-    end
-    if(`CPU_CORE.core1_pad_retire1) begin
-      last_commit_1_pc[63 :0] <= `CPU_CORE.core1_pad_retire1_pc[63:0];  
-    end
-    if(`CPU_CORE.core1_pad_retire2) begin
-      last_commit_2_pc[63 :0] <= `CPU_CORE.core1_pad_retire2_pc[63:0];  
-    end
-    // core 2
-    if(`CPU_CORE.core2_pad_retire0) begin
-      last_commit_0_pc[63 :0] <= `CPU_CORE.core2_pad_retire0_pc[63:0];  
-    end
-    if(`CPU_CORE.core2_pad_retire1) begin
-      last_commit_1_pc[63 :0] <= `CPU_CORE.core2_pad_retire1_pc[63:0];  
-    end
-    if(`CPU_CORE.core2_pad_retire2) begin
-      last_commit_2_pc[63 :0] <= `CPU_CORE.core2_pad_retire2_pc[63:0];  
-    end
-    // core 3
-    if(`CPU_CORE.core3_pad_retire0) begin
-      last_commit_0_pc[63 :0] <= `CPU_CORE.core3_pad_retire0_pc[63:0];  
-    end
-    if(`CPU_CORE.core3_pad_retire1) begin
-      last_commit_1_pc[63 :0] <= `CPU_CORE.core3_pad_retire1_pc[63:0];  
-    end
-    if(`CPU_CORE.core3_pad_retire2) begin
-      last_commit_2_pc[63 :0] <= `CPU_CORE.core3_pad_retire2_pc[63:0];  
+    if(retire2_vld) begin
+      last_commit_2_pc[63 :0] <= retire2_pc[63:0];  
     end
 end
 
@@ -454,10 +307,7 @@ end
 
 wire commit_vld;
 
-assign commit_vld =    `CPU_CORE.core0_pad_retire0 || `CPU_CORE.core0_pad_retire1 || `CPU_CORE.core0_pad_retire2
-                    || `CPU_CORE.core1_pad_retire0 || `CPU_CORE.core1_pad_retire1 || `CPU_CORE.core1_pad_retire2
-                    || `CPU_CORE.core2_pad_retire0 || `CPU_CORE.core2_pad_retire1 || `CPU_CORE.core2_pad_retire2
-                    || `CPU_CORE.core3_pad_retire0 || `CPU_CORE.core3_pad_retire1 || `CPU_CORE.core3_pad_retire2;
+assign commit_vld =    retire0_vld || retire1_vld || retire2_vld;
 
 reg start_stats_reg;
 always @(posedge clk) begin
@@ -494,12 +344,12 @@ end
 `define RESTORE_PC  32'h1c000830
 
 always @(posedge clk) begin
-    if ((`CPU_CORE.core0_pad_retire0_pc[31:0] == `RESTORE_PC)
-        && `CPU_CORE.core0_pad_retire0
-    || (`CPU_CORE.core0_pad_retire1_pc[31:0] == `RESTORE_PC)
-        && `CPU_CORE.core0_pad_retire1
-    || (`CPU_CORE.core0_pad_retire2_pc[31:0] == `RESTORE_PC)
-        && `CPU_CORE.core0_pad_retire2
+    if ((retire0_pc[31:0] == `RESTORE_PC)
+        && retire0_vld
+    || (retire1_pc[31:0] == `RESTORE_PC)
+        && retire1_vld
+    || (retire2_pc[31:0] == `RESTORE_PC)
+        && retire2_vld
         ) begin
         $display("CheckPoint Restore Success!");
         $display("###########################");
