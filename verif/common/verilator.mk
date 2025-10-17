@@ -21,6 +21,7 @@ export LCX_HOME
 
 VERIF_DIR  := $(LCX_HOME)/verif
 COMMON_DIR := $(LCX_HOME)/verif/common
+DIFFTEST_DIR := $(LCX_HOME)/verif/difftest
 
 ifneq ($(words $(CURDIR)),1)
  $(error Unsupported: GNU Make cannot build in directories containing spaces, build elsewhere: '$(CURDIR)')
@@ -166,7 +167,7 @@ CXX_SRC :=  $(COMMON_DIR)/memory/memorysim_check.cpp   \
 			$(COMMON_DIR)/vcsrc/sim_config.cpp         \
 			$(COMMON_DIR)/sim_main.cpp
 
-CXXFLAGS += -I$(COMMON_DIR)/memory -I$(COMMON_DIR)/vcsrc -I$(COMMON_DIR)/softfpu
+CXXFLAGS += -I$(COMMON_DIR)/memory -I$(COMMON_DIR)/vcsrc/include -I$(COMMON_DIR)/softfpu
 
 
 memory:
