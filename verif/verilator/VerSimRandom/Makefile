@@ -2,6 +2,7 @@ include ../../common/verilator.mk
 
 
 VERILATOR_DEFINE += -DCPU_RANDOM_TEST_RETIRE
+VERILATOR_DEFINE += -DCHECK_DIFFTEST
 
 VERILATOR_SRC += 
 

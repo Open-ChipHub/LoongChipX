@@ -6,4 +6,5 @@
 
 
 ${LCX_HOME}/design/soc/rtl/cpu_subsystem_little.v
+${LCX_HOME}/verif/difftest/rtl/difftest.v
 ${LCX_HOME}/verif/common/vsrc/Top_verilator.v
