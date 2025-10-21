@@ -9,14 +9,15 @@ CASE_BIN  := hello_world.bin
 # VCS_FILELISTS
 
 # big little hybrid
-# HETE_ARCH := little
-HETE_ARCH := big
+HETE_ARCH := little
+# HETE_ARCH := big
 # HETE_ARCH := hybrid
 
 ifeq ("$(HETE_ARCH)","big")
 	VCS_FILELISTS := $(VERIF_DIR)/filelists/vcs_bigcore_files.lst
-	VCS_DEFINE += +define+CPU_SINGLE_RETIRE
+	VCS_DEFINE += +define+HETE_ARCH_BIG +define+CPU_SINGLE_RETIRE 
 else ifeq ("$(HETE_ARCH)","little")
+	VCS_DEFINE += +define+HETE_ARCH_LITTLE +define+CONFIG_DIFFTEST 
 	VCS_FILELISTS := $(VERIF_DIR)/filelists/vcs_littlecore_files.lst
 else ifeq ("$(HETE_ARCH)","hybrid")
 	VCS_FILELISTS := $(VERIF_DIR)/filelists/vcs_hybrid_files.lst

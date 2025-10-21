@@ -412,7 +412,7 @@ int main(int argc, char** argv, char** env) {
     dbg_sim_cycles = 0;
 
     sim_wave_on = false;
-    // sim_wave_on = true;
+    sim_wave_on = true;
 
     // Simulate until $finish
     while (!contextp->gotFinish() && !sim_finish && sim_cycles < sim_cycles_limit) {
@@ -441,6 +441,24 @@ int main(int argc, char** argv, char** env) {
         } else if (Top->debug_wave_dump_on == 0xFF) {
         // Turn OFF wave dump
             sim_wave_on = false;
+        }
+
+        // open dump wave
+        if ((Top->dbg_retire0_pc == 0x12001cc80) 
+             && (Top->dbg_retire0_vld)) {
+            if (!sim_wave_on) {
+                sim_wave_on = true;
+                printf("------ Open Wave Dump! ------\n");
+            }
+        }
+
+        // close dump wave
+        if ((Top->dbg_retire0_pc == 0xffffffff) 
+             && (Top->dbg_retire0_vld)) {
+            if (sim_wave_on) {
+                sim_wave_on = false;
+                printf("------ Close Wave Dump! ------\n");
+            }
         }
    
 #ifndef WAVE_NONE

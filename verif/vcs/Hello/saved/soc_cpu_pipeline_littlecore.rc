@@ -6,7 +6,7 @@ viewPort 2532 40 3840 1890 346 65
 
 ; File list:
 ; openDirFile [-d delimiter] [-s time_offset] [-rf auto_bus_rule_file] path_name file_name
-openDirFile -d / "" "/home/airxs/user/cpu/soc-core/labcore-dev-cacop/verif/vcs/hello/soc_top.fsdb"
+openDirFile -d / "" "/home/airxs/user/loongsonedu/cpu/LoongChipX/verif/vcs/Hello/soc_top.fsdb"
 
 ; file time scale:
 ; fileTimeScale ### s|ms|us|ns|ps
@@ -16,16 +16,16 @@ signalSpacing 5
 
 ; windowTimeUnit is used for zoom, cursor & marker
 ; waveform viewport range
-zoom 12373.727095 12483.556108
-cursor 12420.000000
-marker 2.000000
+zoom 15264.012857 15657.085276
+cursor 15446.000000
+marker -2.000000
 
 ; user define markers
 ; userMarker time_pos marker_name color linestyle
 ; visible top row signal index
-top 93
+top 143
 ; marker line index
-markerPos 177
+markerPos 211
 
 ; event list
 ; addEvent event_name event_expression
@@ -46,7 +46,7 @@ curSTATUS ByValue
 
 
 addGroup "G1"
-activeDirFile "" "/home/airxs/user/cpu/soc-core/labcore-dev-cacop/verif/vcs/hello/soc_top.fsdb"
+activeDirFile "" "/home/airxs/user/loongsonedu/cpu/LoongChipX/verif/vcs/Hello/soc_top.fsdb"
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/forever_cpuclk
 addSignal -h 21 /soc_top/reset
 addGroup "BUS" -e FALSE
@@ -102,7 +102,7 @@ addSignal -h 21 -holdScope biu_ifu_arready
 addSignal -h 21 -UNSIGNED -HEX -holdScope ifu_biu_araddr[39:0]
 endSubGroup "IFU-bus-ar"
 endSubGroup "IFU-bus"
-addSubGroup "IFU-mmu"
+addSubGroup "IFU-mmu" -e FALSE
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_ifu_top/ifu_mmu_va[51:0]
 addSignal -h 21 -holdScope ifu_mmu_va_vld
 addSignal -h 21 -UNSIGNED -HEX -holdScope mmu_ifu_pa[27:0]
@@ -110,26 +110,18 @@ addSignal -h 21 -holdScope mmu_ifu_pa_vld
 addSignal -h 21 -holdScope mmu_ifu_access_fault
 endSubGroup "IFU-mmu"
 addSubGroup "IFU-ibuf" -e FALSE
-addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_ifu_top/x_aq_ifu_ibuf/ipack_ibuf_inst[47:0]
-addSignal -h 21 -holdScope ipack_ibuf_inst_full
-addSignal -h 21 -holdScope ipack_ibuf_inst_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_ifu_top/x_aq_ifu_ibuf/ipack_ibuf_inst_vld
 addSignal -h 21 -holdScope pop_entry0_create_en
-addSignal -h 21 -holdScope pop_entry1_create_en
 endSubGroup "IFU-ibuf"
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_ifu_top/ifu_idu_id_inst[31:0]
 addSignal -h 21 -holdScope ifu_idu_id_inst_vld
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/x_aq_idu_id_ctrl/idu_ifu_id_stall
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_ifu_top/x_aq_ifu_ibuf/pop_entry0_retire_en
-addSignal -h 21 -holdScope pop_entry1_retire_en
 addSignal -h 21 -UNSIGNED -HEX -holdScope pop_entry0_create_inst[15:0]
 addSignal -h 21 -holdScope pop_entry0_create_en
 addSignal -h 21 -UNSIGNED -HEX -holdScope pop_entry0_create_inst[15:0]
 addSignal -h 21 -UNSIGNED -HEX -holdScope pop_entry0_inst[15:0]
 addSignal -h 21 -holdScope pop_entry0_vld
-addSignal -h 21 -holdScope pop_entry1_create_en
-addSignal -h 21 -UNSIGNED -HEX -holdScope pop_entry1_create_inst[15:0]
-addSignal -h 21 -UNSIGNED -HEX -holdScope pop_entry1_inst[15:0]
-addSignal -h 21 -holdScope pop_entry1_vld
 addGroup "GG1"
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/forever_cpuclk
 addSignal -h 21 -UNSIGNED -HEX /soc_top/sim_cycles[63:0]
@@ -142,7 +134,8 @@ addSignal -h 21 -holdScope idu_cp0_ex1_expt_illegal
 addSignal -h 21 -holdScope idu_cp0_ex1_expt_page_fault
 addSubGroup "IDU-IU"
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/idu_iu_ex1_alu_sel
-addSignal -h 21 -holdScope idu_iu_ex1_bju_sel
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/x_aq_idu_id_ctrl/idu_cp0_ex1_sel
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/idu_iu_ex1_bju_sel
 addSignal -h 21 -holdScope idu_iu_ex1_div_sel
 addSignal -h 21 -UNSIGNED -HEX -holdScope idu_iu_ex1_func[19:0]
 addSignal -h 21 -holdScope idu_iu_ex1_inst_vld
@@ -150,13 +143,41 @@ addSignal -h 21 -holdScope idu_iu_ex1_length
 addSignal -h 21 -holdScope idu_iu_ex1_mult_sel
 addSignal -h 21 -holdScope idu_iu_ex1_pipedown_vld
 addSignal -h 21 -holdScope idu_iu_ex1_split
-addSubGroup "IDU-IU-reg" -e FALSE
-addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/idu_iu_ex1_src0_reg[5:0]
-addSignal -h 21 -UNSIGNED -HEX -holdScope idu_iu_ex1_src0_data[63:0]
-addSignal -h 21 -UNSIGNED -HEX -holdScope idu_iu_ex1_src1_reg[5:0]
-addSignal -h 21 -UNSIGNED -HEX -holdScope idu_iu_ex1_src1_data[63:0]
-addSignal -h 21 -holdScope idu_iu_ex1_src1_ready
-endSubGroup "IDU-IU-reg"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_retire/retire_chgflw_pc[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/x_aq_iu_bju/bju_pcgen_pc_39_1[62:0]
+addSubGroup "IDU-gpr" -e FALSE
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/x_aq_idu_id_gpr/read_data_1[63:0]
+addSignal -h 21 -holdScope read_data_2[63:0]
+addSignal -h 21 -holdScope read_data_3[63:0]
+addSignal -h 21 -holdScope read_data_4[63:0]
+addSignal -h 21 -holdScope read_data_5[63:0]
+addSignal -h 21 -holdScope read_data_6[63:0]
+addSignal -h 21 -holdScope read_data_7[63:0]
+addSignal -h 21 -holdScope read_data_8[63:0]
+addSignal -h 21 -holdScope read_data_9[63:0]
+addSignal -h 21 -holdScope read_data_10[63:0]
+addSignal -h 21 -holdScope read_data_11[63:0]
+addSignal -h 21 -holdScope read_data_12[63:0]
+addSignal -h 21 -holdScope read_data_13[63:0]
+addSignal -h 21 -holdScope read_data_14[63:0]
+addSignal -h 21 -holdScope read_data_15[63:0]
+addSignal -h 21 -holdScope read_data_16[63:0]
+addSignal -h 21 -holdScope read_data_17[63:0]
+addSignal -h 21 -holdScope read_data_18[63:0]
+addSignal -h 21 -holdScope read_data_19[63:0]
+addSignal -h 21 -holdScope read_data_20[63:0]
+addSignal -h 21 -holdScope read_data_21[63:0]
+addSignal -h 21 -holdScope read_data_22[63:0]
+addSignal -h 21 -holdScope read_data_23[63:0]
+addSignal -h 21 -holdScope read_data_24[63:0]
+addSignal -h 21 -holdScope read_data_25[63:0]
+addSignal -h 21 -holdScope read_data_26[63:0]
+addSignal -h 21 -holdScope read_data_27[63:0]
+addSignal -h 21 -holdScope read_data_28[63:0]
+addSignal -h 21 -holdScope read_data_29[63:0]
+addSignal -h 21 -holdScope read_data_30[63:0]
+addSignal -h 21 -holdScope read_data_31[63:0]
+endSubGroup "IDU-gpr"
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/idu_iu_ex1_src0_reg[5:0]
 endSubGroup "IDU-IU"
 addSubGroup "IDU-LSU" -e FALSE
@@ -184,6 +205,7 @@ addGroup "GG2"
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/forever_cpuclk
 addSignal -h 21 -UNSIGNED -HEX /soc_top/sim_cycles[63:0]
 addGroup "IU"
+addSubGroup "IU-datapath" -e FALSE
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/idu_iu_ex1_func[19:0]
 addSignal -h 21 -holdScope idu_iu_ex1_inst_vld
 addSignal -h 21 -holdScope idu_iu_ex1_length
@@ -194,7 +216,10 @@ addSignal -h 21 -UNSIGNED -HEX -holdScope idu_iu_ex1_src1_data[63:0]
 addSignal -h 21 -UNSIGNED -HEX -holdScope idu_iu_ex1_src1_reg[5:0]
 addSignal -h 21 -holdScope idu_iu_ex1_src1_ready
 addSignal -h 21 -UNSIGNED -HEX -holdScope idu_iu_ex1_src2_data[63:0]
-addSubGroup "IU-tmp"
+endSubGroup "IU-datapath"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_ifu_top/x_aq_ifu_ibuf/ifu_idu_id_inst[31:0]
+addSignal -h 21 -holdScope ifu_idu_id_inst_vld
+addSubGroup "IU-tmp" -e FALSE
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/x_aq_idu_id_ctrl/ctrl_ex1_stall
 endSubGroup "IU-tmp"
 addSubGroup "IU-ALU"
@@ -211,7 +236,7 @@ addSignal -h 21 -UNSIGNED -HEX -holdScope iu_rtu_ex3_mul_data[63:0]
 addSignal -h 21 -UNSIGNED -HEX -holdScope iu_rtu_ex3_mul_preg[5:0]
 addSignal -h 21 -holdScope iu_rtu_ex3_mul_wb_vld
 endSubGroup "IU-MUL-DIV"
-addSubGroup "IU-BJU"
+addSubGroup "IU-BJU" -e FALSE
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/x_aq_iu_bju/idu_iu_ex1_inst[31:0]
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/idu_iu_ex1_bju_sel
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/x_aq_iu_bju/idu_iu_ex1_src0[63:0]
@@ -225,7 +250,7 @@ addSignal -h 21 -UNSIGNED -HEX -holdScope iu_ifu_tar_pc[63:0]
 addSignal -h 21 -holdScope iu_rtu_ex1_bju_wb_vld
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/x_aq_iu_bju/iu_rtu_ex1_bju_cmplt
 endSubGroup "IU-BJU"
-addSubGroup "IU-CP0"
+addSubGroup "IU-CP0" -e FALSE
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_cp0_top/idu_cp0_ex1_dp_sel
 addSignal -h 21 -UNSIGNED -HEX -holdScope idu_cp0_ex1_opcode[31:0]
 addSignal -h 21 -holdScope idu_cp0_ex1_sel
@@ -235,16 +260,6 @@ addSignal -h 21 -holdScope idu_cp0_ex1_expt_illegal
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_cp0_top/x_aq_cp0_iui/iui_inst_rs1[63:0]
 addSignal -h 21 -UNSIGNED -HEX -holdScope iui_inst_rs2[63:0]
 addSignal -h 21 -UNSIGNED -HEX -holdScope iui_inst_imm[11:0]
-addSubGroup "IU-CP0-rst-ctrl"
-addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_cp0_top/x_aq_cp0_special/x_aq_cp0_rst_ctrl/cp0_ifu_icache_inv_req
-addSignal -h 21 -holdScope cp0_lsu_icc_addr[63:0]
-addSignal -h 21 -holdScope cp0_lsu_icc_op[1:0]
-addSignal -h 21 -holdScope cp0_lsu_icc_req
-addSignal -h 21 -holdScope rst_top_op_done
-addSignal -h 21 -holdScope op_done
-addSignal -h 21 -holdScope op_done
-addSignal -h 21 -holdScope lsu_cp0_icc_done
-endSubGroup "IU-CP0-rst-ctrl"
 endSubGroup "IU-CP0"
 addSubGroup "IU-RTU" -e FALSE
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/rtu_iu_div_wb_grant
@@ -253,18 +268,47 @@ addSignal -h 21 -holdScope rtu_iu_ex1_inst_len
 addSignal -h 21 -holdScope rtu_iu_ex1_inst_split
 addSignal -h 21 -UNSIGNED -HEX -holdScope rtu_iu_ex2_cur_pc[39:0]
 endSubGroup "IU-RTU"
-addGroup "RTU"
-addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_retire/rtu_pad_retire_pc[39:0]
-addSignal -h 21 -holdScope rtu_pad_retire
-addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/x_aq_iu_bju/rtu_iu_ex1_cmplt
-addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_rbus/rbus_wb_preg[5:0]
-addSignal -h 21 -UNSIGNED -HEX -holdScope rbus_wb_data[63:0]
-addSignal -h 21 -holdScope rbus_wb_vld
-addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_dp/iu_rtu_ex1_cur_pc[39:0]
-addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/x_aq_iu_bju/rtu_iu_ex1_cmplt
 addGroup "GG3"
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/forever_cpuclk
 addSignal -h 21 -UNSIGNED -HEX /soc_top/sim_cycles[63:0]
+addGroup "RTU"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_retire/rtu_pad_retire_pc[39:0]
+addSignal -h 21 -holdScope rtu_pad_retire
+addSubGroup "RTU-Expt"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/rtu_yy_xx_expt_vec[14:0]
+addSignal -h 21 -holdScope rtu_yy_xx_expt_vld
+endSubGroup "RTU-Expt"
+addSubGroup "RTU-Commit"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/rtu_idu_diff_stall
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/x_aq_idu_id_ctrl/idu_ifu_id_stall
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/ifu_idu_id_inst[31:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_idu_top/x_aq_idu_id_ctrl/ctrl_pipedown_inst_vld
+endSubGroup "RTU-Commit"
+addSubGroup "RTU-Diff"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/diff_cur_state[2:0]
+addSignal -h 21 -UNSIGNED -HEX -holdScope diff_next_state[2:0]
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_dp/dp_ex1_cur_pc[63:0]
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/ctrl_ex1_cmplt
+addSubGroup "RTU-Diff-cmplt"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/ctrl_ex1_alu_cmplt
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/iu_rtu_ex1_alu_wb_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/ctrl_ex1_mul_cmplt
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/iu_rtu_ex3_mul_wb_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/ctrl_ex1_bju_cmplt
+addSignal -h 21 -holdScope ctrl_ex1_div_cmplt
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_iu_top/iu_rtu_div_wb_vld
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/ctrl_ex1_lsu_cmplt
+addSignal -h 21 -holdScope lsu_rtu_wb_vld
+addSignal -h 21 -holdScope ctrl_ex1_vec_cmplt
+addSignal -h 21 -holdScope vpu_rtu_fp_wb_vld
+addSignal -h 21 -holdScope ctrl_ex1_cp0_cmplt
+endSubGroup "RTU-Diff-cmplt"
+addSubGroup "RTU-Diff-wb"
+addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/vpu_rtu_gpr_wb_req
+addSignal -h 21 -holdScope vpu_rtu_fcc_wb_req
+endSubGroup "RTU-Diff-wb"
+addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_rtu_top/x_aq_rtu_ctrl/diff_next_state[2:0]
+endSubGroup "RTU-Diff"
 addGroup "LSU"
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_lsu_top/idu_lsu_ex1_dp_sel
 addSignal -h 21 -UNSIGNED -HEX -holdScope idu_lsu_ex1_func[19:0]
@@ -322,7 +366,7 @@ addSubGroup "GG3"
 addSignal -h 21 /soc_top/cpu_subsystem/core0_subsystem/forever_cpuclk
 addSignal -h 21 -UNSIGNED -HEX /soc_top/sim_cycles[63:0]
 endSubGroup "GG3"
-addSubGroup "LSU-mmu"
+addSubGroup "LSU-mmu" -e FALSE
 addSignal -h 21 -UNSIGNED -HEX /soc_top/cpu_subsystem/core0_subsystem/x_aq_top_0/x_aq_core/x_aq_lsu_top/lsu_mmu_va[51:0]
 addSignal -h 21 -holdScope lsu_mmu_va_vld
 addSignal -h 21 -holdScope mmu_lsu_ca
@@ -413,7 +457,7 @@ addGroup "G12"
 
 ; getSignalForm Scope Hierarchy Status
 ; active file of getSignalForm
-activeDirFile "" "/home/airxs/user/cpu/soc-core/labcore-dev-cacop/verif/vcs/hello/soc_top.fsdb"
+activeDirFile "" "/home/airxs/user/loongsonedu/cpu/LoongChipX/verif/vcs/Hello/soc_top.fsdb"
 
 GETSIGNALFORM_SCOPE_HIERARCHY_BEGIN
 getSignalForm close

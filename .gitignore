@@ -59,6 +59,8 @@ verif/RandomInstGen
 **/vcd2fsdbLog
 # waveform file
 **/saved
+**/save
+*.rc
 
 # verilator
 *.vcd

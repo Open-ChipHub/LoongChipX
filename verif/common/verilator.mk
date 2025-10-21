@@ -153,7 +153,6 @@ vtop_stems := ./obj_dir/VTop.stems
 CXX_SRC :=  $(COMMON_DIR)/memory/memorysim_check.cpp   \
 			$(COMMON_DIR)/memory/memorysim_write.cpp   \
 			$(COMMON_DIR)/memory/memorysim_read.cpp    \
-			$(COMMON_DIR)/softfpu/softfpu.cpp          \
 			$(COMMON_DIR)/vcsrc/snapshot.cpp           \
 			$(COMMON_DIR)/vcsrc/serial.cpp             \
 			$(COMMON_DIR)/vcsrc/initialize.cpp         \
