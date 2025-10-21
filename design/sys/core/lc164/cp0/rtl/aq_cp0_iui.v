@@ -694,10 +694,10 @@ assign iui_regs_csr_write_no_imm_ill = iui_csr_write_no_imm_ill;
 assign iui_regs_csr_en      = iui_inst_csr && !iui_csr_expt_vld;
 assign iui_regs_wdata[63:0] = iui_csr_wdata[63:0];
 
-assign iui_regs_inst_ertn   = iui_inst_ertn && !iui_special_expt_vld;
-assign iui_regs_inst_mret   = iui_inst_mret && !iui_special_expt_vld;
-assign iui_regs_inst_sret   = iui_inst_sret && !iui_special_expt_vld;
-assign iui_regs_inst_cprs   = iui_inst_cprs && !iui_special_expt_vld;
+assign iui_regs_inst_ertn   = iui_inst_ertn && !iui_special_expt_vld && iui_inst_cmplt;
+assign iui_regs_inst_mret   = iui_inst_mret && !iui_special_expt_vld && iui_inst_cmplt;
+assign iui_regs_inst_sret   = iui_inst_sret && !iui_special_expt_vld && iui_inst_cmplt;
+assign iui_regs_inst_cprs   = iui_inst_cprs && !iui_special_expt_vld && iui_inst_cmplt;
 
 assign iui_special_fence    = iui_inst_fence  && !iui_special_expt_vld;
 assign iui_special_fencei   = iui_inst_fencei && !iui_special_expt_vld;
