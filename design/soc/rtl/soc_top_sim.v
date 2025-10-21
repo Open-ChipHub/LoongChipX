@@ -1,5 +1,5 @@
 
-`include "board.h"
+// `include "board.h"
 
 module soc_top #(
     parameter int unsigned AXI_ID_WIDTH      = 8,
