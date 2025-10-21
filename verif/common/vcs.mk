@@ -92,7 +92,7 @@ VERDI_OPTS += -ssy -ssv -ssf
 WAVE := soc_top.fsdb
 
 verdi:
-	$(VERDI) $(VERDI_OPTS) $(WAVE) -top $(SIM_TOP_NAME) -f $(VCS_FILELISTS) -nologo > /dev/null &
+	$(VERDI) $(VERDI_OPTS) $(WAVE) -top $(SIM_TOP_NAME) $(VCS_DEFINE) -f $(VCS_FILELISTS) -nologo > /dev/null &
 
 
 .PHONY: vmlinux vmlinux.bin
