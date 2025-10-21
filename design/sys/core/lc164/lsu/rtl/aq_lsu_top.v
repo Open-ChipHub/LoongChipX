@@ -186,6 +186,7 @@ module aq_lsu_top (
   output   wire  [39 :0]  lsu_rtu_async_tval,
   output   wire           lsu_rtu_ex1_buffer_vld,
   output   wire           lsu_rtu_ex1_cmplt,
+  output   wire           lsu_rtu_ex1_cmplt_mask,
   output   wire           lsu_rtu_ex1_cmplt_dp,
   output   wire           lsu_rtu_ex1_cmplt_for_pcgen,
   output   wire  [63 :0]  lsu_rtu_ex1_data,
@@ -207,6 +208,7 @@ module aq_lsu_top (
   output   wire           lsu_rtu_ex2_data_vld,
   output   wire  [5  :0]  lsu_rtu_ex2_dest_reg,
   output   wire  [39 :0]  lsu_rtu_ex2_tval2,
+  output   wire           lsu_rtu_cmplt_split,
   output   wire           lsu_rtu_no_op,
   output   wire  [63 :0]  lsu_rtu_wb_data,
   output   wire  [5  :0]  lsu_rtu_wb_dest_reg,
@@ -523,6 +525,7 @@ wire             lfb_dc_so_vld;
 wire             lfb_dc_split;                
 wire             lfb_dc_split_first;          
 wire             lfb_dc_split_second;         
+wire             lfb_dc_int_split;         
 wire    [1  :0]  lfb_dc_stb_id;               
 wire             lfb_dc_uncmplt_vreg;         
 wire    [7  :0]  lfb_dc_vfunc;                
@@ -708,6 +711,7 @@ aq_lsu_ag  x_aq_lsu_ag (
   .ag_dc_st_data               (ag_dc_st_data              ),
   .ag_dc_unalign               (ag_dc_unalign              ),
   .ag_dc_unalign_last          (ag_dc_unalign_last         ),
+  .ag_dc_split                 (ag_dc_split                ),
   .ag_dc_vec_nop               (ag_dc_vec_nop              ),
   .ag_dc_virt_idx              (ag_dc_virt_idx             ),
   .ag_dc_vlsu_split_cnt        (ag_dc_vlsu_split_cnt       ),
@@ -780,6 +784,7 @@ aq_lsu_ag  x_aq_lsu_ag (
   .lsu_mmu_va_vld              (lsu_mmu_va_vld             ),
   .lsu_rtu_ex1_buffer_vld      (lsu_rtu_ex1_buffer_vld     ),
   .lsu_rtu_ex1_cmplt           (lsu_rtu_ex1_cmplt          ),
+  .lsu_rtu_ex1_cmplt_mask      (lsu_rtu_ex1_cmplt_mask     ),
   .lsu_rtu_ex1_cmplt_dp        (lsu_rtu_ex1_cmplt_dp       ),
   .lsu_rtu_ex1_cmplt_for_pcgen (lsu_rtu_ex1_cmplt_for_pcgen),
   .lsu_rtu_ex1_data            (lsu_rtu_ex1_data           ),
@@ -839,6 +844,7 @@ aq_lsu_dc  x_aq_lsu_dc (
   .ag_dc_st_data               (ag_dc_st_data              ),
   .ag_dc_unalign               (ag_dc_unalign              ),
   .ag_dc_unalign_last          (ag_dc_unalign_last         ),
+  .ag_dc_split                 (ag_dc_split                ),
   .ag_dc_vec_nop               (ag_dc_vec_nop              ),
   .ag_dc_virt_idx              (ag_dc_virt_idx             ),
   .ag_dc_vlsu_split_cnt        (ag_dc_vlsu_split_cnt       ),
@@ -910,6 +916,7 @@ aq_lsu_dc  x_aq_lsu_dc (
   .dc_lfb_size                 (dc_lfb_size                ),
   .dc_lfb_split                (dc_lfb_split               ),
   .dc_lfb_split_last           (dc_lfb_split_last          ),
+  .dc_lfb_int_split            (dc_lfb_int_split           ),
   .dc_lfb_st_id                (dc_lfb_st_id               ),
   .dc_lfb_vfunc                (dc_lfb_vfunc               ),
   .dc_lfb_virt_idx             (dc_lfb_virt_idx            ),
@@ -1005,6 +1012,7 @@ aq_lsu_dc  x_aq_lsu_dc (
   .lfb_dc_split                (lfb_dc_split               ),
   .lfb_dc_split_first          (lfb_dc_split_first         ),
   .lfb_dc_split_second         (lfb_dc_split_second        ),
+  .lfb_dc_int_split            (lfb_dc_int_split           ),
   .lfb_dc_stb_id               (lfb_dc_stb_id              ),
   .lfb_dc_uncmplt_vreg         (lfb_dc_uncmplt_vreg        ),
   .lfb_dc_vfunc                (lfb_dc_vfunc               ),
@@ -1033,6 +1041,7 @@ aq_lsu_dc  x_aq_lsu_dc (
   .lsu_rtu_ex2_data            (lsu_rtu_ex2_data           ),
   .lsu_rtu_ex2_data_vld        (lsu_rtu_ex2_data_vld       ),
   .lsu_rtu_ex2_dest_reg        (lsu_rtu_ex2_dest_reg       ),
+  .lsu_rtu_cmplt_split         (lsu_rtu_cmplt_split        ),
   .lsu_rtu_wb_data             (lsu_rtu_wb_data            ),
   .lsu_rtu_wb_dest_reg         (lsu_rtu_wb_dest_reg        ),
   .lsu_rtu_wb_vld              (lsu_rtu_wb_vld             ),
@@ -1135,6 +1144,7 @@ aq_lsu_lfb  x_aq_lsu_lfb (
   .dc_lfb_size           (dc_lfb_size          ),
   .dc_lfb_split          (dc_lfb_split         ),
   .dc_lfb_split_last     (dc_lfb_split_last    ),
+  .dc_lfb_int_split      (dc_lfb_int_split     ),
   .dc_lfb_st_id          (dc_lfb_st_id         ),
   .dc_lfb_vfunc          (dc_lfb_vfunc         ),
   .dc_lfb_virt_idx       (dc_lfb_virt_idx      ),
@@ -1191,6 +1201,7 @@ aq_lsu_lfb  x_aq_lsu_lfb (
   .lfb_dc_split          (lfb_dc_split         ),
   .lfb_dc_split_first    (lfb_dc_split_first   ),
   .lfb_dc_split_second   (lfb_dc_split_second  ),
+  .lfb_dc_int_split      (lfb_dc_int_split     ),
   .lfb_dc_stb_id         (lfb_dc_stb_id        ),
   .lfb_dc_uncmplt_vreg   (lfb_dc_uncmplt_vreg  ),
   .lfb_dc_vfunc          (lfb_dc_vfunc         ),

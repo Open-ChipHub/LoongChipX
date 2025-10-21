@@ -36,6 +36,7 @@ module aq_rtu_dp (
   input    wire          cp0_rtu_icg_en,
   input    wire          cp0_yy_clk_en,
   input    wire          ctrl_dp_ex1_cmplt_dp,
+  input    wire          ctrl_diff_ex1_lsu_cmplt,
   input    wire          dp_misc_clk,
   input    wire          forever_cpuclk,
   input    wire          ifu_rtu_warm_up,
@@ -52,6 +53,7 @@ module aq_rtu_dp (
   input    wire          iu_rtu_ex1_mul_cmplt_dp,
   input    wire  [63:0]  iu_rtu_ex1_next_pc,
   input    wire          lsu_rtu_ex1_cmplt_dp,
+  input    wire          lsu_rtu_cmplt_split,
   input    wire  [39:0]  lsu_rtu_ex1_expt_tval,
   input    wire  [14:0]  lsu_rtu_ex1_expt_vec,
   input    wire          lsu_rtu_ex1_expt_vld,
@@ -179,6 +181,15 @@ parameter CBUS_VEC_SEL = 7'b000_0001;
 // only eliminate xxx signals value
 parameter CBUS_NOP_SEL = 7'b000_0000;
 
+`ifdef CONFIG_DIFFTEST
+assign dp_cmplt_source[6:0] = {dp_ex1_alu_cmplt_dp,
+                               dp_ex1_mul_cmplt_dp,
+                               dp_ex1_bju_cmplt_dp,
+                               dp_ex1_div_cmplt_dp,
+                               ctrl_diff_ex1_lsu_cmplt,
+                               dp_ex1_cp0_cmplt_dp,
+                               dp_ex1_vec_cmplt_dp};
+`else 
 assign dp_cmplt_source[6:0] = {dp_ex1_alu_cmplt_dp,
                                dp_ex1_mul_cmplt_dp,
                                dp_ex1_bju_cmplt_dp,
@@ -186,6 +197,8 @@ assign dp_cmplt_source[6:0] = {dp_ex1_alu_cmplt_dp,
                                dp_ex1_lsu_cmplt_dp,
                                dp_ex1_cp0_cmplt_dp,
                                dp_ex1_vec_cmplt_dp};
+`endif
+
 assign dp_ex1_cmplt_dp = |dp_cmplt_source[6:0];
 // TODO add assertion here: cmplt_dp is onehot.
 
@@ -206,6 +219,7 @@ always @( iu_rtu_ex1_bju_inst_len
        or lsu_rtu_ex1_inst_len
        or cp0_rtu_ex1_inst_len
        or lsu_rtu_ex1_inst_split
+       or lsu_rtu_cmplt_split
        or dp_cmplt_source[6:0]
        or iu_rtu_ex1_alu_inst_len
        or vpu_rtu_ex1_inst_split)
@@ -227,10 +241,17 @@ case(dp_cmplt_source[6:0])
     dp_ex1_inst_len   = 1'b1;
     dp_ex1_inst_split = 1'b0;
   end
+`ifdef CONFIG_DIFFTEST 
+  CBUS_LSU_SEL: begin
+    dp_ex1_inst_len   = lsu_rtu_ex1_inst_len;
+    dp_ex1_inst_split = lsu_rtu_cmplt_split;
+  end
+`else 
   CBUS_LSU_SEL: begin
     dp_ex1_inst_len   = lsu_rtu_ex1_inst_len;
     dp_ex1_inst_split = lsu_rtu_ex1_inst_split;
   end
+`endif
   CBUS_CP0_SEL: begin
     dp_ex1_inst_len   = cp0_rtu_ex1_inst_len;
     dp_ex1_inst_split = cp0_rtu_ex1_inst_split;

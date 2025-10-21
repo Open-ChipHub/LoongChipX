@@ -557,6 +557,7 @@ wire    [63 :0]  lsu_rtu_ex2_data;
 wire             lsu_rtu_ex2_data_vld;            
 wire    [5  :0]  lsu_rtu_ex2_dest_reg;            
 wire    [39 :0]  lsu_rtu_ex2_tval2;               
+wire             lsu_rtu_cmplt_split;            
 wire             lsu_rtu_no_op;                   
 wire    [63 :0]  lsu_rtu_wb_data;                 
 wire    [5  :0]  lsu_rtu_wb_dest_reg;             
@@ -603,6 +604,7 @@ wire             rtu_cp0_vxsat;
 wire             rtu_cp0_vxsat_vld;               
 wire             rtu_idu_commit;                  
 wire             rtu_idu_commit_for_bju;          
+wire             rtu_idu_diff_stall;          
 wire             rtu_idu_flush_fe;                
 wire             rtu_idu_flush_stall;             
 wire             rtu_idu_flush_wbt;               
@@ -704,6 +706,7 @@ wire     [2 :0]  vpu_rtu_fcc_wb_index;
 wire             vpu_rtu_fcc_wb_data;
 wire             vpu_rtu_no_op;          
 wire             vpu_rtu_inst_expt_vld;         
+wire             vpu_rtu_fp_wb_vld;         
 wire    [63 :0]  vpu_vidu_fp_fwd_data;            
 wire    [4  :0]  vpu_vidu_fp_fwd_reg;             
 wire             vpu_vidu_fp_fwd_vld;             
@@ -961,6 +964,7 @@ aq_idu_top  x_aq_idu_top (
   .pad_yy_icg_scan_en           (pad_yy_icg_scan_en          ),
   .rtu_idu_commit               (rtu_idu_commit              ),
   .rtu_idu_commit_for_bju       (rtu_idu_commit_for_bju      ),
+  .rtu_idu_diff_stall           (rtu_idu_diff_stall          ),
   .rtu_idu_flush_fe             (rtu_idu_flush_fe            ),
   .rtu_idu_flush_stall          (rtu_idu_flush_stall         ),
   .rtu_idu_flush_wbt            (rtu_idu_flush_wbt           ),
@@ -1270,6 +1274,7 @@ aq_vpu_top  x_aq_vpu_top (
   .vpu_rtu_fcc_wb_data              (vpu_rtu_fcc_wb_data             ),
   .vpu_rtu_fcc_wb_index             (vpu_rtu_fcc_wb_index            ),
   .vpu_rtu_fcc_wb_req               (vpu_rtu_fcc_wb_req              ),
+  .vpu_rtu_fp_wb_vld                (vpu_rtu_fp_wb_vld               ),
   .vpu_rtu_no_op                    (vpu_rtu_no_op                   ),
   .vpu_rtu_inst_expt_vld            (vpu_rtu_inst_expt_vld           ),
   .vpu_vidu_fp_fwd_data             (vpu_vidu_fp_fwd_data            ),
@@ -1426,6 +1431,7 @@ aq_lsu_top  x_aq_lsu_top (
   .lsu_rtu_async_tval           (lsu_rtu_async_tval          ),
   .lsu_rtu_ex1_buffer_vld       (lsu_rtu_ex1_buffer_vld      ),
   .lsu_rtu_ex1_cmplt            (lsu_rtu_ex1_cmplt           ),
+  .lsu_rtu_ex1_cmplt_mask       (lsu_rtu_ex1_cmplt_mask      ),
   .lsu_rtu_ex1_cmplt_dp         (lsu_rtu_ex1_cmplt_dp        ),
   .lsu_rtu_ex1_cmplt_for_pcgen  (lsu_rtu_ex1_cmplt_for_pcgen ),
   .lsu_rtu_ex1_data             (lsu_rtu_ex1_data            ),
@@ -1446,6 +1452,7 @@ aq_lsu_top  x_aq_lsu_top (
   .lsu_rtu_ex2_data             (lsu_rtu_ex2_data            ),
   .lsu_rtu_ex2_data_vld         (lsu_rtu_ex2_data_vld        ),
   .lsu_rtu_ex2_dest_reg         (lsu_rtu_ex2_dest_reg        ),
+  .lsu_rtu_cmplt_split          (lsu_rtu_cmplt_split         ),
   .lsu_rtu_ex2_tval2            (lsu_rtu_ex2_tval2           ),
   .lsu_rtu_no_op                (lsu_rtu_no_op               ),
   .lsu_rtu_wb_data              (lsu_rtu_wb_data             ),
@@ -1824,6 +1831,7 @@ aq_rtu_top  x_aq_rtu_top (
   .lsu_rtu_async_tval            (lsu_rtu_async_tval           ),
   .lsu_rtu_ex1_buffer_vld        (lsu_rtu_ex1_buffer_vld       ),
   .lsu_rtu_ex1_cmplt             (lsu_rtu_ex1_cmplt            ),
+  .lsu_rtu_ex1_cmplt_mask        (lsu_rtu_ex1_cmplt_mask       ),
   .lsu_rtu_ex1_cmplt_dp          (lsu_rtu_ex1_cmplt_dp         ),
   .lsu_rtu_ex1_cmplt_for_pcgen   (lsu_rtu_ex1_cmplt_for_pcgen  ),
   .lsu_rtu_ex1_data              (lsu_rtu_ex1_data             ),
@@ -1844,6 +1852,7 @@ aq_rtu_top  x_aq_rtu_top (
   .lsu_rtu_ex2_data              (lsu_rtu_ex2_data             ),
   .lsu_rtu_ex2_data_vld          (lsu_rtu_ex2_data_vld         ),
   .lsu_rtu_ex2_dest_reg          (lsu_rtu_ex2_dest_reg         ),
+  .lsu_rtu_cmplt_split           (lsu_rtu_cmplt_split          ),
   .lsu_rtu_ex2_tval2             (lsu_rtu_ex2_tval2            ),
   .lsu_rtu_no_op                 (lsu_rtu_no_op                ),
   .lsu_rtu_wb_data               (lsu_rtu_wb_data              ),
@@ -1886,6 +1895,7 @@ aq_rtu_top  x_aq_rtu_top (
   .rtu_hpcp_retire_pc            (rtu_hpcp_retire_pc           ),
   .rtu_idu_commit                (rtu_idu_commit               ),
   .rtu_idu_commit_for_bju        (rtu_idu_commit_for_bju       ),
+  .rtu_idu_diff_stall            (rtu_idu_diff_stall           ),
   .rtu_idu_flush_fe              (rtu_idu_flush_fe             ),
   .rtu_idu_flush_stall           (rtu_idu_flush_stall          ),
   .rtu_idu_flush_wbt             (rtu_idu_flush_wbt            ),
@@ -1959,6 +1969,7 @@ aq_rtu_top  x_aq_rtu_top (
   .vpu_rtu_fcc_wb_data           (vpu_rtu_fcc_wb_data          ),
   .vpu_rtu_fcc_wb_index          (vpu_rtu_fcc_wb_index         ),
   .vpu_rtu_fcc_wb_req            (vpu_rtu_fcc_wb_req           ),
+  .vpu_rtu_fp_wb_vld             (vpu_rtu_fp_wb_vld            ),
   .vpu_rtu_no_op                 (vpu_rtu_no_op                ),
   .vpu_rtu_inst_expt_vld         (vpu_rtu_inst_expt_vld        )
 );

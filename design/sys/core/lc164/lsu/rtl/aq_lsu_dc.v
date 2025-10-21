@@ -44,6 +44,7 @@ module aq_lsu_dc (
   input    wire  [63 :0]  ag_dc_st_data,
   input    wire           ag_dc_unalign,
   input    wire           ag_dc_unalign_last,
+  input    wire           ag_dc_split,
   input    wire           ag_dc_vec_nop,
   input    wire  [1  :0]  ag_dc_virt_idx,
   input    wire  [9  :0]  ag_dc_vlsu_split_cnt,
@@ -97,6 +98,7 @@ module aq_lsu_dc (
   input    wire           lfb_dc_split,
   input    wire           lfb_dc_split_first,
   input    wire           lfb_dc_split_second,
+  input    wire           lfb_dc_int_split,
   input    wire  [1  :0]  lfb_dc_stb_id,
   input    wire           lfb_dc_uncmplt_vreg,
   input    wire  [7  :0]  lfb_dc_vfunc,
@@ -199,6 +201,7 @@ module aq_lsu_dc (
   output   wire  [1  :0]  dc_lfb_size,
   output   wire           dc_lfb_split,
   output   wire           dc_lfb_split_last,
+  output   wire           dc_lfb_int_split,
   output   wire  [1  :0]  dc_lfb_st_id,
   output   wire  [7  :0]  dc_lfb_vfunc,
   output   wire  [1  :0]  dc_lfb_virt_idx,
@@ -276,6 +279,7 @@ module aq_lsu_dc (
   output   wire  [63 :0]  lsu_rtu_ex2_data,
   output   wire           lsu_rtu_ex2_data_vld,
   output   wire  [5  :0]  lsu_rtu_ex2_dest_reg,
+  output   wire           lsu_rtu_cmplt_split,
   output   wire  [63 :0]  lsu_rtu_wb_data,
   output   wire  [5  :0]  lsu_rtu_wb_dest_reg,
   output   wire           lsu_rtu_wb_vld,
@@ -323,6 +327,7 @@ reg              da_fls;
 reg              da_inst_vld;                
 reg              da_lock;                    
 reg              da_sc_inst;                 
+reg              da_amo_int_split;                 
 reg     [1  :0]  da_sew;                     
 reg              da_sign_ext;                
 reg     [1  :0]  da_size;                    
@@ -364,6 +369,7 @@ reg              dc_sign_ext;
 reg     [1  :0]  dc_size;                    
 reg              dc_split;                   
 reg              dc_split_last;              
+reg              dc_int_split;              
 reg              dc_src2_depd;               
 reg     [5  :0]  dc_src2_reg;                
 reg              dc_sseg_first;              
@@ -406,6 +412,7 @@ wire             ag_ptw_pf_amr_mask;
 wire    [1  :0]  ag_ptw_priv_mode;           
 wire             ag_ptw_split;               
 wire             ag_ptw_split_last;          
+wire             ag_ptw_int_split;          
 wire    [1  :0]  ag_ptw_virt_idx;            
 wire             ag_ptw_vld;                 
 wire             ag_ptw_vld_dp;              
@@ -427,6 +434,7 @@ wire    [63 :0]  data;
 wire    [63 :0]  data_align_vfls_ext;        
 wire    [3  :0]  data_shift;                 
 wire             data_vld;                   
+wire             amo_inst_split;                   
 wire             dc_alias_hit;               
 wire             dc_alias_hit_raw;           
 wire    [1  :0]  dc_alias_idx;               
@@ -466,6 +474,7 @@ wire             dc_da_vl_update;
 wire    [6  :0]  dc_da_vl_val;               
 wire             dc_da_vls;                  
 wire             dc_da_vsplit_last;          
+wire             dc_da_amo_int_split;          
 wire             dc_data_grant;              
 wire    [2  :0]  dc_data_sel;                
 wire             dc_dca_inst;                
@@ -564,6 +573,7 @@ wire             vls;
 wire             vlsu_create_wdata_en;       
 wire    [3  :0]  vlsu_fwd_data_shift;        
 wire             vsplit_last;                
+wire             amo_int_split;                
 wire    [63 :0]  way0_data_dout;             
 wire    [27 :0]  way0_tag;                   
 wire             way0_tag_hit;               
@@ -775,6 +785,7 @@ assign ag_ptw_virt_idx[1:0]             = mcic_dc_req ? mcic_dc_addr[13:12] : ag
 assign ag_ptw_dest_reg[5:0]             = mcic_dc_req ? 6'b0 : ag_dc_dest_reg[5:0];
 assign ag_ptw_split                     = mcic_dc_req ? 1'b0 : ag_dc_unalign;
 assign ag_ptw_split_last                = mcic_dc_req ? 1'b1 : ag_dc_unalign_last;
+assign ag_ptw_int_split                 = mcic_dc_req ? 1'b0 : ag_dc_split;
 assign ag_ptw_expt_vld                  = mcic_dc_req ? 1'b0 : ag_dc_expt_vld;
 assign ag_ptw_data_shift[3:0]           = mcic_dc_req ? 4'b0000 : ag_dc_data_shift[3:0];
 assign ag_ptw_inst_pc[15:0]             = mcic_dc_req ? 16'b0: ag_dc_inst_pc[15:0];
@@ -900,6 +911,7 @@ begin
     dc_data_shift[3:0]        <= ag_ptw_data_shift[3:0];
     dc_split                  <= ag_ptw_split;
     dc_split_last             <= ag_ptw_split_last;
+    dc_int_split              <= ag_ptw_int_split;
     dc_expt_vld               <= ag_ptw_expt_vld;
     dc_ld_pc[15:0]            <= ag_ptw_inst_pc[15:0];
     dc_priv_mode[1:0]         <= ag_ptw_priv_mode[1:0];
@@ -1227,6 +1239,7 @@ assign dc_lfb_vfunc[7:0]     = dc_vfunc[7:0];
 assign dc_lfb_ptw            = dc_ptw;
 assign dc_lfb_split          = dc_split;
 assign dc_lfb_split_last     = dc_split_last;
+assign dc_lfb_int_split      = dc_int_split;
 assign dc_lfb_inst_ld        = dc_ld_amo_inst;
 assign dc_lfb_st_id[1:0]     = stb_dc_create_id[1:0];
 assign dc_lfb_alias_hit      = dc_alias_hit;
@@ -1498,6 +1511,7 @@ assign sew[1:0]                  = lfb_data_sel ? lfb_dc_sew[1:0]               
 assign vl_update                 = lfb_data_sel ? lfb_dc_vl_update                 : dc_vl_update;
 assign vl_val[6:0]               = lfb_data_sel ? lfb_dc_vl_val[6:0]               : dc_vl_val[6:0];
 assign vsplit_last               = lfb_data_sel ? lfb_dc_vsplit_last               : dc_vsplit_last;
+assign amo_int_split             = lfb_data_sel ? lfb_dc_int_split                 : dc_int_split;
 assign vec_nop                   = lfb_data_sel ? 1'b0                             : dc_vec_nop;
 assign expt_vld                  = lfb_data_sel ? 1'b0                             : dc_expt_vld;
 assign data_shift[3:0]           = lfb_data_sel ? lfb_dc_data_shift[3:0]           : dc_rdata_shift[3:0];
@@ -1685,6 +1699,7 @@ assign dc_da_vl_update         = vl_update;
 assign dc_da_vl_val[6:0]       = vl_val[6:0];
 assign dc_da_vsplit_last       = vsplit_last;
 assign dc_da_vec_nop           = vec_nop;
+assign dc_da_amo_int_split     = amo_int_split;
 //assign dc_da_ld_inst           = ld_inst;
 assign dc_da_amo_inst          = amo_inst;
 assign dc_da_amo_func[4:0]     = amo_func[4:0];
@@ -1820,6 +1835,7 @@ begin
     da_dest_reg[5:0]   <= dc_da_dest_reg[5:0];
     da_expt_vld        <= dc_da_expt_vld;
     da_sc_inst         <= dc_sc_data_vld;
+    da_amo_int_split   <= dc_da_amo_int_split;
 //    da_ld_inst         <= dc_da_ld_inst;
     da_amo_inst        <= dc_da_amo_inst;
     da_amo_func[4:0]   <= dc_da_amo_func[4:0];
@@ -1865,6 +1881,8 @@ assign da_dc_fwd_data[`LSU_DATAW-1:0] = da_data[`LSU_DATAW-1:0];
 assign lsu_rtu_wb_vld           = da_inst_vld & !da_vfls & !da_expt_vld;
 assign lsu_rtu_wb_dest_reg[5:0] = da_dest_reg[5:0];
 assign lsu_rtu_wb_data[63:0]    = da_data[63:0];
+
+assign lsu_rtu_cmplt_split      = da_amo_int_split;
 
 assign lsu_vlsu_data_vld      = da_inst_vld & da_vfls & !da_amo_no_wd;  //exclude amo wd0
 assign lsu_vlsu_func[19:0]    = {da_vfunc[7:0], 

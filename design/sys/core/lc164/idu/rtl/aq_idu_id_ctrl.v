@@ -62,6 +62,7 @@ module aq_idu_id_ctrl (
   input    wire          pad_yy_icg_scan_en,
   input    wire          rtu_idu_commit,
   input    wire          rtu_idu_commit_for_bju,
+  input    wire          rtu_idu_diff_stall,
   input    wire          rtu_idu_flush_fe,
   input    wire          rtu_idu_flush_stall,
   input    wire          rtu_idu_pipeline_empty,
@@ -516,7 +517,8 @@ assign ctrl_ex1_issue_stall    = ex1_inst_vld
 assign ctrl_ex1_internal_stall = ex1_inst_vld
                                  && (iu_idu_bju_global_full
                                   || lsu_idu_global_full)
-                                 || ctrl_ex1_issue_stall;
+                                 || ctrl_ex1_issue_stall
+                                 || rtu_idu_diff_stall;
 //4.if no commit, ex1 inst should
 //  discard and cannot issue (no sel / inst no valid).
 //  if no commit, rtu will flush, idu could discard ex1 inst

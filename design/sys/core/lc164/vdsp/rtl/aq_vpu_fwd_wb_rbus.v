@@ -95,6 +95,7 @@ module aq_vpu_fwd_wb_rbus (
   output   wire          vpu_rtu_fcc_wb_data,
   output   wire          vpu_rtu_no_op,
   output   wire          vpu_rtu_inst_expt_vld,
+  output   wire          vpu_rtu_fp_wb_vld,
   output   wire          vpu_vfdsu_ex1_sel,
   output   wire  [63:0]  vpu_vidu_fp_fwd_data,
   output   wire  [4 :0]  vpu_vidu_fp_fwd_reg,
@@ -367,6 +368,8 @@ end
 assign vpu_vidu_fp_wb_vld             = fpr_wb_vld;
 assign vpu_vidu_fp_wb_data[FLEN-1:0]  = fpr_wb_data[FLEN-1:0];
 assign vpu_vidu_fp_wb_reg[4:0]        = fpr_wb_index[4:0];
+
+assign vpu_rtu_fp_wb_vld              = fpr_wb_vld;
 
 assign vpu_vlsu_fp_wb_vld             = fpr_wb_vld;
 assign vpu_vlsu_fp_wb_data[FLEN-1:0]  = fpr_wb_data[FLEN-1:0];

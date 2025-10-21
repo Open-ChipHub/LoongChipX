@@ -52,6 +52,7 @@ module aq_lsu_lfb (
   input    wire  [1  :0]  dc_lfb_size,
   input    wire           dc_lfb_split,
   input    wire           dc_lfb_split_last,
+  input    wire           dc_lfb_int_split,
   input    wire  [1  :0]  dc_lfb_st_id,
   input    wire  [7  :0]  dc_lfb_vfunc,
   input    wire  [1  :0]  dc_lfb_virt_idx,
@@ -129,6 +130,7 @@ module aq_lsu_lfb (
   output   wire           lfb_dc_split,
   output   wire           lfb_dc_split_first,
   output   wire           lfb_dc_split_second,
+  output   wire           lfb_dc_int_split,
   output   wire  [1  :0]  lfb_dc_stb_id,
   output   wire           lfb_dc_uncmplt_vreg,
   output   wire  [7  :0]  lfb_dc_vfunc,
@@ -175,7 +177,7 @@ module aq_lsu_lfb (
 
 // &Regs; @22
 reg     [54 :0]  arbus;                 
-reg     [36 :0]  ldbus;                 
+reg     [37 :0]  ldbus;                 
 reg     [3  :0]  lfb_bus_ptr;           
 reg     [3  :0]  lfb_create_ptr;        
 reg     [3  :0]  lfb_pop_ptr;           
@@ -251,6 +253,7 @@ wire             lfb_create_sign_ext;
 wire    [1  :0]  lfb_create_size;       
 wire             lfb_create_split;      
 wire             lfb_create_split_last; 
+wire             lfb_create_int_split; 
 wire    [1  :0]  lfb_create_stbid;      
 wire    [7  :0]  lfb_create_vfunc;      
 wire    [1  :0]  lfb_create_virt_idx;   
@@ -262,7 +265,7 @@ wire             lfb_create_vsplit_last;
 wire             lfb_create_wb;         
 wire    [54 :0]  lfb_entry0_arbus;      
 wire    [6  :0]  lfb_entry0_dbginfo;    
-wire    [36 :0]  lfb_entry0_ldbus;      
+wire    [37 :0]  lfb_entry0_ldbus;      
 wire    [39 :0]  lfb_entry0_mtval;      
 wire    [50 :0]  lfb_entry0_rdl_bus;    
 wire    [44 :0]  lfb_entry0_refbus;     
@@ -270,7 +273,7 @@ wire    [6  :0]  lfb_entry0_stbus;
 wire    [20 :0]  lfb_entry0_vldbus;     
 wire    [54 :0]  lfb_entry1_arbus;      
 wire    [6  :0]  lfb_entry1_dbginfo;    
-wire    [36 :0]  lfb_entry1_ldbus;      
+wire    [37 :0]  lfb_entry1_ldbus;      
 wire    [39 :0]  lfb_entry1_mtval;      
 wire    [50 :0]  lfb_entry1_rdl_bus;    
 wire    [44 :0]  lfb_entry1_refbus;     
@@ -278,7 +281,7 @@ wire    [6  :0]  lfb_entry1_stbus;
 wire    [20 :0]  lfb_entry1_vldbus;     
 wire    [54 :0]  lfb_entry2_arbus;      
 wire    [6  :0]  lfb_entry2_dbginfo;    
-wire    [36 :0]  lfb_entry2_ldbus;      
+wire    [37 :0]  lfb_entry2_ldbus;      
 wire    [39 :0]  lfb_entry2_mtval;      
 wire    [50 :0]  lfb_entry2_rdl_bus;    
 wire    [44 :0]  lfb_entry2_refbus;     
@@ -286,7 +289,7 @@ wire    [6  :0]  lfb_entry2_stbus;
 wire    [20 :0]  lfb_entry2_vldbus;     
 wire    [54 :0]  lfb_entry3_arbus;      
 wire    [6  :0]  lfb_entry3_dbginfo;    
-wire    [36 :0]  lfb_entry3_ldbus;      
+wire    [37 :0]  lfb_entry3_ldbus;      
 wire    [39 :0]  lfb_entry3_mtval;      
 wire    [50 :0]  lfb_entry3_rdl_bus;    
 wire    [44 :0]  lfb_entry3_refbus;     
@@ -294,7 +297,7 @@ wire    [6  :0]  lfb_entry3_stbus;
 wire    [20 :0]  lfb_entry3_vldbus;     
 wire    [54 :0]  lfb_entry4_arbus;      
 wire    [6  :0]  lfb_entry4_dbginfo;    
-wire    [36 :0]  lfb_entry4_ldbus;      
+wire    [37 :0]  lfb_entry4_ldbus;      
 wire    [39 :0]  lfb_entry4_mtval;      
 wire    [50 :0]  lfb_entry4_rdl_bus;    
 wire    [44 :0]  lfb_entry4_refbus;     
@@ -302,7 +305,7 @@ wire    [6  :0]  lfb_entry4_stbus;
 wire    [20 :0]  lfb_entry4_vldbus;     
 wire    [54 :0]  lfb_entry5_arbus;      
 wire    [6  :0]  lfb_entry5_dbginfo;    
-wire    [36 :0]  lfb_entry5_ldbus;      
+wire    [37 :0]  lfb_entry5_ldbus;      
 wire    [39 :0]  lfb_entry5_mtval;      
 wire    [50 :0]  lfb_entry5_rdl_bus;    
 wire    [44 :0]  lfb_entry5_refbus;     
@@ -310,7 +313,7 @@ wire    [6  :0]  lfb_entry5_stbus;
 wire    [20 :0]  lfb_entry5_vldbus;     
 wire    [54 :0]  lfb_entry6_arbus;      
 wire    [6  :0]  lfb_entry6_dbginfo;    
-wire    [36 :0]  lfb_entry6_ldbus;      
+wire    [37 :0]  lfb_entry6_ldbus;      
 wire    [39 :0]  lfb_entry6_mtval;      
 wire    [50 :0]  lfb_entry6_rdl_bus;    
 wire    [44 :0]  lfb_entry6_refbus;     
@@ -318,7 +321,7 @@ wire    [6  :0]  lfb_entry6_stbus;
 wire    [20 :0]  lfb_entry6_vldbus;     
 wire    [54 :0]  lfb_entry7_arbus;      
 wire    [6  :0]  lfb_entry7_dbginfo;    
-wire    [36 :0]  lfb_entry7_ldbus;      
+wire    [37 :0]  lfb_entry7_ldbus;      
 wire    [39 :0]  lfb_entry7_mtval;      
 wire    [50 :0]  lfb_entry7_rdl_bus;    
 wire    [44 :0]  lfb_entry7_refbus;     
@@ -389,6 +392,7 @@ assign lfb_create_lock           = dc_lfb_lock;
 assign lfb_create_ptw            = dc_lfb_ptw;
 assign lfb_create_split          = dc_lfb_split;
 assign lfb_create_split_last     = dc_lfb_split_last;
+assign lfb_create_int_split      = dc_lfb_int_split;
 assign lfb_create_size[1:0]      = dc_lfb_size[1:0];
 assign lfb_create_shift[3:0]     = dc_lfb_shift[3:0];
 assign lfb_create_amo_inst       = dc_lfb_amo_inst;
@@ -825,15 +829,15 @@ parameter VLD_SPLIT   = 20;
 parameter VLD_WIDTH   = 21;
 
 // &CombBeg; @477
-always @( lfb_entry1_ldbus[36:0]
-       or lfb_entry0_ldbus[36:0]
-       or lfb_entry4_ldbus[36:0]
-       or lfb_entry3_ldbus[36:0]
-       or lfb_entry5_ldbus[36:0]
-       or lfb_entry6_ldbus[36:0]
-       or lfb_entry7_ldbus[36:0]
+always @( lfb_entry1_ldbus[37:0]
+       or lfb_entry0_ldbus[37:0]
+       or lfb_entry4_ldbus[37:0]
+       or lfb_entry3_ldbus[37:0]
+       or lfb_entry5_ldbus[37:0]
+       or lfb_entry6_ldbus[37:0]
+       or lfb_entry7_ldbus[37:0]
        or ld_sel[7:0]
-       or lfb_entry2_ldbus[36:0])
+       or lfb_entry2_ldbus[37:0])
 begin
   case(ld_sel[DEPTH-1:0])
   8'b00000001 : ldbus[`LSU_LD_WIDTH-1:0] = lfb_entry0_ldbus[`LSU_LD_WIDTH-1:0];
@@ -913,6 +917,7 @@ assign lfb_dc_data_shift[3:0]      = ldbus[`LSU_LD_SHIFT_3:`LSU_LD_SHIFT_0];
 assign lfb_dc_split_second         = ldbus[`LSU_LD_SPLIT] & ldbus[`LSU_LD_SLAST];
 assign lfb_dc_split_first          = ldbus[`LSU_LD_SPLIT] & !ldbus[`LSU_LD_SLAST];
 assign lfb_dc_split                = ldbus[`LSU_LD_SPLIT];
+assign lfb_dc_int_split            = ldbus[`LSU_LD_ISPLIT];
 assign lfb_dc_vls                  = ldbus[`LSU_LD_VLS];
 assign lfb_dc_fls                  = ldbus[`LSU_LD_FLS];
 assign lfb_dc_ptw                  = ldbus[`LSU_LD_PTW];
@@ -1103,6 +1108,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_0 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),
@@ -1182,6 +1188,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_1 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),
@@ -1261,6 +1268,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_2 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),
@@ -1340,6 +1348,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_3 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),
@@ -1419,6 +1428,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_4 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),
@@ -1498,6 +1508,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_5 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),
@@ -1577,6 +1588,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_6 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),
@@ -1656,6 +1668,7 @@ aq_lsu_lfb_entry  x_aq_lsu_lfb_entry_7 (
   .lfb_create_size          (lfb_create_size         ),
   .lfb_create_split         (lfb_create_split        ),
   .lfb_create_split_last    (lfb_create_split_last   ),
+  .lfb_create_int_split     (lfb_create_int_split    ),
   .lfb_create_stbid         (lfb_create_stbid        ),
   .lfb_create_vfunc         (lfb_create_vfunc        ),
   .lfb_create_virt_idx      (lfb_create_virt_idx     ),

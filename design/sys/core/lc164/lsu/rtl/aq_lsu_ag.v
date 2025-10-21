@@ -104,6 +104,7 @@ module aq_lsu_ag (
   output   wire  [63:0]  ag_dc_st_data,
   output   wire          ag_dc_unalign,
   output   wire          ag_dc_unalign_last,
+  output   wire          ag_dc_split,
   output   wire          ag_dc_vec_nop,
   output   wire  [1 :0]  ag_dc_virt_idx,
   output   wire  [9 :0]  ag_dc_vlsu_split_cnt,
@@ -137,6 +138,7 @@ module aq_lsu_ag (
   output   wire          lsu_mmu_va_vld,
   output   wire          lsu_rtu_ex1_buffer_vld,
   output   wire          lsu_rtu_ex1_cmplt,
+  output   wire          lsu_rtu_ex1_cmplt_mask,
   output   wire          lsu_rtu_ex1_cmplt_dp,
   output   wire          lsu_rtu_ex1_cmplt_for_pcgen,
   output   wire  [63:0]  lsu_rtu_ex1_data,
@@ -239,6 +241,7 @@ wire    [63:0]  ag_pipe_addr;
 wire    [63:0]  ag_pipe_addr_offset;           
 wire            ag_pipe_amo;                   
 wire            ag_pipe_atomic;                
+wire            ag_pipe_atomic_ll;                
 wire            ag_pipe_base_sel;              
 wire            ag_pipe_boundary_unmask;       
 wire    [7 :0]  ag_pipe_bytes_vld;             
@@ -967,6 +970,8 @@ assign ag_pipe_inst_st  = (ag_pipe_func[16] && !ag_pipe_func[12] && ag_pipe_func
                          | ((ag_pipe_func[19:12] == 8'b0001_0001) && ag_pipe_func[8])
                          | ((ag_pipe_func[19:12] == 8'b0001_0001) && !ag_pipe_func[8] 
                             && !ag_pipe_func[7]);
+assign ag_pipe_atomic_ll = (ag_pipe_func[19:12] == 8'b0001_0001) && ag_pipe_func[6]
+                           && ag_pipe_func[7];
 
 assign ag_pipe_dca_st   = ag_pipe_inst_dca || ag_pipe_inst_st;
 assign ag_pipe_dca_pa   = ag_pipe_inst_dca && 1'b0;
@@ -1383,6 +1388,8 @@ assign ag_dc_unalign_last        = ag_pipe_unalign_last;
 assign ag_dc_src2_depd           = ag_pipe_src2_depd;
 assign ag_dc_virt_idx[1:0]       = ag_pipe_addr[13:12];
 
+assign ag_dc_split               = ag_pipe_id_split;
+
 //for prefetch
 assign ag_dc_inst_pc[15:0]       = ag_pipe_pc[15:0];
 assign ag_dc_pf_amr_mask         = ag_pipe_unit_stride && vls_unalign
@@ -1442,14 +1449,18 @@ assign ag_dc_amo_func[4:0] = ag_pipe_func[6:2];
 // output to rtu
 //-----------------------------------------------
 //----------fast cmplt to rtu----------
-assign lsu_rtu_ex1_cmplt          = ag_pipe_cmplt_req;
+assign lsu_rtu_ex1_cmplt           = ag_pipe_cmplt_req;
 assign lsu_rtu_ex1_cmplt_for_pcgen = ag_pipe_cmplt_normal;
-assign lsu_rtu_ex1_cmplt_dp       = ag_pipe_cmplt_dp;
-assign lsu_rtu_ex1_inst_split     = ag_pipe_id_split;
-assign lsu_rtu_ex1_inst_len       = ag_pipe_inst_len;
+assign lsu_rtu_ex1_cmplt_dp        = ag_pipe_cmplt_dp;
+assign lsu_rtu_ex1_inst_split      = ag_pipe_id_split;
+assign lsu_rtu_ex1_inst_len        = ag_pipe_inst_len;
 
-assign lsu_rtu_ex1_expt_vld       = ag_pipe_expt_vld && !ag_pipe_expt_mask;
-assign lsu_rtu_ex1_expt_vec[14:0] = ag_pipe_expt_vec[14:0];
+// when expt, raise commit signal.
+assign lsu_rtu_ex1_cmplt_mask      = ag_pipe_dca_st && !ag_pipe_amo
+                                     || lsu_rtu_ex1_expt_vld;
+
+assign lsu_rtu_ex1_expt_vld        = ag_pipe_expt_vld && !ag_pipe_expt_mask;
+assign lsu_rtu_ex1_expt_vec[14:0]  = ag_pipe_expt_vec[14:0];
 
 //assign lsu_rtu_ex1_inst_ld                  = ag_pipe_inst_ld;
 assign lsu_rtu_ex1_expt_tval[`PA_WIDTH-1:0] = ag_pipe_expt_tval[`PA_WIDTH-1:0];

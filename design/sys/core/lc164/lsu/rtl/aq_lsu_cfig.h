@@ -16,27 +16,28 @@ limitations under the License.
 `define LSU_LD_REG_5    5
 `define LSU_LD_FLS      6
 `define LSU_LD_VLS      7
-`define LSU_LD_SLAST    8
-`define LSU_LD_SPLIT    9
-`define LSU_LD_BYTE_0   10
+`define LSU_LD_ISPLIT   8
+`define LSU_LD_SLAST    9
+`define LSU_LD_SPLIT    10
+`define LSU_LD_BYTE_0   11
 
 `ifdef DPLEN_128
-  `define LSU_LD_BYTE_15    25
-  `define LSU_LD_SEXT       26
-  `define LSU_LD_ADDR_3     27
-  `define LSU_LD_WB_EN      28
-  `define LSU_LD_SIZE_0     29
-  `define LSU_LD_SIZE_1     30
-  `define LSU_LD_PTW        31
-  `define LSU_LD_LOCK       32
-  `define LSU_LD_SHIFT_0    33
-  `define LSU_LD_SHIFT_3    36
-  `define LSU_LD_STB_ID_0   37 
-  `define LSU_LD_STB_ID_1   38 
-  `define LSU_LD_AMO_INST   39 
-  `define LSU_LD_AMO_FUNC_0 40 
-  `define LSU_LD_AMO_FUNC_4 44 
-  `define LSU_LD_WIDTH      45 
+  `define LSU_LD_BYTE_15    25+1
+  `define LSU_LD_SEXT       26+1
+  `define LSU_LD_ADDR_3     27+1
+  `define LSU_LD_WB_EN      28+1
+  `define LSU_LD_SIZE_0     29+1
+  `define LSU_LD_SIZE_1     30+1
+  `define LSU_LD_PTW        31+1
+  `define LSU_LD_LOCK       32+1
+  `define LSU_LD_SHIFT_0    33+1
+  `define LSU_LD_SHIFT_3    36+1
+  `define LSU_LD_STB_ID_0   37+1 
+  `define LSU_LD_STB_ID_1   38+1 
+  `define LSU_LD_AMO_INST   39+1 
+  `define LSU_LD_AMO_FUNC_0 40+1 
+  `define LSU_LD_AMO_FUNC_4 44+1 
+  `define LSU_LD_WIDTH      46 
   
   `define LSU_DATAW       128 
   `define LSU_BYTEW       16 
@@ -45,22 +46,22 @@ limitations under the License.
   `define VLSU_BLKW       32 
 `else//DPLEN_64
     //LFB LDBUS
-  `define LSU_LD_BYTE_7   17
-  `define LSU_LD_SEXT     18
-  `define LSU_LD_ADDR_3   19
-  `define LSU_LD_WB_EN    20
-  `define LSU_LD_SIZE_0   21
-  `define LSU_LD_SIZE_1   22
-  `define LSU_LD_PTW      23
-  `define LSU_LD_LOCK     24
-  `define LSU_LD_SHIFT_0  25
-  `define LSU_LD_SHIFT_3  28
-  `define LSU_LD_STB_ID_0   29
-  `define LSU_LD_STB_ID_1   30 
-  `define LSU_LD_AMO_INST   31 
-  `define LSU_LD_AMO_FUNC_0 32 
-  `define LSU_LD_AMO_FUNC_4 36
-  `define LSU_LD_WIDTH      37
+  `define LSU_LD_BYTE_7     17+1
+  `define LSU_LD_SEXT       18+1
+  `define LSU_LD_ADDR_3     19+1
+  `define LSU_LD_WB_EN      20+1
+  `define LSU_LD_SIZE_0     21+1
+  `define LSU_LD_SIZE_1     22+1
+  `define LSU_LD_PTW        23+1
+  `define LSU_LD_LOCK       24+1
+  `define LSU_LD_SHIFT_0    25+1
+  `define LSU_LD_SHIFT_3    28+1
+  `define LSU_LD_STB_ID_0   29+1
+  `define LSU_LD_STB_ID_1   30+1 
+  `define LSU_LD_AMO_INST   31+1 
+  `define LSU_LD_AMO_FUNC_0 32+1 
+  `define LSU_LD_AMO_FUNC_4 36+1
+  `define LSU_LD_WIDTH      38
   
   `define LSU_DATAW       64 
   `define LSU_BYTEW       8 
