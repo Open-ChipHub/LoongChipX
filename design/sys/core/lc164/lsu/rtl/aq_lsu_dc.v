@@ -1882,7 +1882,7 @@ assign lsu_rtu_wb_vld           = da_inst_vld & !da_vfls & !da_expt_vld;
 assign lsu_rtu_wb_dest_reg[5:0] = da_dest_reg[5:0];
 assign lsu_rtu_wb_data[63:0]    = da_data[63:0];
 
-assign lsu_rtu_cmplt_split      = da_amo_int_split;
+assign lsu_rtu_cmplt_split      = da_inst_vld & !da_vfls & !da_expt_vld & da_amo_int_split;
 
 assign lsu_vlsu_data_vld      = da_inst_vld & da_vfls & !da_amo_no_wd;  //exclude amo wd0
 assign lsu_vlsu_func[19:0]    = {da_vfunc[7:0], 
