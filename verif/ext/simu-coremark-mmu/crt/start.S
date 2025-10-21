@@ -54,9 +54,9 @@ _start:
     # sync data
     dbar 0
 
-    li.d   $t1, 0
-    csrwr  $t1, 0x550
-    ibar 0
+    # li.d   $t1, 0
+    # csrwr  $t1, 0x550
+    # ibar 0
 
     rdtime.d $r11, $zero
     rdtimeh.w $r11, $zero
@@ -123,10 +123,10 @@ _test_atomic:
     # amswap.w $r20, $r13, $r11
     # amswap.d $r20, $r13, $r11
 
-    addi.w      $t1, $zero, 1
-    amadd_db.w  $t0, $t1, $r11
+    # addi.w      $t1, $zero, 1
+    # amadd_db.w  $t0, $t1, $r11
 
-    dbar 0
+    # dbar 0
 
     ld.d $r13, $r11, 0
     add.d      $r13, $r13, $zero
