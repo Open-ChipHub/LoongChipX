@@ -94,7 +94,7 @@ CXXFLAGS+=-I$(COMMON_DIR)/memory/
 # lib files path
 LDFLAGS +=-L$(COMMON_DIR)/memory/DRAMsim3/
 LDFLAGS +=-L$(COMMON_DIR)/softfpu
-LIBS    += -ldramsim3 -lsoftfloat
+LIBS    += -ldramsim3
 
 ifeq ("$(WAVE)", "FST")
     WAVE_FLAGS=--trace-fst
