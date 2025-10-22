@@ -47,7 +47,7 @@ extern long long inst_total;
 uint32_t split_num = 0;
 
 int debug = 0;
-
+int debug_hit_num = 0;
 
 int Difftest::step(vluint64_t &main_time) {
     // progress = false;
@@ -163,13 +163,23 @@ int Difftest::step(vluint64_t &main_time) {
     }
 
     /// only for debug.
-    if (dut.commit[0].valid && (dut.commit[0].pc == 0x12020203c)) {
-        printf("Trigger Debugger.\n");
+    if (dut.commit[0].valid && (dut.commit[0].pc == 0x080001cc)) {
+        // printf("Trigger Debugger.\n");
         debug = 1;
     }
 
-    if (dut.commit[0].valid && (dut.commit[0].pc == 0x90000000006f6630)) {
-        fprintf(trace_out, "Raise Exception 0\n");
+    /// only for debug.
+    if (dut.commit[0].valid && (dut.commit[0].pc == 0x08002000)) {
+        printf("\x1b[32mException Exit.\x1b[0m\n");
+        sim_over = true;
+        exit(1);
+    }
+
+    if (dut.commit[0].valid && (dut.commit[0].pc == 0x00000310)) {
+        if (debug_hit_num == 10)
+            debug = 2;
+        else
+            debug_hit_num++;
         debug = 3;
     }
 
