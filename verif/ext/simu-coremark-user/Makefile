@@ -14,7 +14,7 @@ INCLUDES := -Iinclude -Iclib
 ### 
 CCFLAGS := -static -G0 -pipe -Wa,-mla-global-with-pcrel -fPIC -g -O2
 
-LDSTART ?= --defsym=MEM_START=0x1C000000
+LDSTART ?= --defsym=MEM_START=0x1D000000
 
 LDFLAGS += $(LDSTART) -Tlinker.script -Map=link.map -static -G0 
 

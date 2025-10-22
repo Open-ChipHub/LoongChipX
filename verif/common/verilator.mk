@@ -93,8 +93,7 @@ CXXFLAGS+=-I$(COMMON_DIR)/memory/DRAMsim3/src/
 CXXFLAGS+=-I$(COMMON_DIR)/memory/
 # lib files path
 LDFLAGS +=-L$(COMMON_DIR)/memory/DRAMsim3/
-LDFLAGS +=-L$(COMMON_DIR)/softfpu
-LIBS    += -ldramsim3 -lsoftfloat
+LIBS    += -ldramsim3
 
 ifeq ("$(WAVE)", "FST")
     WAVE_FLAGS=--trace-fst
@@ -138,7 +137,7 @@ VERILATOR_DEFINE += -DTRIPLE_CORE
 # VERILATOR_DEFINE += -DQUAD_CORE
 
 
-VERILATOR_FILELISTS ?= $(VERIF_DIR)/filelists/verilator_files.lst
+VERILATOR_FILELISTS ?= $(VERIF_DIR)/filelists/verilator_littlecore_files.lst
 VERILATOR_SRC   += -f $(VERILATOR_FILELISTS)
 VERILATOR_INPUT ?= $(VERILATOR_DEFINE) --top-module Top ${VERILATOR_SRC} -Wno-CMPCONST -Wno-fatal
 
@@ -153,7 +152,6 @@ vtop_stems := ./obj_dir/VTop.stems
 CXX_SRC :=  $(COMMON_DIR)/memory/memorysim_check.cpp   \
 			$(COMMON_DIR)/memory/memorysim_write.cpp   \
 			$(COMMON_DIR)/memory/memorysim_read.cpp    \
-			$(COMMON_DIR)/softfpu/softfpu.cpp          \
 			$(COMMON_DIR)/vcsrc/snapshot.cpp           \
 			$(COMMON_DIR)/vcsrc/serial.cpp             \
 			$(COMMON_DIR)/vcsrc/initialize.cpp         \
@@ -238,6 +236,7 @@ mostlyclean maintainer-clean::
 
 clean:
 	-rm -rf *exe.report logs board.h
+	-rm -rf ./obj_dir
 
 clean_all: mostlyclean
 

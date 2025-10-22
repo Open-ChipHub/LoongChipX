@@ -17,7 +17,7 @@ CCFLAGS := -static -G0 -pipe -Wa,-mla-global-with-pcrel -fPIC -g -O0
 # for debug
 DBG_CCFLAGS := -static -G0 -pipe -Wa,-mla-global-with-pcrel -fPIC -g -O0
 
-LDSTART ?= --defsym=MEM_START=0x1C000000
+LDSTART ?= --defsym=MEM_START=0x1D000000
 
 LDFLAGS += $(LDSTART) -Tlinker.script -Map=link.map -static -G0 
 
