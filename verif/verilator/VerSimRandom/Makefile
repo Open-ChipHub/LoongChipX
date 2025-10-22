@@ -13,12 +13,15 @@ HETE_ARCH := little
 # HETE_ARCH := hybrid
 
 ifeq ("$(HETE_ARCH)","big")
+	VERILATOR_DEFINE += -DCPU_SINGLE_RETIRE
+	VERDI_DEFINE += +define+CPU_SINGLE_RETIRE
 	VERILATOR_FILELISTS := $(VERIF_DIR)/filelists/verilator_bigcore_files.lst
-	VCS_DEFINE += +define+CPU_SINGLE_RETIRE
 else ifeq ("$(HETE_ARCH)","little")
+	VERILATOR_DEFINE += -DCONFIG_DIFFTEST -DCHECK_DIFFTEST
+	VERDI_DEFINE += +define+CONFIG_DIFFTEST +define+CHECK_DIFFTEST
 	VERILATOR_FILELISTS := $(VERIF_DIR)/filelists/verilator_littlecore_files.lst
-# else ifeq ("$(HETE_ARCH)","hybrid")
-# 	VERILATOR_FILELISTS := $(VERIF_DIR)/filelists/vcs_hybrid_files.lst
+else ifeq ("$(HETE_ARCH)","hybrid")
+	VERILATOR_FILELISTS := $(VERIF_DIR)/filelists/vcs_hybrid_files.lst
 else
 $(error "We set HETE_ARCH (big, little, hybrid)")
 endif
