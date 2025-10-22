@@ -9,31 +9,49 @@ random_test_start:
 	csrwr	$r0,0x6
 	csrwr	$r0,0x4
 	csrwr	$r0,0x18
+	
+	# EENTRY
 	lu12i.w	$r1,32770
 	csrwr	$r1,0xc
+	
+	# TLBRENTRY
 	lu12i.w	$r1,32769
 	csrwr	$r1,0x88
 
-# We keep pgdh and pgdl in C910
+    # We keep pgdh and pgdl in C910
+	# PGDL
 	lu12i.w	$r1,131074
 	csrwr	$r1,0x19
+	# PGDH
 	lu12i.w	$r1,131074
 	csrwr	$r1,0x1a
 
-	lu12i.w	$r1,94
-	ori	$r1,$r1,0x56e
+	# PWCL = 0x13E4D52C
+	# lu12i.w	$r1,94
+	# ori	$r1,$r1,0x56e
+	lu12i.w	$r1,81485
+	ori	$r1,$r1,0x52c
 	csrwr	$r1,0x1c
-	ori	$r1,$r0,0x2e4
+	
+	# PWCH = 0x1000000
+	# ori	$r1,$r0,0x2e4
+	lu12i.w	$r1,4096
 	csrwr	$r1,0x1d
+	
+	# EUEN
 	ori	$r1,$r0,0xf
 	csrwr	$r1,0x2
+	
+	# Jump 8000000
 	lu12i.w	$r1,32768
 	ori	$r1,$r1,0x64
 	lu32i.d	$r1,0
 	lu52i.d	$r1,$r1,0
 	jirl	$r0,$r1,0
+	
 	lu12i.w	$r31,32773
 	ld.d	$r1,$r31,512
+	
 	beqz	$r1, init_fpr_end
 	ld.d	$r1,$r31,640
 	movgr2fcsr	$r0,$r1
