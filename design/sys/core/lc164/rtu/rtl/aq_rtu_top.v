@@ -319,6 +319,7 @@ aq_rtu_ctrl  x_aq_rtu_ctrl (
   .rtu_idu_diff_stall               (rtu_idu_diff_stall              ),
   .rtu_iu_ex1_cmplt                 (rtu_iu_ex1_cmplt                ),
   .rtu_iu_ex1_cmplt_dp              (rtu_iu_ex1_cmplt_dp             ),
+  .rtu_yy_xx_flush                  (rtu_yy_xx_flush                 ),
   .vpu_rtu_fp_wb_vld                (vpu_rtu_fp_wb_vld               ),
   .vpu_rtu_gpr_wb_req               (vpu_rtu_gpr_wb_req              ),
   .vpu_rtu_fcc_wb_req               (vpu_rtu_fcc_wb_req              ),

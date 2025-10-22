@@ -34,6 +34,7 @@ module aq_rtu_ctrl (
   input    wire       pad_yy_icg_scan_en,
   input    wire       retire_ctrl_commit_clear,
   input    wire       retire_ctrl_commit_clear_for_bju,
+  input    wire       rtu_yy_xx_flush,
   input    wire       vpu_rtu_fp_wb_vld,
   input    wire       vpu_rtu_gpr_wb_req,
   input    wire       vpu_rtu_fcc_wb_req,
@@ -265,6 +266,8 @@ parameter D_WAIT    = 3'b100;
 always @ (posedge forever_cpuclk or negedge cpurst_b)
 begin
   if (!cpurst_b)
+    diff_cur_state[2:0] <= D_IDLE;
+  else if (rtu_yy_xx_flush)
     diff_cur_state[2:0] <= D_IDLE;
   else
     diff_cur_state[2:0] <= diff_next_state[2:0];
