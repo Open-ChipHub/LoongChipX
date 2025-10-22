@@ -368,7 +368,9 @@ endmodule
     `DPIC_ARG_LONG fpr_28,
     `DPIC_ARG_LONG fpr_29,
     `DPIC_ARG_LONG fpr_30,
-    `DPIC_ARG_LONG fpr_31
+    `DPIC_ARG_LONG fpr_31,
+    `DPIC_ARG_BYTE fccr,
+    `DPIC_ARG_INT  fcsr0
 );
 `DIFFTEST_MOD_DECL(FPRegState)(
     input         clock,

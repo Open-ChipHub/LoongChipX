@@ -9,7 +9,7 @@ extern FILE* uart_out;
 // not compare estat
 static const int DIFFTEST_NR_GREG   = 32;
 static const int DIFFTEST_NR_CSRREG = 12;
-static const int DIFFTEST_NR_FPREG  = 32+2;
+static const int DIFFTEST_NR_FPREG  = 32;
 static const int DIFFTEST_NR_REG = DIFFTEST_NR_GREG + DIFFTEST_NR_CSRREG;
 
 static const char* reg_name[] = {
@@ -32,6 +32,8 @@ static const char compare_mask[] = {
 /* used only do rand test. compare only when flag is true */
 static bool diff_flag = false;
 #endif
+
+bool do_check_inst_rdtime(uint32_t inst);
 
 static uint32_t estat_last;
 static uint32_t estat_flag;
@@ -295,10 +297,10 @@ int Difftest::step(vluint64_t &main_time) {
     if (memcmp(&dut.regs.fpr[0], &ref.regs.fpr[0], DIFFTEST_NR_FPREG * sizeof(uint64_t))){
         for (int i = 0; i < DIFFTEST_NR_GREG; i ++) {
             if (dut.regs.fpr[i] != ref.regs.fpr[i]) {
-                printf("%2s(r%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                printf("%2s(f%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
                        reg_name[i], i, ref.csr.cur_pc, ref.regs.fpr[i], dut.regs.fpr[i]);
 #ifdef SIMU_TRACE
-                fprintf(trace_out, "%2s(r%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                fprintf(trace_out, "%2s(f%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
                         reg_name[i], i, ref.csr.cur_pc, ref.regs.fpr[i], dut.regs.fpr[i]);
 #endif
             }
@@ -322,6 +324,63 @@ void Difftest::do_first_instr_commit() {
 #endif
         proxy->regcpy(dut_regs_ptr, DIFFTEST_TO_REF, DIFF_TO_REF_ALL);
     }
+}
+
+void Difftest::do_instr_commit(int i) {
+
+    /* rdtime{L/H}.w rdtime.d */
+    if (do_check_inst_rdtime(dut.commit[i].inst)) {
+        struct la64_timer timer;
+        timer.counter_id = dut.csr.tid;
+        timer.stable_timer = dut.commit[i].timer_64_value;
+        timer.time_val = dut.csr.tval;
+        // printf("timer64: 0x%lx, low: 0x%x, high: 0x%x\n",dut.commit[i].timer_64_value,timer_low,timer_high);
+        proxy->timercpy(&timer);
+    }
+
+    /* single step exec */
+    auto start = std::chrono::steady_clock::now();
+    proxy->exec(1);
+    auto end = std::chrono::steady_clock::now();
+    emu_nano_seconds += std::chrono::nanoseconds(end-start);
+
+}
+
+void Difftest::display() {
+    fflush(NULL);
+    printf("\n==============  DUT Regs  ==============\n");
+    for (int i = 0; i < 32; i ++) {
+        printf("%s(r%2d): 0x%08x ", reg_name[i], i, dut_regs_ptr[i]);
+        if (i % 4 == 3) printf("\n");
+    }
+    printf("pc: 0x%08lx\n", dut.csr.cur_pc);
+    printf("CRMD: 0x%08lx,    PRMD: 0x%08lx,   EUEN: 0x%08lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
+    printf("ECFG: 0x%08lx,   ESTAT: 0x%08lx,    ERA: 0x%08lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
+    printf("BADV: 0x%08lx,  EENTRY: 0x%08lx, LLBCTL: 0x%08lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
+    printf("cpu.ll_bit: %lu\n", dut.csr.llbctl & 0x1);
+    printf("INDEX: 0x%08lx, TLBEHI: 0x%08lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
+    printf("ASID: 0x%08lx, TLBRENTRY: 0x%08lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
+    printf("*******************************************************************************\n");
+#ifdef SIMU_TRACE
+    fprintf(trace_out,"\n==============  DUT Regs  ==============\n");
+        for (int i = 0; i < 32; i ++) {
+        fprintf(trace_out,"%s(r%2d): 0x%08x ", reg_name[i], i, dut_regs_ptr[i]);
+        if (i % 4 == 3) fprintf(trace_out,"\n");
+    }
+    fprintf(trace_out,"pc: 0x%08lx\n", dut.csr.cur_pc);
+    fprintf(trace_out,"CRMD: 0x%08lx,    PRMD: 0x%08lx,   EUEN: 0x%08lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
+    fprintf(trace_out,"ECFG: %08lx8x,   ESTAT: 0x%08lx,    ERA: 0x%08lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
+    fprintf(trace_out,"BADV: 0x%08lx,  EENTRY: 0x%08lx, LLBCTL: 0x%08lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
+    fprintf(trace_out,"cpu.ll_bit: %lu\n", dut.csr.llbctl & 0x1);
+    fprintf(trace_out,"INDEX: 0x%08lx, TLBEHI: 0x%08lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
+    fprintf(trace_out,"ASID: 0x%08lx, TLBRENTRY: 0x%08lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
+    fprintf(trace_out,"*******************************************************************************\n");
+#endif
+    printf("\n==============  REF Regs  ==============\n");
+    fflush(NULL);
+
+    proxy->isa_reg_display();
+    fflush(NULL);
 }
 
 bool Difftest::do_check_instruction_split(uint32_t inst, uint32_t *split_num) {
@@ -716,63 +775,6 @@ bool do_check_inst_rdtime(uint32_t inst) {
     }
 
     return false;
-}
-
-void Difftest::do_instr_commit(int i) {
-
-    /* rdtime{L/H}.w rdtime.d */
-    if (do_check_inst_rdtime(dut.commit[i].inst)) {
-        struct la64_timer timer;
-        timer.counter_id = dut.csr.tid;
-        timer.stable_timer = dut.commit[i].timer_64_value;
-        timer.time_val = dut.csr.tval;
-        // printf("timer64: 0x%lx, low: 0x%x, high: 0x%x\n",dut.commit[i].timer_64_value,timer_low,timer_high);
-        proxy->timercpy(&timer);
-    }
-
-    /* single step exec */
-    auto start = std::chrono::steady_clock::now();
-    proxy->exec(1);
-    auto end = std::chrono::steady_clock::now();
-    emu_nano_seconds += std::chrono::nanoseconds(end-start);
-
-}
-
-void Difftest::display() {
-    fflush(NULL);
-    printf("\n==============  DUT Regs  ==============\n");
-    for (int i = 0; i < 32; i ++) {
-        printf("%s(r%2d): 0x%08x ", reg_name[i], i, dut_regs_ptr[i]);
-        if (i % 4 == 3) printf("\n");
-    }
-    printf("pc: 0x%08lx\n", dut.csr.cur_pc);
-    printf("CRMD: 0x%08lx,    PRMD: 0x%08lx,   EUEN: 0x%08lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
-    printf("ECFG: 0x%08lx,   ESTAT: 0x%08lx,    ERA: 0x%08lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
-    printf("BADV: 0x%08lx,  EENTRY: 0x%08lx, LLBCTL: 0x%08lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
-    printf("cpu.ll_bit: %lu\n", dut.csr.llbctl & 0x1);
-    printf("INDEX: 0x%08lx, TLBEHI: 0x%08lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
-    printf("ASID: 0x%08lx, TLBRENTRY: 0x%08lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
-    printf("*******************************************************************************\n");
-#ifdef SIMU_TRACE
-    fprintf(trace_out,"\n==============  DUT Regs  ==============\n");
-        for (int i = 0; i < 32; i ++) {
-        fprintf(trace_out,"%s(r%2d): 0x%08x ", reg_name[i], i, dut_regs_ptr[i]);
-        if (i % 4 == 3) fprintf(trace_out,"\n");
-    }
-    fprintf(trace_out,"pc: 0x%08lx\n", dut.csr.cur_pc);
-    fprintf(trace_out,"CRMD: 0x%08lx,    PRMD: 0x%08lx,   EUEN: 0x%08lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
-    fprintf(trace_out,"ECFG: %08lx8x,   ESTAT: 0x%08lx,    ERA: 0x%08lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
-    fprintf(trace_out,"BADV: 0x%08lx,  EENTRY: 0x%08lx, LLBCTL: 0x%08lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
-    fprintf(trace_out,"cpu.ll_bit: %lu\n", dut.csr.llbctl & 0x1);
-    fprintf(trace_out,"INDEX: 0x%08lx, TLBEHI: 0x%08lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
-    fprintf(trace_out,"ASID: 0x%08lx, TLBRENTRY: 0x%08lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
-    fprintf(trace_out,"*******************************************************************************\n");
-#endif
-    printf("\n==============  REF Regs  ==============\n");
-    fflush(NULL);
-
-    proxy->isa_reg_display();
-    fflush(NULL);
 }
 
 Difftest::Difftest(int coreid): coreid(coreid) {

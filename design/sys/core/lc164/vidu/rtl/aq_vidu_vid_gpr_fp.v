@@ -740,6 +740,52 @@ begin
 // &CombEnd; @264
 end
 
+
+//==========================================================
+//                   Check DiffTest
+//==========================================================
+`ifdef CHECK_DIFFTEST
+DifftestFPRegState DifftestFPRegState (
+    .clock              (forever_cpuclk     ),
+    .coreid             ('0                 ),
+    .fccr               (8'b0               ),
+    .fcsr0              (32'b0              ),
+    .fpr_0              (read_data_0[63:0]  ),
+    .fpr_1              (read_data_1[63:0]  ),
+    .fpr_2              (read_data_2[63:0]  ),
+    .fpr_3              (read_data_3[63:0]  ),
+    .fpr_4              (read_data_4[63:0]  ),
+    .fpr_5              (read_data_5[63:0]  ),
+    .fpr_6              (read_data_6[63:0]  ),
+    .fpr_7              (read_data_7[63:0]  ),
+    .fpr_8              (read_data_8[63:0]  ),
+    .fpr_9              (read_data_9[63:0]  ),
+    .fpr_10             (read_data_10[63:0] ),
+    .fpr_11             (read_data_11[63:0] ),
+    .fpr_12             (read_data_12[63:0] ),
+    .fpr_13             (read_data_13[63:0] ),
+    .fpr_14             (read_data_14[63:0] ),
+    .fpr_15             (read_data_15[63:0] ),
+    .fpr_16             (read_data_16[63:0] ),
+    .fpr_17             (read_data_17[63:0] ),
+    .fpr_18             (read_data_18[63:0] ),
+    .fpr_19             (read_data_19[63:0] ),
+    .fpr_20             (read_data_20[63:0] ),
+    .fpr_21             (read_data_21[63:0] ),
+    .fpr_22             (read_data_22[63:0] ),
+    .fpr_23             (read_data_23[63:0] ),
+    .fpr_24             (read_data_24[63:0] ),
+    .fpr_25             (read_data_25[63:0] ),
+    .fpr_26             (read_data_26[63:0] ),
+    .fpr_27             (read_data_27[63:0] ),
+    .fpr_28             (read_data_28[63:0] ),
+    .fpr_29             (read_data_29[63:0] ),
+    .fpr_30             (read_data_30[63:0] ),
+    .fpr_31             (read_data_31[63:0] )
+);
+`endif
+
+
 // &ModuleEnd; @266
 endmodule
 
