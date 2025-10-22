@@ -525,7 +525,7 @@ wire             lfb_dc_so_vld;
 wire             lfb_dc_split;                
 wire             lfb_dc_split_first;          
 wire             lfb_dc_split_second;         
-wire             lfb_dc_int_split;         
+wire             lfb_dc_inst_split;         
 wire    [1  :0]  lfb_dc_stb_id;               
 wire             lfb_dc_uncmplt_vreg;         
 wire    [7  :0]  lfb_dc_vfunc;                
@@ -916,7 +916,7 @@ aq_lsu_dc  x_aq_lsu_dc (
   .dc_lfb_size                 (dc_lfb_size                ),
   .dc_lfb_split                (dc_lfb_split               ),
   .dc_lfb_split_last           (dc_lfb_split_last          ),
-  .dc_lfb_int_split            (dc_lfb_int_split           ),
+  .dc_lfb_inst_split           (dc_lfb_inst_split          ),
   .dc_lfb_st_id                (dc_lfb_st_id               ),
   .dc_lfb_vfunc                (dc_lfb_vfunc               ),
   .dc_lfb_virt_idx             (dc_lfb_virt_idx            ),
@@ -1012,7 +1012,7 @@ aq_lsu_dc  x_aq_lsu_dc (
   .lfb_dc_split                (lfb_dc_split               ),
   .lfb_dc_split_first          (lfb_dc_split_first         ),
   .lfb_dc_split_second         (lfb_dc_split_second        ),
-  .lfb_dc_int_split            (lfb_dc_int_split           ),
+  .lfb_dc_inst_split           (lfb_dc_inst_split          ),
   .lfb_dc_stb_id               (lfb_dc_stb_id              ),
   .lfb_dc_uncmplt_vreg         (lfb_dc_uncmplt_vreg        ),
   .lfb_dc_vfunc                (lfb_dc_vfunc               ),
@@ -1144,7 +1144,7 @@ aq_lsu_lfb  x_aq_lsu_lfb (
   .dc_lfb_size           (dc_lfb_size          ),
   .dc_lfb_split          (dc_lfb_split         ),
   .dc_lfb_split_last     (dc_lfb_split_last    ),
-  .dc_lfb_int_split      (dc_lfb_int_split     ),
+  .dc_lfb_inst_split     (dc_lfb_inst_split    ),
   .dc_lfb_st_id          (dc_lfb_st_id         ),
   .dc_lfb_vfunc          (dc_lfb_vfunc         ),
   .dc_lfb_virt_idx       (dc_lfb_virt_idx      ),
@@ -1201,7 +1201,7 @@ aq_lsu_lfb  x_aq_lsu_lfb (
   .lfb_dc_split          (lfb_dc_split         ),
   .lfb_dc_split_first    (lfb_dc_split_first   ),
   .lfb_dc_split_second   (lfb_dc_split_second  ),
-  .lfb_dc_int_split      (lfb_dc_int_split     ),
+  .lfb_dc_inst_split     (lfb_dc_inst_split    ),
   .lfb_dc_stb_id         (lfb_dc_stb_id        ),
   .lfb_dc_uncmplt_vreg   (lfb_dc_uncmplt_vreg  ),
   .lfb_dc_vfunc          (lfb_dc_vfunc         ),

@@ -54,7 +54,7 @@ module aq_lsu_lfb_entry (
   input    wire  [1 :0]  lfb_create_size,
   input    wire          lfb_create_split,
   input    wire          lfb_create_split_last,
-  input    wire          lfb_create_int_split,
+  input    wire          lfb_create_inst_split,
   input    wire  [1 :0]  lfb_create_stbid,
   input    wire  [7 :0]  lfb_create_vfunc,
   input    wire  [1 :0]  lfb_create_virt_idx,
@@ -124,7 +124,7 @@ reg             lfb_sign_ext;
 reg     [1 :0]  lfb_size;               
 reg             lfb_split;              
 reg             lfb_split_last;         
-reg             lfb_int_split;         
+reg             lfb_inst_split;         
 reg     [1 :0]  lfb_stbid;              
 reg     [7 :0]  lfb_vfunc;              
 reg     [1 :0]  lfb_virt_idx;           
@@ -298,7 +298,7 @@ begin
     lfb_ptw                     <= lfb_create_ptw;
     lfb_split                   <= lfb_create_split;
     lfb_split_last              <= lfb_create_split_last;
-    lfb_int_split               <= lfb_create_int_split;
+    lfb_inst_split              <= lfb_create_inst_split;
     lfb_size[1:0]               <= lfb_create_size[1:0];
     lfb_attr[2:0]               <= lfb_create_attr[2:0];
     lfb_byte_vld[`LSU_BYTEW-1:0]<= lfb_create_bytes_vld[`LSU_BYTEW-1:0];
@@ -475,7 +475,7 @@ assign lfb_entryx_ldbus[`LSU_LD_WIDTH-1:0]
                           lfb_byte_vld[`LSU_BYTEW-1:0],
                           lfb_split,
                           lfb_split_last,
-                          lfb_int_split,
+                          lfb_inst_split,
                           lfb_vls,
                           lfb_fls,
                           lfb_dest_reg[5:0]};
