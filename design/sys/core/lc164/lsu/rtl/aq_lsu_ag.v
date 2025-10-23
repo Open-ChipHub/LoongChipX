@@ -241,7 +241,8 @@ wire    [63:0]  ag_pipe_addr;
 wire    [63:0]  ag_pipe_addr_offset;           
 wire            ag_pipe_amo;                   
 wire            ag_pipe_atomic;                
-wire            ag_pipe_atomic_ll;                
+wire            ag_pipe_inst_ll;                
+wire            ag_pipe_inst_sc;                
 wire            ag_pipe_base_sel;              
 wire            ag_pipe_boundary_unmask;       
 wire    [7 :0]  ag_pipe_bytes_vld;             
@@ -970,8 +971,10 @@ assign ag_pipe_inst_st  = (ag_pipe_func[16] && !ag_pipe_func[12] && ag_pipe_func
                          | ((ag_pipe_func[19:12] == 8'b0001_0001) && ag_pipe_func[8])
                          | ((ag_pipe_func[19:12] == 8'b0001_0001) && !ag_pipe_func[8] 
                             && !ag_pipe_func[7]);
-assign ag_pipe_atomic_ll = (ag_pipe_func[19:12] == 8'b0001_0001) && ag_pipe_func[6]
+assign ag_pipe_inst_ll = (ag_pipe_func[19:12] == 8'b0001_0001) && ag_pipe_func[6]
                            && ag_pipe_func[7];
+assign ag_pipe_inst_sc = (ag_pipe_func[19:12] == 8'b0001_0001) && ag_pipe_func[6]
+                           && !ag_pipe_func[7];
 
 assign ag_pipe_dca_st   = ag_pipe_inst_dca || ag_pipe_inst_st;
 assign ag_pipe_dca_pa   = ag_pipe_inst_dca && 1'b0;
@@ -1456,7 +1459,12 @@ assign lsu_rtu_ex1_inst_split      = ag_pipe_id_split;
 assign lsu_rtu_ex1_inst_len        = ag_pipe_inst_len;
 
 // when expt, raise commit signal.
-assign lsu_rtu_ex1_cmplt_mask      = ag_pipe_dca_st && !ag_pipe_amo
+//   1. store inst not wb
+//   2. amo inst write back
+//   3. sc inst write back
+assign lsu_rtu_ex1_cmplt_mask      = ag_pipe_dca_st 
+                                      && !ag_pipe_amo
+                                      && !ag_pipe_inst_sc
                                      || lsu_rtu_ex1_expt_vld;
 
 assign lsu_rtu_ex1_expt_vld        = ag_pipe_expt_vld && !ag_pipe_expt_mask;
