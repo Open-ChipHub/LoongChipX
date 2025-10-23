@@ -73,13 +73,15 @@ reg             ex2_double;
 reg             ex2_f16;                      
 reg             ex2_half; 
 reg     [2 :0]  ex2_rm;                       
-reg             ex2_single;                   
+reg             ex2_single;       
+reg             ex2_neg;            
 reg             ex3_bf16;                     
 reg             ex3_double;                   
 reg             ex3_f16;                      
 reg             ex3_half;                     
 reg     [2 :0]  ex3_rm;                       
-reg             ex3_single;                   
+reg             ex3_single;       
+reg             ex3_neg;            
 reg             ex4_bf16;                     
 reg             ex4_double;                   
 reg             ex4_f16;                      
@@ -186,6 +188,7 @@ aq_vfmau_mult  x_aq_vfmau_mult (
   .ex3_simd                      (ex3_simd                     ),
   .ex3_single                    (ex3_single                   ),
   .ex3_special_cmplt             (ex3_special_cmplt            ),
+  .ex3_neg                       (ex3_neg                      ),
   .ex4_bf16                      (ex4_bf16                     ),
   .ex4_dst_bf16                  (ex4_dst_bf16                 ),
   .ex4_dst_double                (ex4_dst_double               ),
@@ -285,6 +288,7 @@ begin
     ex2_double    <= ex1_double;
     ex2_rm[2:0]   <= ex1_rm[2:0]; 
     ex2_mac       <= ex1_mac_update;
+    ex2_neg       <= ex1_neg;
   end
 end
 
@@ -322,6 +326,7 @@ begin
     ex3_double                <= ex2_double;
     ex3_mac                   <= ex2_mac;
     ex3_rm[2:0]               <= ex2_rm[2:0];
+    ex3_neg                   <= ex2_neg;
   end
 end
 

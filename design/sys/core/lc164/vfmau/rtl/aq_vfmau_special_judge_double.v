@@ -27,6 +27,7 @@ module aq_vfmau_special_judge_double (
   input    wire          ex1_dst_single,
   input    wire          ex1_half,
   input    wire          ex1_mac,
+  input    wire          ex1_neg,
   input    wire  [12:0]  ex1_mult_expnt,
   input    wire          ex1_mult_sign,
   input    wire  [2 :0]  ex1_rm,
@@ -345,7 +346,7 @@ assign ex1_result_zero = ex1_zero[0] && ex1_norm[1] && ex1_zero[2]
 assign ex1_fmau_result_zero = ex1_result_zero;
 
 assign ex1_sub_vld        = (ex1_mult_sign ^ ex1_src2_sign) && ex1_mac;
-assign ex1_fmau_zero_sign = ex1_sub_vld ? (ex1_rm[2:0]==3'b010) : ex1_mult_sign;
+assign ex1_fmau_zero_sign = ex1_sub_vld ? ex1_neg ^ (ex1_rm[2:0]==3'b010) : ex1_mult_sign;
 
 //inf
 assign ex1_fmau_result_inf = (|ex1_inf[2:0]) && !(|ex1_result_qnan[2:0]) && !ex1_nv[1] && !ex1_nv[2]

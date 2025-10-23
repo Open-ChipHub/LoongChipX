@@ -174,7 +174,7 @@ wire    [23:0]  ex1_dtos_sh_f_v;
 wire    [53:0]  ex1_dtos_sh_f_x;                     
 wire    [11:0]  ex1_e_without_bias;                  
 wire    [11:0]  ex1_exp_bias;                        
-wire            ex1_final_double_narrow_dn;
+wire            ex1_final_double_narrow_dn;      
 wire    [11:0]  ex1_final_exp;                       
 wire            ex1_final_sign;                      
 wire    [56:0]  ex1_final_tail;                      

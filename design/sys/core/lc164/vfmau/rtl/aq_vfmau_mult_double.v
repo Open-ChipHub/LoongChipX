@@ -57,6 +57,7 @@ module aq_vfmau_mult_double (
   input    wire  [2  :0]  ex3_rm,
   input    wire           ex3_simd,
   input    wire           ex3_single,
+  input    wire           ex3_neg,
   input    wire           ex4_bf16,
   input    wire           ex4_dst_bf16,
   input    wire           ex4_dst_double,
@@ -120,7 +121,8 @@ reg     [110:0]  ex4_mac_frac_pre;
 reg     [51 :0]  ex4_mac_frac_result;             
 reg              ex4_mac_rnd_in;                  
 reg     [1  :0]  ex4_mac_shift_high;              
-reg              ex4_mac_sign;                    
+reg              ex4_mac_sign;          
+reg              ex4_mac_zero_sign;          
 reg              ex5_mac_double_nx;               
 reg              ex5_mac_double_of;               
 reg     [63 :0]  ex5_mac_double_result;           
@@ -180,7 +182,8 @@ wire    [12 :0]  ex3_mac_expnt_adjust;
 wire             ex3_mac_expnt_neg_max;           
 wire             ex3_mac_frac_not_zero;           
 wire    [110:0]  ex3_mac_result_shift;            
-wire             ex3_mac_sign;                    
+wire             ex3_mac_sign;               
+wire             ex3_mac_zero_sign;     
 wire    [15 :0]  ex3_mult_bf16_result;            
 wire    [2  :0]  ex3_mult_bf16_rnd_bit;           
 wire    [63 :0]  ex3_mult_double_result;          
@@ -350,6 +353,7 @@ aq_vfmau_special_judge_double  x_aq_vfmau_special_judge_double (
   .ex1_dst_single                (ex1_dst_single               ),
   .ex1_half                      (ex1_half                     ),
   .ex1_mac                       (ex1_mac                      ),
+  .ex1_neg                       (ex1_neg                      ),
   .ex1_mult_expnt                (ex1_mult_expnt               ),
   .ex1_mult_sign                 (ex1_mult_sign                ),
   .ex1_rm                        (ex1_rm                       ),
@@ -548,6 +552,7 @@ endcase
 end
 
 assign ex3_mac_sign = ex3_mult_sign ^(ex3_sub_vld && ex3_adder_1_result[ADD_D_WIDTH-1]);
+assign ex3_mac_zero_sign = ex3_sub_vld ? ex3_neg ^ (ex3_rm[2:0]==3'b010) : ex3_mult_sign;
 assign ex3_mac_frac_not_zero = |ex3_adder_result[ADD_D_WIDTH-1:0];
 
 //======================================================================
@@ -698,6 +703,7 @@ begin
     ex4_mac_expnt_neg_max             <= ex3_mac_expnt_neg_max;
     ex4_mac_frac_not_zero             <= ex3_mac_frac_not_zero;
     ex4_mac_sign                      <= ex3_mac_sign;
+    ex4_mac_zero_sign                 <= ex3_mac_zero_sign;
   end
 end
 
@@ -841,7 +847,7 @@ endcase
 // &CombEnd; @1385
 end
 
-assign ex4_mac_sign_result = ex4_mac_frac_not_zero ? ex4_mac_sign : (ex4_rm[2:0]==3'b010);
+assign ex4_mac_sign_result = ex4_mac_frac_not_zero ? ex4_mac_sign : ex4_mac_zero_sign;
 
 assign ex4_late_of = (ex4_mac_expnt[7:0] ==8'b1111_1101)      && ex4_mac_expnt_sel[2] && ex4_expnt_8bit
                    ||(ex4_mac_expnt[7:0] ==8'b1111_1110)      && ex4_mac_expnt_sel[1] && ex4_expnt_8bit

@@ -331,16 +331,16 @@ assign ex1_scalar_class_r[63:0] = {64{ex1_double}} & ex1_double_class_r[63:0]  |
 //fsgnj  : r_s = s1_s
 
 assign ex1_double_fsgnjx_r[63:0]  = {1'b0, ex1_src0[62:0]};
-assign ex1_single0_fsgnjx_r[63:0] = {32'h0, 1'b0, ex1_op0_single0[30:0]};
+assign ex1_single0_fsgnjx_r[63:0] = {32'b0, 1'b0, ex1_op0_single0[30:0]};
 assign ex1_half0_fsgnjx_r[63:0]   = {{48{1'b1}},ex1_half0_src0_sign ^ ex1_half0_src1_sign, ex1_op0_half0[14:0]};
 assign ex1_bhalf0_fsgnjx_r[63:0]  = {{48{1'b1}},ex1_bhalf0_src0_sign ^ ex1_bhalf0_src1_sign, ex1_op0_bhalf0[14:0]};
 
-assign ex1_double_fsgnjn_r[63:0]  = {~ex1_double_src1_sign, ex1_src0[62:0]};
-assign ex1_single0_fsgnjn_r[63:0] = {32'h0, ~ex1_single0_src1_sign, ex1_op0_single0[30:0]};
-assign ex1_half0_fsgnjn_r[63:0]   = {{48{1'b1}},~ex1_half0_src1_sign, ex1_op0_half0[14:0]};
-assign ex1_bhalf0_fsgnjn_r[63:0]  = {{48{1'b1}},~ex1_bhalf0_src1_sign, ex1_op0_bhalf0[14:0]};
+assign ex1_double_fsgnjn_r[63:0]  = {~ex1_double_src0_sign, ex1_src0[62:0]};
+assign ex1_single0_fsgnjn_r[63:0] = {ex1_src0[63:32], ~ex1_single0_src0_sign, ex1_src0[30:0]};
+assign ex1_half0_fsgnjn_r[63:0]   = {{48{1'b1}},~ex1_half0_src0_sign, ex1_op0_half0[14:0]};
+assign ex1_bhalf0_fsgnjn_r[63:0]  = {{48{1'b1}},~ex1_bhalf0_src0_sign, ex1_op0_bhalf0[14:0]};
 assign ex1_double_fsgnj_r[63:0]  = {ex1_double_src1_sign, ex1_src0[62:0]};
-assign ex1_single0_fsgnj_r[63:0] = {32'h0, ex1_single0_src1_sign, ex1_op0_single0[30:0]};
+assign ex1_single0_fsgnj_r[63:0] = {ex1_src0[63:32], ex1_single0_src1_sign, ex1_op0_single0[30:0]};
 assign ex1_half0_fsgnj_r[63:0]   = {{48{1'b1}},ex1_half0_src1_sign, ex1_op0_half0[14:0]};
 assign ex1_bhalf0_fsgnj_r[63:0]  = {{48{1'b1}},ex1_bhalf0_src1_sign, ex1_op0_bhalf0[14:0]};
 assign ex1_scalar_fsgnjx_r[63:0]         = {64{ex1_double}} & ex1_double_fsgnjx_r[63:0]    |
@@ -371,9 +371,9 @@ assign ex1_fmvdx_r[63:0]   = {ex1_int_src[63:0]};
 assign ex1_fmvhx_r[63:0]   = {{48{1'b1}}, ex1_int_src[15:0]};
 assign ex1_fmvfhd_r[63:0]  = {ex1_int_src[31:0], ex1_src0[31:0]};
 assign ex1_fmvdf_r[63:0]   = ex1_src0[63:0];
-assign ex1_fmvwf_r[63:0]   = {32'b0, ex1_src0[31:0]};
+assign ex1_fmvwf_r[63:0]   = {{32{ex1_src0[31]}}, ex1_src0[31:0]};
 
-assign ex1_fmvxw_r[63:0]   = {{32{ex1_src0[31]}},ex1_src0[31:0]};
+assign ex1_fmvxw_r[63:0]   = {{32{ex1_src0[31]}}, ex1_src0[31:0]};
 assign ex1_fmvxd_r[63:0]   = ex1_src0[63:0];
 assign ex1_fmvxh_r[63:0]   = {{48{ex1_src0[15]}},ex1_src0[15:0]};
 

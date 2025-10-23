@@ -225,7 +225,9 @@ wire            src0_single0_qnan;
 wire            src0_single0_snan;                   
 wire            src0_single0_zero;                   
 wire    [47:0]  srcv0_type;                          
-wire    [5 :0]  stod_shift_bit;                      
+wire    [5 :0]  stod_shift_bit;         
+reg             ex2_op_ftoi;
+reg             ex3_op_ftoi;             
 
 //cnvt
 
@@ -251,14 +253,14 @@ wire    [5 :0]  stod_shift_bit;
 
 wire [19:0] func      = vpu_group_1_xx_ex1_func[19:0];
 
-assign ex1_op_ftoi    = !func[2] && func[1] && !func[0];
+assign ex1_op_ftoi    = ~func[9] & ~(func[2] & func[1]);
 assign ex1_op_stod    = func[2] && func[1] && ex1_src_l32;
 assign ex1_op_dtos    = func[2] && func[1] && ex1_src_l64;    
 assign ex1_op_htos    = 1'b0;
 assign ex1_op_bhtos   = 1'b0;
 assign ex1_op_stoh    = 1'b0;
 assign ex1_op_stobh   = 1'b0;
-assign ex1_op_itof    = func[2] && !func[1];
+assign ex1_op_itof    = func[9];
 assign ex1_op_bhtod   = 1'b0;
 assign ex1_op_htod    = 1'b0;
 assign ex1_op_dtoh    = 1'b0;
@@ -288,11 +290,11 @@ assign ex1_src_bhalf  = 1'b0;
 assign ex1_h_quod_up  = 1'b0;
 assign ex1_bh_quod_up = 1'b0;
 
-assign ex1_src_float  = func[1];
-assign ex1_dest_float = func[2];
+assign ex1_src_float  = ex1_op_ftoi | ex1_op_stod | ex1_op_dtos;
+assign ex1_dest_float = ex1_op_itof | ex1_op_stod | ex1_op_dtos;
 
 assign ex1_src_si     = func[0];
-assign ex1_src_i      = ~func[1];
+assign ex1_src_i      = ex1_op_itof;
 
 assign ex1_dest_l64    = ex1_src_l64 && ex1_same   ||
                          ex1_src_l32 && ex1_widden;
@@ -492,6 +494,7 @@ begin
     ex2_dest_l8     <= ex1_dest_l8;
     ex2_dest_float  <= ex1_dest_float;
     ex2_dest_si     <= ex1_dest_si;
+    ex2_op_ftoi     <= ex1_op_ftoi;
   end
 end
 
@@ -582,7 +585,7 @@ assign ex2_scalar_int_result[63:0]      = {64{ex2_dest_l64}} & ex2_int64_result[
                                           {64{ex2_dest_l32}} & {ex2_int32_0_result[63:0]} |
                                           {64{ex2_dest_l16}} & {ex2_int16_0_result[63:0]};       
 assign vfcvt_vpu_ex2_gpr_result[63:0]   = ex2_scalar_int_result[63:0];
-assign ex2_total_result[63:0]           = ex2_scalar_total_result[63:0];    
+assign ex2_total_result[63:0]           = ex2_op_ftoi ? ex2_scalar_int_result[63:0] : ex2_scalar_total_result[63:0];    
 
 assign ex2_expt[3:0]                    = double_pipe_ex2_expt[3:0];
 always @(posedge fcnvt_ex2_pipe_clk)
@@ -596,6 +599,7 @@ begin
   if(fcnvt_ex2_pipedown) begin
     ex3_expt[3:0]      <= ex2_expt[3:0];
     ex3_dest_l64       <= ex2_dest_l64;
+    ex3_op_ftoi        <= ex2_op_ftoi;
   end
 end
 
@@ -605,7 +609,7 @@ end
 
 
 
-assign vfcvt_vpu_ex3_fpr_result[63:0]             = ex3_dest_l64 ? ex3_double_result[63:0] : ex3_result[63:0];
+assign vfcvt_vpu_ex3_fpr_result[63:0]             = ex3_dest_l64 && !ex3_op_ftoi ? ex3_double_result[63:0] : ex3_result[63:0];
 assign vfcvt_vpu_ex3_fflags[4:0]                  = {ex3_expt[3],1'b0,ex3_expt[2:0]};
 
 

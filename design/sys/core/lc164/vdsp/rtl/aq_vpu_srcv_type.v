@@ -128,7 +128,7 @@ assign src_double_norm       = !src_double_zero && !src_double_expn_max;
 
 //single0
 //assign src_single0_cnan       = !(&src[63:32]) && (inst_vec_vf && src_sel || !inst_simd);
-assign src_single0_cnan       = (inst_simd) ? !(&src_high[47:16] || src_vec): !(&src[63:32]);
+assign src_single0_cnan       = 1'b0;
 //assign src_single0_cnan       = !(&src[63:32]);
 assign src_single0_expn_zero  = !(|src[30:23]);
 assign src_single0_expn_max   = &src[30:23];
