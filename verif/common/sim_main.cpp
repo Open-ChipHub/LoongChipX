@@ -390,7 +390,7 @@ int main(int argc, char** argv, char** env) {
     Top->dump_cycles = 0xffffffffffffffff;
     // Top->dump_cycles = 0x0;
 
-    Top->debug_dump_on = 1;
+    // Top->debug_dump_on = 1;
 
     if(sim_cfg.wave_begin_cycles != 0){
         snapshot->wave = 0;
@@ -412,7 +412,7 @@ int main(int argc, char** argv, char** env) {
     dbg_sim_cycles = 0;
 
     sim_wave_on = false;
-    sim_wave_on = true;
+    // sim_wave_on = true;
 
     // Simulate until $finish
     while (!contextp->gotFinish() && !sim_finish && sim_cycles < sim_cycles_limit) {
@@ -444,7 +444,7 @@ int main(int argc, char** argv, char** env) {
         }
 
         // open dump wave
-        if ((Top->dbg_retire0_pc == 0x12001cc80) 
+        if ((Top->dbg_retire0_pc == 0x12001cc800) 
              && (Top->dbg_retire0_vld)) {
             if (!sim_wave_on) {
                 sim_wave_on = true;
@@ -488,7 +488,8 @@ int main(int argc, char** argv, char** env) {
         emulator->process();
 #endif
 
-        if (sim_cycles % 100000 == 10000) {
+        if ((sim_cycles % 100000 == 10000)
+            || (sim_cycles % 100000 == 10001)) {
             ram.ram_update_io();
         }
 

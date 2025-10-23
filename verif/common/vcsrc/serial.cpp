@@ -691,22 +691,19 @@ SerialState *simple_serial_restore(int base, qemu_irq irq, int baudbase, const c
     s->baudbase = baudbase;
     s->recv_fifo.data = (uint8_t*)malloc(UART_FIFO_LENGTH);
     s->xmit_fifo.data = (uint8_t*)malloc(UART_FIFO_LENGTH);
-
+    s->connfd = getfd(32005);
     fprintf(stderr, "serial restore successfully\n");
 
     return s;
 }
 
 void serial_check_io(SerialState *s) {
-    static int n;
-    n ++;
-    DPRINTF("serial_check_io, %d\n", n);
     while (serial_can_receive(s)) {
         uint8_t c;
 		int cnt = read(s->connfd, &c, 1);
         if (cnt == -1) {
             if (errno == EAGAIN) {
-                printf("read nothing\n");
+                // printf("read nothing\n");
 				return;
             } else {
                 printf("unexpected error\n");
@@ -717,7 +714,6 @@ void serial_check_io(SerialState *s) {
 		} else if (cnt == 1) {
             serial_receive1(s, &c, 1);
             fifo_timeout_int(s);
-            printf("get char ok\n");
         }
     };
 }
@@ -776,6 +772,17 @@ void func(int connfd)
 // Driver function
 int getfd(uint16_t port)
 {
+    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
+    if (flags == -1) {
+        perror("fcntl F_GETFL");
+        return 1;
+    }
+
+    if (fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK) == -1) {
+        perror("fcntl F_SETFL O_NONBLOCK");
+        return 1;
+    }
+    return STDIN_FILENO;
     int fd = open("./logs/latest/serial.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666);
     if (fd < 0) {
         perror("open serial.txt");
@@ -832,7 +839,7 @@ int getfd(uint16_t port)
 	close(sockfd);
 	// After chatting close the socket
 
-    int flags = fcntl(connfd, F_GETFL, 0);
+    flags = fcntl(connfd, F_GETFL, 0);
     fcntl(connfd, F_SETFL, flags | O_NONBLOCK);
 	// Function for chatting between client and server
 	return connfd;
