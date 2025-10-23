@@ -390,6 +390,7 @@ int main(int argc, char** argv, char** env) {
     Top->dump_cycles = 0xffffffffffffffff;
     // Top->dump_cycles = 0x0;
 
+    // dump pc trace.
     // Top->debug_dump_on = 1;
 
     if(sim_cfg.wave_begin_cycles != 0){
@@ -444,7 +445,7 @@ int main(int argc, char** argv, char** env) {
         }
 
         // open dump wave
-        if ((Top->dbg_retire0_pc == 0x12001cc800) 
+        if ((Top->dbg_retire0_pc == 0x9000000002821300) 
              && (Top->dbg_retire0_vld)) {
             if (!sim_wave_on) {
                 sim_wave_on = true;
@@ -488,8 +489,7 @@ int main(int argc, char** argv, char** env) {
         emulator->process();
 #endif
 
-        if ((sim_cycles % 100000 == 10000)
-            || (sim_cycles % 100000 == 10001)) {
+        if (sim_cycles/10 % 10000 == 1000) {
             ram.ram_update_io();
         }
 
