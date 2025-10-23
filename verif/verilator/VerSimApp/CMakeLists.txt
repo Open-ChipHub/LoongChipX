@@ -3,8 +3,7 @@ project(VerilatorSim)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(VerilatorSim ../../common/softfpu/softfpu.cpp
-							../../common/memory/memorysim_write.cpp
+add_executable(VerilatorSim ../../common/memory/memorysim_write.cpp
 							../../common/memory/memorysim_check.cpp
 							../../common/memory/memorysim_read.cpp
 							../../common/vcsrc/log.cpp

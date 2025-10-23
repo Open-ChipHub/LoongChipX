@@ -37,7 +37,6 @@
 #include "initialize.h"
 
 #include "snapshot.h"
-#include "../softfpu/softfpu.h"
 #include "dramsim3.h"
 #include "fpr.h"
 #include "commonprint.h"
@@ -413,7 +412,6 @@ int main(int argc, char** argv, char** env) {
    
 #ifndef WAVE_NONE
         if (snapshot->wave && snapshot->trace_opened) {
-            if (sim_wave_on)
                 trace->dump(sim_cycles);
         }
 #endif
@@ -454,12 +452,10 @@ int main(int argc, char** argv, char** env) {
         
 #ifndef WAVE_NONE
         if (snapshot->wave && snapshot->trace_opened) {
-            if (sim_wave_on)
                 trace->dump(sim_cycles);
         }
 #endif
 
-#ifdef GEN_SNAPSHOT
         if(snapshot->snapshot_isparent()){
             int cycle = sim_cycles/2;
             if(cycle % snapshot_dist == 11){
@@ -468,11 +464,10 @@ int main(int argc, char** argv, char** env) {
                 snapshot->snapshot_gen();
             }
         }
-#endif
 
         if(snapshot->trace_reopen){
             if(!snapshot->trace_opened){
-                if (sim_wave_on) {
+                if (1) {
 #ifndef WAVE_NONE
                     Top->trace(trace, 99, 0);
                     trace->open(trace_name.c_str());
