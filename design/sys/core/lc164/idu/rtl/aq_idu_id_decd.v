@@ -2955,7 +2955,7 @@ begin
     end
   22'b0000000100010100110101: begin //movcf2fr
     decd_fp0_eu[`EU_WIDTH-1:0]            = `EU_FSPU;
-    decd_fp0_func[`FUNC_WIDTH-1:0]        = `FUNC_FMV_SI64_F64;
+    decd_fp0_func[`FUNC_WIDTH-1:0]        = `FUNC_FMV_F64_SI64;
     decd_fp0_dstf_vld                     = 1'b1;
     decd_fp0_srcc_vld                     = 1'b1;
     end
@@ -2967,7 +2967,7 @@ begin
     end
   22'b0000000100010100110111: begin //movcf2gr
     decd_fp0_eu[`EU_WIDTH-1:0]            = `EU_FSPU;
-    decd_fp0_func[`FUNC_WIDTH-1:0]        = `FUNC_FMV_SI64_F64;
+    decd_fp0_func[`FUNC_WIDTH-1:0]        = `FUNC_FMV_F64_SI64;
     decd_fp0_dst0_vld                     = 1'b1;
     decd_fp0_srcc_vld                     = 1'b1;
     end
