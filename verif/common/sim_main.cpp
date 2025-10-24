@@ -359,6 +359,9 @@ int main(int argc, char** argv, char** env) {
     Top->dump_cycles = 0xffffffffffffffff;
     // Top->dump_cycles = 0x0;
 
+    // this signal enable dump pc trace.
+    Top->debug_dump_on = 1;
+
     uint64_t sim_cycles = 0;
     if(sim_cfg.wave_begin_cycles != 0){
         snapshot->wave = 0;
@@ -409,6 +412,28 @@ int main(int argc, char** argv, char** env) {
         // Turn OFF wave dump
             sim_wave_on = false;
         }
+
+        #define WAVE_DUMP_BEGIN_PC 0x9000000002821300
+        #define WAVE_DUMP_END_PC   0xffffffff
+
+        // open dump wave
+        if ((Top->dbg_retire0_pc == WAVE_DUMP_BEGIN_PC) 
+             && (Top->dbg_retire0_vld)) {
+            if (!sim_wave_on) {
+                sim_wave_on = true;
+                printf("------ Open Wave Dump! ------\n");
+            }
+        }
+
+        // close dump wave
+        if ((Top->dbg_retire0_pc == WAVE_DUMP_END_PC) 
+             && (Top->dbg_retire0_vld)) {
+            if (sim_wave_on) {
+                sim_wave_on = false;
+                printf("------ Close Wave Dump! ------\n");
+            }
+        }
+
    
 #ifndef WAVE_NONE
         if (snapshot->wave && snapshot->trace_opened) {
@@ -456,6 +481,7 @@ int main(int argc, char** argv, char** env) {
         }
 #endif
 
+#ifdef GEN_SNAPSHOT
         if(snapshot->snapshot_isparent()){
             int cycle = sim_cycles/2;
             if(cycle % snapshot_dist == 11){
@@ -464,6 +490,7 @@ int main(int argc, char** argv, char** env) {
                 snapshot->snapshot_gen();
             }
         }
+#endif
 
         if(snapshot->trace_reopen){
             if(!snapshot->trace_opened){
