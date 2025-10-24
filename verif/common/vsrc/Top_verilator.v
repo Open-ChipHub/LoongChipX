@@ -1,7 +1,7 @@
 
 `timescale 1ns/1ps 
 
-//`include "board.h"
+`include "board.h"
 
 module Top #(
     parameter int unsigned AXI_ID_WIDTH      = 8,
@@ -283,9 +283,21 @@ assign dbg_retire0_vld      = retire0_vld;
 //----------------------------------------------------------
 //                   Save Commit PC
 //----------------------------------------------------------
+wire        enable_long_time_check;
+wire        commit_vld;
+
 reg [63: 0] last_commit_0_pc;
 reg [63: 0] last_commit_1_pc;
 reg [63: 0] last_commit_2_pc;
+
+
+`ifdef CHECK_LONG_TIME_COMMIT
+assign enable_long_time_check = 1'b1;
+`else 
+assign enable_long_time_check = 1'b0;
+`endif
+
+
 always @(posedge clk) begin
     if(reset) begin
       last_commit_0_pc[63 :0] <= 64'b0;
@@ -303,12 +315,10 @@ always @(posedge clk) begin
     end
 end
 
+assign commit_vld  =  retire0_vld || retire1_vld || retire2_vld;
 
 
-wire commit_vld;
-
-assign commit_vld =    retire0_vld || retire1_vld || retire2_vld;
-
+// skip long initialization when system restet.
 reg start_stats_reg;
 always @(posedge clk) begin
     if (reset) begin
@@ -329,8 +339,10 @@ always @(posedge clk) begin
 end
 
 always @(posedge clk) begin
-    if ((commit_idle_cnt[31: 0] >= 32'h8000) && start_stats_reg) begin
-       $display("Too long time not retire inst!");
+    if ((commit_idle_cnt[31: 0] >= 32'h8000) && start_stats_reg
+        && enable_long_time_check) 
+    begin
+       $display("\nToo long time not retire inst!");
        $display("Last Commit PC 0: %x", last_commit_0_pc[63:0]);
        $display("Last Commit PC 1: %x", last_commit_1_pc[63:0]);
        $display("Last Commit PC 2: %x", last_commit_2_pc[63:0]);
