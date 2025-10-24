@@ -360,7 +360,7 @@ int main(int argc, char** argv, char** env) {
     // Top->dump_cycles = 0x0;
 
     // this signal enable dump pc trace.
-    Top->debug_dump_on = 1;
+    // Top->debug_dump_on = 1;
 
     uint64_t sim_cycles = 0;
     if(sim_cfg.wave_begin_cycles != 0){
@@ -413,7 +413,7 @@ int main(int argc, char** argv, char** env) {
             sim_wave_on = false;
         }
 
-        #define WAVE_DUMP_BEGIN_PC 0x9000000002821300
+        #define WAVE_DUMP_BEGIN_PC 0x9000000002821301
         #define WAVE_DUMP_END_PC   0xffffffff
 
         // open dump wave
@@ -457,7 +457,7 @@ int main(int argc, char** argv, char** env) {
             #endif
         }
 
-        if (sim_cycles % 100000 == 10000) {
+        if (sim_cycles/10 % 10000 == 1000) {
             ram.ram_update_io();
         }
 
@@ -477,6 +477,7 @@ int main(int argc, char** argv, char** env) {
         
 #ifndef WAVE_NONE
         if (snapshot->wave && snapshot->trace_opened) {
+            if (sim_wave_on)
                 trace->dump(sim_cycles);
         }
 #endif
@@ -494,7 +495,7 @@ int main(int argc, char** argv, char** env) {
 
         if(snapshot->trace_reopen){
             if(!snapshot->trace_opened){
-                if (1) {
+                if (sim_wave_on) {
 #ifndef WAVE_NONE
                     Top->trace(trace, 99, 0);
                     trace->open(trace_name.c_str());

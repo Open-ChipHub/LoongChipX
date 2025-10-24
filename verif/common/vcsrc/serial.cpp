@@ -42,20 +42,20 @@ extern "C" {
 #endif
 
 
-#define UART_LCR_DLAB	0x80	/* Divisor latch access bit */
+#define UART_LCR_DLAB   0x80    /* Divisor latch access bit */
 
-#define UART_IER_MSI	0x08	/* Enable Modem status interrupt */
-#define UART_IER_RLSI	0x04	/* Enable receiver line status interrupt */
-#define UART_IER_THRI	0x02	/* Enable Transmitter holding register int. */
-#define UART_IER_RDI	0x01	/* Enable receiver data interrupt */
+#define UART_IER_MSI    0x08    /* Enable Modem status interrupt */
+#define UART_IER_RLSI   0x04    /* Enable receiver line status interrupt */
+#define UART_IER_THRI   0x02    /* Enable Transmitter holding register int. */
+#define UART_IER_RDI    0x01    /* Enable receiver data interrupt */
 
-#define UART_IIR_NO_INT	0x01	/* No interrupts pending */
-#define UART_IIR_ID	0x06	/* Mask for the interrupt ID */
+#define UART_IIR_NO_INT 0x01    /* No interrupts pending */
+#define UART_IIR_ID 0x06    /* Mask for the interrupt ID */
 
-#define UART_IIR_MSI	0x00	/* Modem status interrupt */
-#define UART_IIR_THRI	0x02	/* Transmitter holding register empty */
-#define UART_IIR_RDI	0x04	/* Receiver data interrupt */
-#define UART_IIR_RLSI	0x06	/* Receiver line status interrupt */
+#define UART_IIR_MSI    0x00    /* Modem status interrupt */
+#define UART_IIR_THRI   0x02    /* Transmitter holding register empty */
+#define UART_IIR_RDI    0x04    /* Receiver data interrupt */
+#define UART_IIR_RLSI   0x06    /* Receiver line status interrupt */
 #define UART_IIR_CTI    0x0C    /* Character Timeout Indication */
 
 #define UART_IIR_FENF   0x80    /* Fifo enabled, but not functionning */
@@ -64,33 +64,33 @@ extern "C" {
 /*
  * These are the definitions for the Modem Control Register
  */
-#define UART_MCR_LOOP	0x10	/* Enable loopback test mode */
-#define UART_MCR_OUT2	0x08	/* Out2 complement */
-#define UART_MCR_OUT1	0x04	/* Out1 complement */
-#define UART_MCR_RTS	0x02	/* RTS complement */
-#define UART_MCR_DTR	0x01	/* DTR complement */
+#define UART_MCR_LOOP   0x10    /* Enable loopback test mode */
+#define UART_MCR_OUT2   0x08    /* Out2 complement */
+#define UART_MCR_OUT1   0x04    /* Out1 complement */
+#define UART_MCR_RTS    0x02    /* RTS complement */
+#define UART_MCR_DTR    0x01    /* DTR complement */
 
 /*
  * These are the definitions for the Modem Status Register
  */
-#define UART_MSR_DCD	0x80	/* Data Carrier Detect */
-#define UART_MSR_RI	0x40	/* Ring Indicator */
-#define UART_MSR_DSR	0x20	/* Data Set Ready */
-#define UART_MSR_CTS	0x10	/* Clear to Send */
-#define UART_MSR_DDCD	0x08	/* Delta DCD */
-#define UART_MSR_TERI	0x04	/* Trailing edge ring indicator */
-#define UART_MSR_DDSR	0x02	/* Delta DSR */
-#define UART_MSR_DCTS	0x01	/* Delta CTS */
-#define UART_MSR_ANY_DELTA 0x0F	/* Any of the delta bits! */
+#define UART_MSR_DCD    0x80    /* Data Carrier Detect */
+#define UART_MSR_RI 0x40    /* Ring Indicator */
+#define UART_MSR_DSR    0x20    /* Data Set Ready */
+#define UART_MSR_CTS    0x10    /* Clear to Send */
+#define UART_MSR_DDCD   0x08    /* Delta DCD */
+#define UART_MSR_TERI   0x04    /* Trailing edge ring indicator */
+#define UART_MSR_DDSR   0x02    /* Delta DSR */
+#define UART_MSR_DCTS   0x01    /* Delta CTS */
+#define UART_MSR_ANY_DELTA 0x0F /* Any of the delta bits! */
 
-#define UART_LSR_TEMT	0x40	/* Transmitter empty */
-#define UART_LSR_THRE	0x20	/* Transmit-hold-register empty */
-#define UART_LSR_BI	0x10	/* Break interrupt indicator */
-#define UART_LSR_FE	0x08	/* Frame error indicator */
-#define UART_LSR_PE	0x04	/* Parity error indicator */
-#define UART_LSR_OE	0x02	/* Overrun error indicator */
-#define UART_LSR_DR	0x01	/* Receiver data ready */
-#define UART_LSR_INT_ANY 0x1E	/* Any of the lsr-interrupt-triggering status bits */
+#define UART_LSR_TEMT   0x40    /* Transmitter empty */
+#define UART_LSR_THRE   0x20    /* Transmit-hold-register empty */
+#define UART_LSR_BI 0x10    /* Break interrupt indicator */
+#define UART_LSR_FE 0x08    /* Frame error indicator */
+#define UART_LSR_PE 0x04    /* Parity error indicator */
+#define UART_LSR_OE 0x02    /* Overrun error indicator */
+#define UART_LSR_DR 0x01    /* Receiver data ready */
+#define UART_LSR_INT_ANY 0x1E   /* Any of the lsr-interrupt-triggering status bits */
 
 /* Interrupt trigger levels. The byte-counts are for 16550A - in newer UARTs the byte-count for each ITL is higher. */
 
@@ -691,33 +691,29 @@ SerialState *simple_serial_restore(int base, qemu_irq irq, int baudbase, const c
     s->baudbase = baudbase;
     s->recv_fifo.data = (uint8_t*)malloc(UART_FIFO_LENGTH);
     s->xmit_fifo.data = (uint8_t*)malloc(UART_FIFO_LENGTH);
-
+    s->connfd = getfd(32005);
     fprintf(stderr, "serial restore successfully\n");
 
     return s;
 }
 
 void serial_check_io(SerialState *s) {
-    static int n;
-    n ++;
-    DPRINTF("serial_check_io, %d\n", n);
     while (serial_can_receive(s)) {
         uint8_t c;
-		int cnt = read(s->connfd, &c, 1);
+        int cnt = read(s->connfd, &c, 1);
         if (cnt == -1) {
             if (errno == EAGAIN) {
-                printf("read nothing\n");
-				return;
+                // printf("read nothing\n");
+                return;
             } else {
                 printf("unexpected error\n");
                 abort();
             }
         } else if (cnt == 0) {
-			abort();
-		} else if (cnt == 1) {
+            abort();
+        } else if (cnt == 1) {
             serial_receive1(s, &c, 1);
             fifo_timeout_int(s);
-            printf("get char ok\n");
         }
     };
 }
@@ -738,44 +734,55 @@ void serial_check_io(SerialState *s) {
 
 void func(int connfd)
 {
-	#define BUFF_SIZE 1024
-	char buff[BUFF_SIZE];
-	int n;
+    #define BUFF_SIZE 1024
+    char buff[BUFF_SIZE];
+    int n;
     int flags = fcntl(connfd, F_GETFL, 0);
     fcntl(connfd, F_SETFL, flags | O_NONBLOCK);
-	// infinite loop for chat
-	for (;;) {
-		bzero(buff, BUFF_SIZE);
+    // infinite loop for chat
+    for (;;) {
+        bzero(buff, BUFF_SIZE);
 
-		// read the message from client and copy it in buffer
-		int cnt = read(connfd, buff, sizeof(buff));
+        // read the message from client and copy it in buffer
+        int cnt = read(connfd, buff, sizeof(buff));
         if (cnt == -1) {
             if (errno == EAGAIN) {
                 printf("read nothing\n");
-				sleep(1);
+                sleep(1);
             } else {
                 printf("unexpected error\n");
                 abort();
             }
         } else if (cnt == 0) {
-			abort();
-		}
-		// print buffer which contains the client contents
-		printf("From client: %s\t To client : ", buff);
-		bzero(buff, BUFF_SIZE);
-		n = 0;
+            abort();
+        }
+        // print buffer which contains the client contents
+        printf("From client: %s\t To client : ", buff);
+        bzero(buff, BUFF_SIZE);
+        n = 0;
 
-		// if msg contains "Exit" then server exit and chat ended.
-		if (strncmp("exit", buff, 4) == 0) {
-			printf("Server Exit...\n");
-			break;
-		}
-	}
+        // if msg contains "Exit" then server exit and chat ended.
+        if (strncmp("exit", buff, 4) == 0) {
+            printf("Server Exit...\n");
+            break;
+        }
+    }
 }
 
 // Driver function
 int getfd(uint16_t port)
 {
+    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
+    if (flags == -1) {
+        perror("fcntl F_GETFL");
+        return 1;
+    }
+
+    if (fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK) == -1) {
+        perror("fcntl F_SETFL O_NONBLOCK");
+        return 1;
+    }
+    return STDIN_FILENO;
     int fd = open("./logs/latest/serial.txt", O_WRONLY|O_CREAT|O_TRUNC, 0666);
     if (fd < 0) {
         perror("open serial.txt");
@@ -783,59 +790,59 @@ int getfd(uint16_t port)
     } else {
         return fd;
     }
-	int sockfd, connfd, len;
-	struct sockaddr_in servaddr, cli;
+    int sockfd, connfd, len;
+    struct sockaddr_in servaddr, cli;
 
-	// socket create and verification
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd == -1) {
-		printf("socket creation failed...\n");
-		exit(0);
-	}
-	else
-		printf("Socket successfully created..\n");
-	bzero(&servaddr, sizeof(servaddr));
-
-	// assign IP, PORT
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servaddr.sin_port = htons(port);
-
-	// Binding newly created socket to given IP and verification
-	if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) {
-		printf("socket bind failed...\n");
-		exit(0);
-	}
-	else
-		printf("Socket successfully binded..\n");
-
-	// Now server is ready to listen and verification
-	if ((listen(sockfd, 5)) != 0) {
-		printf("Listen failed...\n");
-		exit(0);
-	}
-	else {
-		printf("Server listening.. %d\n", port);
-		printf("use this command to connect:\n");
-		printf("nc localhost %d\n", port);
+    // socket create and verification
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1) {
+        printf("socket creation failed...\n");
+        exit(0);
     }
-	len = sizeof(cli);
+    else
+        printf("Socket successfully created..\n");
+    bzero(&servaddr, sizeof(servaddr));
 
-	// Accept the data packet from client and verification
-	connfd = accept(sockfd, (struct sockaddr*)&cli, (socklen_t *)&len);
-	if (connfd < 0) {
-		printf("server accept failed...\n");
-		exit(0);
-	}
-	else
-		printf("server accept the client...\n");
-	close(sockfd);
-	// After chatting close the socket
+    // assign IP, PORT
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port = htons(port);
 
-    int flags = fcntl(connfd, F_GETFL, 0);
+    // Binding newly created socket to given IP and verification
+    if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) {
+        printf("socket bind failed...\n");
+        exit(0);
+    }
+    else
+        printf("Socket successfully binded..\n");
+
+    // Now server is ready to listen and verification
+    if ((listen(sockfd, 5)) != 0) {
+        printf("Listen failed...\n");
+        exit(0);
+    }
+    else {
+        printf("Server listening.. %d\n", port);
+        printf("use this command to connect:\n");
+        printf("nc localhost %d\n", port);
+    }
+    len = sizeof(cli);
+
+    // Accept the data packet from client and verification
+    connfd = accept(sockfd, (struct sockaddr*)&cli, (socklen_t *)&len);
+    if (connfd < 0) {
+        printf("server accept failed...\n");
+        exit(0);
+    }
+    else
+        printf("server accept the client...\n");
+    close(sockfd);
+    // After chatting close the socket
+
+    flags = fcntl(connfd, F_GETFL, 0);
     fcntl(connfd, F_SETFL, flags | O_NONBLOCK);
-	// Function for chatting between client and server
-	return connfd;
+    // Function for chatting between client and server
+    return connfd;
 }
 
 #ifdef __cplusplus
