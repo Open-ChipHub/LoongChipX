@@ -31,30 +31,30 @@ The directory structure is as follows:
 ```shell
 LoongChipX
 ├── design
-│   ├── common    （Shared code）
-│   ├── soc        （Code for Soc top）
+│   ├── common    (Shared code)
+│   ├── soc       (Code for Soc top)
 │   └── sys
-│       ├── ccx    （Code for Cache Coherence Protocols）
-│       ├── core    （Code for Cores）
-│       │   ├── lc164    （5-stage core，with l1DCache and l1ICache,100K LOC）
-│       │   └── lc364    （3-issue core，with l1DCache and l1ICache,300K LOC）
-│       ├── filelists    （file lists）
-│       └── llc    （Code for Last Level Cache）
-├── impl    (files for FPGA implement)
-├── ip    (IP for FPGA implement)
-├── scripts    （scripts）
-└── verif    （files for verification）
-    ├── common    （common codes）
-    ├── config    （config files）
-    ├── ext    （testbench）
-    │   ├── loader    （Code for program loader）
-    │   ├── simu-coremark-mmu    （coremark with mmu）
-    │   ├── simu-coremark-user    （Bare-Metal coremark）
-    │   ├── simu-funcs    （function test）
-    │   ├── simu-hello    （hello function test）
-    │   ├── simu-hello-dual-core    （hello function test with dual cores）
-    │   ├── simu-hello-quad-core    （hello function test with quad cores）
-    │   └── simu-kernel    （kernel test）
+│       ├── ccx   (Code for Cache Coherence Protocols)
+│       ├── core  (Code for Cores)
+│       │   ├── lc164    (5-stage core，with l1DCache and l1ICache,100K LOC)
+│       │   └── lc364    (3-issue core，with l1DCache and l1ICache,300K LOC)
+│       ├── filelists    (file lists)
+│       └── llc   (Code for Last Level Cache)
+├── impl     (files for FPGA implement)
+├── ip       (IP for FPGA implement)
+├── scripts  (scripts)
+└── verif    (files for verification)
+    ├── common   (common codes)
+    ├── config   (config files)
+    ├── ext      (testbench)
+    │   ├── loader    (Code for program loader)
+    │   ├── simu-coremark-mmu    (coremark with mmu)
+    │   ├── simu-coremark-user   (Bare-Metal coremark)
+    │   ├── simu-funcs    (function test)
+    │   ├── simu-hello    (hello function test)
+    │   ├── simu-hello-dual-core    (hello function test with dual cores)
+    │   ├── simu-hello-quad-core    (hello function test with quad cores)
+    │   └── simu-kernel   (kernel test)
     ├── filelists
     ├── vcs
     │   ├── CoreMark

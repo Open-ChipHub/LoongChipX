@@ -32,29 +32,29 @@ English Readme is [here](README.md).
 LoongChipX
 ├── design
 │   ├── common    （共用代码）
-│   ├── soc        （顶层SoC例化文件）
+│   ├── soc       （顶层SoC例化文件）
 │   └── sys
-│       ├── ccx    （一致性协议）
-│       ├── core    （CPU核心）
+│       ├── ccx   （一致性协议）
+│       ├── core  （CPU核心）
 │       │   ├── lc164    （五级流水core，包含l1DCache和l1ICache,10万LOC）
 │       │   └── lc364    （3发射core，包含l1DCache和l1ICache,30万LOC）
 │       ├── filelists    （代码文件列表）
-│       └── llc    （末级Cache）
-├── impl    (FPGA例化脚本文件)
-├── ip    (FPGA例化IP)
-├── scripts    （常用脚本）
+│       └── llc   （末级Cache）
+├── impl      (FPGA例化脚本文件)
+├── ip        (FPGA例化IP)
+├── scripts  （常用脚本）
 └── verif    （仿真验证）
     ├── common    （测试程序代码）
     ├── config    （测试样例配置文件）
-    ├── ext    （测试样例程序）
+    ├── ext       （测试样例程序）
     │   ├── loader    （样例加载程序）
     │   ├── simu-coremark-mmu    （加载页表的coremark样例程序）
-    │   ├── simu-coremark-user    （coremark样例裸机程序）
+    │   ├── simu-coremark-user   （coremark样例裸机程序）
     │   ├── simu-funcs    （函数测试程序）
     │   ├── simu-hello    （hello样例程序）
     │   ├── simu-hello-dual-core    （hello双核样例程序）
     │   ├── simu-hello-quad-core    （hello四核样例程序）
-    │   └── simu-kernel    （内核样例程序）
+    │   └── simu-kernel   （内核样例程序）
     ├── filelists
     ├── vcs
     │   ├── CoreMark
