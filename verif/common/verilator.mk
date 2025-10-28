@@ -235,7 +235,7 @@ mostlyclean maintainer-clean::
 	$(MAKE) clean -C $(COMMON_DIR)/memory/DRAMsim3  
 
 clean:
-	-rm -rf *exe.report logs board.h
+	-rm -rf *exe.report* logs board.h
 	-rm -rf ./obj_dir
 
 clean_all: mostlyclean

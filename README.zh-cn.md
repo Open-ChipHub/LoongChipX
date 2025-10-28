@@ -4,6 +4,10 @@ LoongChipX是一个开源的异构多核处理器平台。包括多发射乱序�
 
 English Readme is [here](README.md).
 
+LoongChipX平台整体架构图如下所示。
+
+![Open-LoongChipx](images/Open-LoongChipX-Overview.svg)
+
 ## 目录
 - [项目简介](#intro)
 - [目录结构](#instr)
@@ -223,3 +227,4 @@ make upload
 ## 技术交流
 
 ## 开源许可
+LoongChipX平台遵守木兰宽松许可证[Mulan PSL v2](LICENSE).
