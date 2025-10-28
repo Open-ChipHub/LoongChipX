@@ -4,6 +4,10 @@
 
 中文说明[在此](README.zh-cn.md).
 
+The architecture overview of LoongChipX Platform is shown below.
+
+![Open-LoongChipx](images/Open-LoongChipX-Overview.svg)
+
 ## Table of Contents
 - [Introduction](#intro_en)
 - [Directory Structure](#instr_en)
