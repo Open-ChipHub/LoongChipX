@@ -7,8 +7,8 @@ VERILATOR_SRC +=
 
 
 # big little hybrid
-# HETE_ARCH := little
-HETE_ARCH := big
+HETE_ARCH := little
+# HETE_ARCH := big
 # HETE_ARCH := hybrid
 
 ifeq ("$(HETE_ARCH)","big")
@@ -25,12 +25,12 @@ endif
 
 CONFIG  :=  $(VERIF_DIR)/config/config.kernel.checkpoint
 
-run: sub-run
-
 sub-run:
 	rm -rf board.h
 	@if [ "${HETE_ARCH}" = "big" ]; then \
 		echo "\`define HETE_ARCH_BIG 1" > board.h; \
 	elif [ "${HETE_ARCH}" = "little" ]; then \
 		echo "\`define HETE_ARCH_LITTLE 1" > board.h; \
+	elif [ "${HETE_ARCH}" = "hybrid" ]; then \
+		echo "\`define HETE_ARCH_HYBRID 1" > board.h; \
 	fi
