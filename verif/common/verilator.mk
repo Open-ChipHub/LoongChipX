@@ -142,7 +142,7 @@ VERILATOR_SRC   += -f $(VERILATOR_FILELISTS)
 VERILATOR_INPUT ?= $(VERILATOR_DEFINE) --top-module Top ${VERILATOR_SRC} -Wno-CMPCONST -Wno-fatal
 
 ######################################################################
-default: run
+default: sub-run run
 
 vtop_mk    := ./obj_dir/VTop.mk
 vtop_xml   := ./obj_dir/VTop.xml
@@ -188,6 +188,8 @@ print_trace: vcsrc/print_trace.c vcsrc/trace.h
 run: build 
 	mkdir -p logs
 	obj_dir/VTop $(CONFIG) +trace
+
+sub-run:
 
 show-config:
 	$(VERILATOR) -V
