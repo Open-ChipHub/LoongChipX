@@ -16,11 +16,11 @@ The architecture overview of LoongChipX Platform is shown below.
 
 ## <a nane="intro_en"></a> Introduction
 
-### 364
+### Core364 (12-Stage Pipeline Out-of-Order)
 
 The 364 is a 64-bit high-performance processor core designed for embedded systems and SoC applications, based on the LoongArch instruction set architecture. The design focuses on performance optimization, implementing advanced high-performance techniques such as a 3-issue, 8-execution superscalar architecture.
 
-### 164
+### Core164 (5-Stage Pipeline)
 
 The 164 is a 64-bit ultra-high-efficiency processor core designed for embedded systems, based on the LoongArch instruction set architecture. The architecture implements a 5-stage dual-issue in-order pipeline and is specifically optimized for low power consumption.
 
@@ -29,7 +29,7 @@ The architecture overview is shown below.
 ![LoongChipx-Core164](images/core164_arch.drawio.svg)
 
 
-### 132
+### Core132 (3-Stage Pipeline, 32-bit)
 
 132 is a 32-bit processor core designed for embedded systems, featuring the LoongArch32 instruction set and supporting simulation verification and rapid development.
 
