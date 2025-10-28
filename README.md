@@ -24,6 +24,11 @@ The 364 is a 64-bit high-performance processor core designed for embedded system
 
 The 164 is a 64-bit ultra-high-efficiency processor core designed for embedded systems, based on the LoongArch instruction set architecture. The architecture implements a 5-stage dual-issue in-order pipeline and is specifically optimized for low power consumption.
 
+The architecture overview is shown below.
+
+![LoongChipx-Core164](images/core164_arch.drawio.svg)
+
+
 ### 132
 
 132 is a 32-bit processor core designed for embedded systems, featuring the LoongArch32 instruction set and supporting simulation verification and rapid development.

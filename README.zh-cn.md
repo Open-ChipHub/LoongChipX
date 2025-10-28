@@ -4,7 +4,7 @@ LoongChipX是一个开源的异构多核处理器平台。包括多发射乱序�
 
 English Readme is [here](README.md).
 
-LoongChipX平台整体架构图如下所示。
+LoongChipX平台整体架构图如下所示:
 
 ![Open-LoongChipx](images/Open-LoongChipX-Overview.svg)
 
@@ -23,6 +23,10 @@ LoongChipX平台整体架构图如下所示。
 ### 164
 
 164是面向嵌入式系统的64位超高能效处理器核，采用了LoongArch指令集。架构实现了五级弹发射顺序流水线技术，并针对功耗进行了专门的优化。
+
+架构图如下所示:
+
+![LoongChipx-Core164](images/core164_arch.drawio.svg)
 
 ### 132
 
