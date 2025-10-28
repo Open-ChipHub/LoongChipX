@@ -88,7 +88,8 @@ The following instructions will allow you to compile and run a Verilator model o
 Before compiling and running, please check if the development environment meets the following requirements:
 - Make. version 4.3 or higher.
 - The simulation tools. supporting Verilator and Verdi, with Verilator version 5.008 or higher.
-- Clang compiler. version 14.0.0 or higher.
+- Clang compiler version 13.0.0 or higher (optional).
+- GCC compiler version 12.0.0 or higher.
 - Serial port software, such as minicom, version 2.8 or higher.
 - Linux kernel.version 6.10,git clone from github.
 - Cross Compiler. verison 13.0 or higher,git clone from 可从[build_Tools](https://github.com/loongson/build-tools/releases/).

@@ -86,7 +86,8 @@ LoongChipX
 编译运行之前，请检查开发环境是否具备以下条件：
 - Make版本为4.3及以上。
 - 仿真工具支持Verilator 与 verdi。其中，verilator版本为5.008及以上。
-- clang编译器版本为14.0.0及以上。
+- clang编译器版本为13.0.0及以上（可选）。
+- gcc编译器版本为12.0.0及以上。
 - 串口软件。如minicom，版本为2.8及以上。
 - linux源码。内核版本6.10.可从Git仓库下载。
 - 交叉编译器。版本为13.0.可从[build_Tools](https://github.com/loongson/build-tools/releases/)下载。
