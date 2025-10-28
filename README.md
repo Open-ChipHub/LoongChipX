@@ -1,6 +1,6 @@
 # LoongChipX
 
-LoongChipX is an open-source heterogeneous multi-core processor platform. It includes the high-performance, multiple-issue, out-of-order LabCore364; the five-stage pipelined LabCore164; the LoongArch32-compatible small core LabCore132; as well as a high-performance six-issue processor currently under development. Our goal is to build a multi-core heterogeneous processor platform that supports simulation and verification, and provides corresponding software support, such as the Linux kernel, GCC, LLVM compiler, and more.
+**LoongChipX** is an open-source heterogeneous multi-core processor platform. It includes the high-performance, multiple-issue, out-of-order LabCore364; the five-stage pipelined LabCore164; the LoongArch32-compatible small core LabCore132; as well as a high-performance six-issue processor currently under development. Our goal is to build a multi-core heterogeneous processor platform that supports simulation and verification, and provides corresponding software support, such as the Linux kernel, GCC, LLVM compiler, and more.
 
 中文说明[在此](README.zh-cn.md).
 
@@ -206,4 +206,7 @@ Reset the core,and Serial Software can receive message from FPGA.
 
 
 ## Follow us
+
 ## LICENSE
+
+LoongChipX is licensed under [Mulan PSL v2](LICENSE).
