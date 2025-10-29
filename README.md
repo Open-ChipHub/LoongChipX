@@ -4,6 +4,8 @@
 
 中文说明[在此](README.zh-cn.md).
 
+Click [here](https://loongchipx-doc.readthedocs.io/zh-cn/latest/index.html#) to read the docs.
+
 The architecture overview of LoongChipX Platform is shown below.
 
 ![Open-LoongChipx](images/Open-LoongChipX-Overview.svg)
