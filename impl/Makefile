@@ -9,8 +9,8 @@ PROJECT_HOME = $(LCX_HOME)/impl
 SYNTH_TOP_MODULE = soc_top_xlnx
 
 # big little hybrid
-# HETE_ARCH := little
-HETE_ARCH := big
+HETE_ARCH := little
+# HETE_ARCH := big
 # HETE_ARCH := hybrid
 
 # BOARD := vcu118
