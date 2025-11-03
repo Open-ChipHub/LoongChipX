@@ -8967,6 +8967,65 @@ assign ibuf_ibdp_bypass_inst2_vlmul[1:0] = bypass_way_inst2_vlmul[1:0];
 assign ibuf_ibdp_bypass_inst2_vsew[2:0]  = bypass_way_inst2_vsew[2:0];
 assign ibuf_ibdp_bypass_inst2_vl[7:0]    = bypass_way_inst2_vl[7:0];
 
+
+//==========================================================
+//                   Performance Statistics
+//==========================================================
+`define CONFIG_PERF 1
+`ifdef CONFIG_PERF
+
+parameter SAMP_WIDTH = 8;
+
+wire  [SAMP_WIDTH-1: 0]  sample_hold;
+wire                     start_sample;
+wire                     always_enable_sample_event;
+wire                     clear_cur_stage_sam;
+wire                     show_sample_event;
+
+assign sample_hold[SAMP_WIDTH-1 :0]   = 8'd100;
+assign show_sample_event   = clear_cur_stage_sam;
+assign always_enable_sample_event = 1'b1;
+
+// Event stat register cnt
+reg   [SAMP_WIDTH-1: 0]  sample_cnt;
+always @(posedge forever_cpuclk or negedge cpurst_b)
+begin
+  if(~cpurst_b || clear_cur_stage_sam) begin
+    sample_cnt[SAMP_WIDTH-1:0] <= {SAMP_WIDTH{1'b0}};
+  end else if (always_enable_sample_event) begin
+    sample_cnt[SAMP_WIDTH-1:0] <= sample_cnt[SAMP_WIDTH-1:0] + 1'b1;
+  end else begin
+    sample_cnt[SAMP_WIDTH-1:0] <= sample_cnt[SAMP_WIDTH-1:0];
+  end
+end
+assign clear_cur_stage_sam = (sample_cnt[SAMP_WIDTH-1:0] == sample_hold[SAMP_WIDTH-1:0]);
+
+// Event 0: dispatch inst valid
+reg   [SAMP_WIDTH-1: 0]  sample_event_0_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_0_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_0_all_cnt;
+wire                     enable_sample_event_0;
+always @(posedge forever_cpuclk or negedge cpurst_b)
+begin
+  if(~cpurst_b || clear_cur_stage_sam) 
+  begin
+    sample_event_0_cnt[SAMP_WIDTH-1:0]   <= {SAMP_WIDTH{1'b0}};
+  end else if (enable_sample_event_0) 
+  begin
+    sample_event_0_cnt[SAMP_WIDTH-1:0]   <= sample_event_0_cnt[SAMP_WIDTH-1:0] + 1'b1;
+  end else 
+  begin
+    sample_event_0_cnt[SAMP_WIDTH-1:0]   <= sample_event_0_cnt[SAMP_WIDTH-1:0];
+  end
+end
+assign enable_sample_event_0                       = ibuf_create_vld;
+assign show_sample_event_0_cnt[SAMP_WIDTH-1:0]     = {SAMP_WIDTH{show_sample_event}} & sample_event_0_cnt[SAMP_WIDTH-1:0];
+assign show_sample_event_0_all_cnt[SAMP_WIDTH-1:0] = {SAMP_WIDTH{show_sample_event}} & sample_hold[SAMP_WIDTH-1:0];
+
+`else 
+`endif
+
+
 // &ModuleEnd; @5434
 endmodule
 

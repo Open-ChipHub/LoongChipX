@@ -1235,6 +1235,131 @@ assign ctrl_dp_is_dis_stall = ctrl_is_dis_stall;
 //if cannot dispatch all is pipeline inst, stall ir stage
 assign ctrl_is_stall     = ctrl_is_dis_stall || is_dis_type_stall;
 
+
+//==========================================================
+//                   Performance Statistics
+//==========================================================
+`define CONFIG_PERF 1
+`ifdef CONFIG_PERF
+
+wire is_pipedown_inst0_vld;
+wire is_pipedown_inst1_vld;
+wire is_pipedown_inst2_vld;
+wire is_pipedown_inst3_vld;
+
+assign is_pipedown_inst0_vld = is_inst0_vld && !ctrl_is_stall;
+assign is_pipedown_inst1_vld = is_inst1_vld && !ctrl_is_stall;
+assign is_pipedown_inst2_vld = is_inst2_vld && !ctrl_is_stall;
+assign is_pipedown_inst3_vld = is_inst3_vld && !ctrl_is_stall;
+
+parameter SAMP_WIDTH = 6;
+
+wire  [SAMP_WIDTH-1: 0]  sample_hold;
+wire                     start_sample;
+wire                     always_enable_sample_event;
+wire                     clear_cur_stage_sam;
+wire                     show_sample_event;
+
+assign sample_hold[SAMP_WIDTH-1 :0]   = 5'd20;
+assign show_sample_event   = clear_cur_stage_sam;
+assign always_enable_sample_event = 1'b1;
+
+// Event stat register cnt
+reg   [SAMP_WIDTH-1: 0]  sample_cnt;
+always @(posedge forever_cpuclk or negedge cpurst_b)
+begin
+  if(~cpurst_b || clear_cur_stage_sam) begin
+    sample_cnt[SAMP_WIDTH-1:0] <= {SAMP_WIDTH{1'b0}};
+  end else if (always_enable_sample_event) begin
+    sample_cnt[SAMP_WIDTH-1:0] <= sample_cnt[SAMP_WIDTH-1:0] + 1'b1;
+  end else begin
+    sample_cnt[SAMP_WIDTH-1:0] <= sample_cnt[SAMP_WIDTH-1:0];
+  end
+end
+assign clear_cur_stage_sam = (sample_cnt[SAMP_WIDTH-1:0] == sample_hold[SAMP_WIDTH-1:0]);
+
+// Event 0: dispatch inst valid
+reg   [SAMP_WIDTH-1: 0]  sample_event_0_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_0_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_0_all_cnt;
+wire                     enable_sample_event_0;
+always @(posedge forever_cpuclk or negedge cpurst_b)
+begin
+  if(~cpurst_b || clear_cur_stage_sam) 
+  begin
+    sample_event_0_cnt[SAMP_WIDTH-1:0]   <= {SAMP_WIDTH{1'b0}};
+  end else if (enable_sample_event_0) 
+  begin
+    sample_event_0_cnt[SAMP_WIDTH-1:0]   <= sample_event_0_cnt[SAMP_WIDTH-1:0] + 1'b1;
+  end else 
+  begin
+    sample_event_0_cnt[SAMP_WIDTH-1:0]   <= sample_event_0_cnt[SAMP_WIDTH-1:0];
+  end
+end
+assign enable_sample_event_0                       = is_pipedown_inst0_vld;
+assign show_sample_event_0_cnt[SAMP_WIDTH-1:0]     = {SAMP_WIDTH{show_sample_event}} & sample_event_0_cnt[SAMP_WIDTH-1:0];
+assign show_sample_event_0_all_cnt[SAMP_WIDTH-1:0] = {SAMP_WIDTH{show_sample_event}} & sample_hold[SAMP_WIDTH-1:0];
+
+
+// Event 1: dispatch inst stall
+reg   [SAMP_WIDTH-1: 0]  sample_event_1_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_1_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_1_all_cnt;
+wire                     enable_sample_event_1;
+always @(posedge forever_cpuclk or negedge cpurst_b)
+begin
+  if(~cpurst_b || clear_cur_stage_sam) 
+  begin
+    sample_event_1_cnt[SAMP_WIDTH-1:0]   <= {SAMP_WIDTH{1'b0}};
+  end else if (enable_sample_event_1) 
+  begin
+    sample_event_1_cnt[SAMP_WIDTH-1:0]   <= sample_event_1_cnt[SAMP_WIDTH-1:0] + 1'b1;
+  end else 
+  begin
+    sample_event_1_cnt[SAMP_WIDTH-1:0]   <= sample_event_1_cnt[SAMP_WIDTH-1:0];
+  end
+end
+assign enable_sample_event_1                       = ctrl_is_stall;
+assign show_sample_event_1_cnt[SAMP_WIDTH-1:0]     = {SAMP_WIDTH{show_sample_event}} & sample_event_1_cnt[SAMP_WIDTH-1:0];
+assign show_sample_event_1_all_cnt[SAMP_WIDTH-1:0] = {SAMP_WIDTH{show_sample_event}} & sample_hold[SAMP_WIDTH-1:0];
+
+
+// Event 2: dispatch inst valid
+reg   [SAMP_WIDTH-1: 0]  sample_event_2_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_2_cnt;
+wire  [SAMP_WIDTH-1: 0]  show_sample_event_2_all_cnt;
+wire                     enable_sample_event_2;
+always @(posedge forever_cpuclk or negedge cpurst_b)
+begin
+  if(~cpurst_b || clear_cur_stage_sam) 
+  begin
+    sample_event_2_cnt[SAMP_WIDTH-1:0]   <= {SAMP_WIDTH{1'b0}};
+  end else if (enable_sample_event_2) 
+  begin
+    sample_event_2_cnt[SAMP_WIDTH-1:0]   <= sample_event_2_cnt[SAMP_WIDTH-1:0] + 1'b1;
+  end else 
+  begin
+    sample_event_2_cnt[SAMP_WIDTH-1:0]   <= sample_event_2_cnt[SAMP_WIDTH-1:0];
+  end
+end
+assign enable_sample_event_2                       = is_dis_type_stall;
+assign show_sample_event_2_cnt[SAMP_WIDTH-1:0]     = {SAMP_WIDTH{show_sample_event}} & sample_event_2_cnt[SAMP_WIDTH-1:0];
+assign show_sample_event_2_all_cnt[SAMP_WIDTH-1:0] = {SAMP_WIDTH{show_sample_event}} & sample_hold[SAMP_WIDTH-1:0];
+
+
+`else 
+wire is_pipedown_inst0_vld;
+wire is_pipedown_inst1_vld;
+wire is_pipedown_inst2_vld;
+wire is_pipedown_inst3_vld;
+
+assign is_pipedown_inst0_vld = is_inst0_vld && !ctrl_is_stall;
+assign is_pipedown_inst1_vld = is_inst1_vld && !ctrl_is_stall;
+assign is_pipedown_inst2_vld = is_inst2_vld && !ctrl_is_stall;
+assign is_pipedown_inst3_vld = is_inst3_vld && !ctrl_is_stall;
+
+`endif
+
 // &ModuleEnd; @827
 endmodule
 
