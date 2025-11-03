@@ -600,54 +600,6 @@ assign snq_return_snoop_resp[4:0] = snq_resp[4:0];
 assign snq_inv_en =  biu_snq_cr_resp_acept;
                   //&& (snpt_cur_state[2:0] == SNPT_WAIT_POP);
 
-
-//&CombBeg;
-//  snq_snoop_tag_req = 1'b0;
-//  snq_tag_req_issued      = 1'b0;
-//  save_tag_resp             = 1'b0;
-//  snpt_snpdt_start          = 1'b0;
-//  snq_return_snoop_resp_vld     = 1'b0;
-//  case(snpt_cur_state)
-//    SNPT_IDLE:
-//    begin
-//      if(snq_snoop_tag_start)       //select cur entry to read tag
-//      begin
-//        snq_snoop_tag_req = 1'b1; //read tag
-//        if(dcache_arb_snq_st_grnt)
-//          snq_tag_req_issued = 1'b1; //set snq_issued bit
-//        else
-//          snq_tag_req_issued = 1'b0;
-//      end
-//      else
-//      begin
-//        snq_snoop_tag_req = 1'b0;
-//        snq_tag_req_issued      = 1'b0;
-//      end
-//    end
-//    SNPT_WAIT_RESP:
-//    begin
-//      if(snq_resp_create_en)
-//        save_tag_resp = 1'b1;
-//      else
-//        save_tag_resp = 1'b0;
-//    end
-//    SNPT_WAIT_SDT_CMPLT:
-//    begin
-//      if(arb_snq_entry_oldest_index)
-//        snpt_snpdt_start = 1'b1;
-//      else
-//        snpt_snpdt_start = 1'b0;
-//    end
-//    SNPT_WAIT_POP:
-//    begin
-//      snq_return_snoop_resp_vld = 1'b1;
-//      if(biu_snq_cr_resp_acept)
-//        snq_inv_en = 1'b1;
-//      else
-//        snq_inv_en = 1'b0;
-//    end
-//  endcase
-//&CombEnd;
         
 //======================================
 //         cr resp return

@@ -588,47 +588,6 @@ assign snpdt_next_data     = !snpdt_cur_state[1] && snpdt_cur_state[0];
 assign snpdt_check_ecc     = snpdt_cur_state[1] && snpdt_cur_state[0];
 assign snpdt_state_reissue = snpdt_cur_state[1] && !snpdt_cur_state[0];
 
-//&CombBeg;
-//  snq_dcache_snpdt_req_bf = 1'b0;
-//  snq_dcache_snpdt_chg_tag_req_bf = 1'b0;
-//  snpdt_sdb_create_en     = 1'b0;
-////  snpdt_snpt_cmplt      = 1'b0;
-//  case(snpdt_cur_state)
-//    SNPDT_IDLE:
-//    begin
-//      if(snq_snpdt_start && snq_snpdt_need_data && cur_sdb_entry_empty)
-//      begin
-//        snq_dcache_snpdt_req_bf = 1'b1;
-//        snq_dcache_snpdt_chg_tag_req_bf = 1'b0;
-//        snpdt_sdb_create_en  = 1'b1;
-////        if(snoop_dt_req_pop_en)
-////          snpdt_snpt_cmplt = 1'b1; //quick cmplt
-//      end
-//      else if(snq_snpdt_start && !snq_snpdt_need_data && snq_snpdt_need_chg_tag)
-//      begin
-//        snq_dcache_snpdt_req_bf = 1'b1;
-//        snq_dcache_snpdt_chg_tag_req_bf = 1'b1;
-////        if(snoop_dt_req_pop_en)
-////          snpdt_snpt_cmplt = 1'b1; //
-//      end
-//      else
-//      begin
-//        snq_dcache_snpdt_req_bf = 1'b0;
-//        snq_dcache_snpdt_chg_tag_req_bf = 1'b0;
-//        snpdt_sdb_create_en     = 1'b0;
-////        snpdt_snpt_cmplt      = 1'b0;
-//      end
-//    end
-//    SNPDT_RD_NEXT_DATA:
-//    begin
-//      snq_dcache_snpdt_req_bf = 1'b1;
-//      if(snq_snpdt_need_chg_tag)
-//        snq_dcache_snpdt_chg_tag_req_bf = 1'b1;
-//      else
-//        snq_dcache_snpdt_chg_tag_req_bf = 1'b0;
-//    end
-//  endcase
-//&CombEnd;
 //coding style
 assign snq_dcache_snpdt_req_bf =  (snpdt_state_idle 
                                       && snq_snpdt_start
@@ -724,11 +683,11 @@ always @(posedge snpdtclk or negedge cpurst_b)
 begin
   if(~cpurst_b)
   begin
-    snq_dcache_sdb_id[2:0]        <= 3'b0; 
+    snq_dcache_sdb_id[2:0]  <= 3'b0; 
   end
   else if(snoop_dt_req_create_en && snpdt_state_idle)
   begin
-    snq_dcache_sdb_id[2:0]        <= sdb_create_ptr[2:0]; 
+    snq_dcache_sdb_id[2:0]  <= sdb_create_ptr[2:0]; 
   end
 end
     
@@ -792,7 +751,7 @@ end
 //control
 assign sdb_data_return         = sdb_data_pop_vld && sdb_biu_cd_valid;
 assign sdb_data_returned       = sdb_data_return && biu_sdb_cd_ready;
-assign sdb_entry_inv           =  sdb_data_returned && cdr_cur_state[3];
+assign sdb_entry_inv           = sdb_data_returned && cdr_cur_state[3];
 //                               && cdr_cur_state[1:0] == CDR_DATA3;
        
 //==========================================================
@@ -931,26 +890,6 @@ assign idfifo_entry_create_vld[2:0] = sdb_fifo_create_ptr[2:0]
 assign lsu_sdb_not_empty   = |sdb_vld[2:0];
 assign cur_sdb_entry_empty = |sdb_entry_avail[2:0];
 
-//sdb data create pointer
-//assign cur_entry_all_data_vld =  (&sdb_entry0_data_vld[3:0]) && sdb_data_create_ptr[0]
-//                              || (&sdb_entry1_data_vld[3:0]) && sdb_data_create_ptr[1];
-//always @(posedge snq_ctl_clk or negedge cpurst_b)
-//begin
-//  if(~cpurst_b)
-//    is_second_data <= 1'b0;
-//  else if(ld_da_snq_borrow_sndb)
-//    is_second_data <= ~is_second_data;
-//  else
-//    is_second_data <= is_second_data;
-//end
-//assign sdb_data_create_ptr_updt = ld_da_snq_borrow_sndb && is_second_data;
-//always @(posedge snq_ctl_clk or negedge cpurst_b)
-//begin
-//  if(~cpurst_b)
-//    sdb_data_create_ptr[1:0] <= 2'b01;
-//  else if(sdb_data_create_ptr_updt)
-//    sdb_data_create_ptr[1:0] <= {sdb_data_create_ptr[0],sdb_data_create_ptr[1]};
-//end
 
 //fifo pop pointer
 always @(posedge snq_ctl_clk or negedge cpurst_b)
