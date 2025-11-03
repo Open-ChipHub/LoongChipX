@@ -953,32 +953,10 @@ casez({decd_op[31:15], decd_op[14:10]})
     pipe4_decd_lsfifo         = 1'b0;
   end
 
-  // 22'b0000011000???????_????? : // cacop (cache) (write into L1 Cache)
-  // begin
-  //   pipe4_decd_atomic         = 1'b0;
-  //   pipe4_decd_sync_fence     = 1'b1;
-  //   pipe4_decd_inst_flush     = 1'b0;
-  //   pipe4_decd_inst_share     = 1'b0;
-  //   pipe4_decd_icc            = 1'b1;
-  //   pipe4_decd_st             = 1'b0;
-  //   pipe4_decd_mmu_req        = 1'b0;
-  //   pipe4_decd_inst_type[1:0] = 2'b10;
-  //   pipe4_decd_inst_size[1:0] = 2'b01;
-  //   pipe4_decd_inst_mode[1:0] = 2'b00;
-  //   pipe4_decd_fence_mode[3:0]= 4'b0000;
-  //   pipe4_decd_inst_fls       = 1'b0;
-  //   pipe4_decd_inst_vls       = 1'b0;
-  //   pipe4_decd_offset[13:0]   = 14'b0;
-  //   pipe4_decd_shift[3:0]     = 4'b0001;
-  //   pipe4_decd_inst_str       = 1'b0;
-  //   pipe4_decd_off_0_extend   = 1'b0;
-  //   pipe4_decd_lsfifo         = 1'b0;
-  // end
-
   22'b0000011000???????_????? : // cacop (cache) // write into Cache, And Clear, invalidate L1 DCache 
   begin
     pipe4_decd_atomic         = 1'b0;
-    pipe4_decd_sync_fence     = 1'b1;
+    pipe4_decd_sync_fence     = 1'b0;
     pipe4_decd_inst_flush     = 1'b0;
     pipe4_decd_inst_share     = 1'b0;
     pipe4_decd_icc            = 1'b1;
