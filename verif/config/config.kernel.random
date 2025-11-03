@@ -1,5 +1,5 @@
 random_test=1
-random_test_dir=/home/airxs/user/loongsonedu/cpu/LoongChipX/verif/RandomInstGen/
+random_test_dir=/home/airxs/user/loongsonedu/cpu/LoongChipX-dev/verif/RandomInstGen/
 #fpr_bits=64
 fpr_bits=0
 random_with_tlb=1

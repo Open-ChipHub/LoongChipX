@@ -10,7 +10,7 @@ CASE_BIN  := hello_world.bin
 
 # big little hybrid
 HETE_ARCH := little
-# HETE_ARCH := big
+HETE_ARCH := big
 # HETE_ARCH := hybrid
 
 ifeq ("$(HETE_ARCH)","big")

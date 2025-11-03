@@ -27,7 +27,7 @@ TEST_CASE = simu-kernel#
 
 all: $(TEST_CASE).bin
 
-KERNEL_DIR := /home/airxs/user/cpu/dev/system/linux/linux-6.10-labcore-rc1
+KERNEL_DIR := /home/airxs/user/cpu/system/linux/linux-6.10-labcore164-emu-dbg/
 
 vmlinux:
 	cp $(KERNEL_DIR)/vmlinux .

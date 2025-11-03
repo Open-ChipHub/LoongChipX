@@ -2,11 +2,11 @@ Magic 271485
 Revision Verdi_O-2018.09-SP2
 
 ; Window Layout <x> <y> <width> <height> <signalwidth> <valuewidth>
-viewPort 3812 40 3840 1890 346 65
+viewPort 2532 40 3840 1890 346 65
 
 ; File list:
 ; openDirFile [-d delimiter] [-s time_offset] [-rf auto_bus_rule_file] path_name file_name
-openDirFile -d / "" "/home/airxs/user/loongsonedu/cpu/LoongChipX/verif/verilator/VerSimCKP/wave.vcd.fsdb"
+openDirFile -d / "" "/home/airxs/user/loongsonedu/cpu/LoongChipX-dev/verif/verilator/VerSimCKP/wave.vcd.fsdb"
 
 ; file time scale:
 ; fileTimeScale ### s|ms|us|ns|ps
@@ -16,21 +16,21 @@ signalSpacing 5
 
 ; windowTimeUnit is used for zoom, cursor & marker
 ; waveform viewport range
-zoom 11798.603790 11948.455976
-cursor 11858.000000
+zoom 715046.690644 715218.487079
+cursor 715114.000000
 marker 2.000000
 
 ; user define markers
 ; userMarker time_pos marker_name color linestyle
 ; visible top row signal index
-top 355
+top 404
 ; marker line index
-markerPos 436
+markerPos 448
 
 ; Run Time Signal and Member
 ; userBusMem member ...
 ; saveRunSig name
-activeDirFile "" "/home/airxs/user/loongsonedu/cpu/LoongChipX/verif/verilator/VerSimCKP/wave.vcd.fsdb"
+activeDirFile "" "/home/airxs/user/loongsonedu/cpu/LoongChipX-dev/verif/verilator/VerSimCKP/wave.vcd.fsdb"
 userBusMem /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[31]
 userBusMem /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[30]
 userBusMem /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_idu_top/x_ct_idu_ir_dp/ir_inst1_data[29]
@@ -783,10 +783,10 @@ curSTATUS ByValue
 
 
 addGroup "G1"
-activeDirFile "" "/home/airxs/user/loongsonedu/cpu/LoongChipX/verif/verilator/VerSimCKP/wave.vcd.fsdb"
+activeDirFile "" "/home/airxs/user/loongsonedu/cpu/LoongChipX-dev/verif/verilator/VerSimCKP/wave.vcd.fsdb"
 addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/pll_core_clk
 addSignal -h 21 -holdScope pad_cpu_rst_b
-addGroup "BUS" -e FALSE
+addGroup "BUS"
 addSignal -h 21 -UNSIGNED -HEX /Sim_Top/Top/axi_ar_addr[39:0]
 addSignal -h 21 -holdScope axi_ar_valid
 addSignal -h 21 -holdScope axi_r_valid
@@ -1263,6 +1263,135 @@ addSignal -h 21 -holdScope vfpu_idu_ex3_pipe6_data_vld_dup0
 addSignal -h 21 -holdScope vfpu_idu_ex4_pipe6_fwd_vreg_vld
 addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_vfpu_top/x_ct_vfpu_crtl/ctrl_ex3_pipe6_inst_vld
 addGroup "LSU"
+addSubGroup "LSU-BIU"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_biu_top/biu_pad_awaddr[39:0]
+addSignal -h 21 -holdScope biu_pad_awvalid
+endSubGroup "LSU-BIU"
+addSubGroup "LSU-WMB"
+addSubGroup "LSU-WMB-Read"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_read_req_unmask
+endSubGroup "LSU-WMB-Read"
+addSubGroup "LSU-WMB-SQ"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_sq/sq_wmb_pop_to_ce_req
+endSubGroup "LSU-WMB-SQ"
+addSubGroup "LSU-WMB-CE"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb_ce/sq_pop_addr[39:0]
+addSignal -h 21 -UNSIGNED -HEX -holdScope sq_pop_bytes_vld[15:0]
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_ce_create_vld
+addSignal -h 21 -holdScope wmb_ce_create_merge
+endSubGroup "LSU-WMB-CE"
+addSubGroup "LSU-WMB-Entry"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb_ce/wmb_ce_addr[39:0]
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_create_vld
+addSignal -h 21 -UNSIGNED -HEX -holdScope wmb_entry_vld[7:0]
+addSubGroup "LSU-WMB-Entry-7"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/x_ct_lsu_wmb_entry_7/wmb_entry_read_req_success_set
+addSignal -h 21 -holdScope wmb_entry_read_resp_set
+addSignal -h 21 -holdScope wmb_entry_write_req
+addSignal -h 21 -holdScope wmb_entry_write_biu_req
+addSignal -h 21 -holdScope wmb_entry_write_dcache_req
+addSignal -h 21 -holdScope wmb_entry_write_vb_req
+addSignal -h 21 -holdScope wmb_entry_write_resp_set
+addSubGroup "LSU-WMB-Entry-7-read-req"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/x_ct_lsu_wmb_entry_7/wmb_entry_read_req
+addSignal -h 21 -holdScope wmb_entry_read_dp_req
+addSignal -h 21 -holdScope wmb_entry_read_ptr_shift_imme
+addSignal -h 21 -holdScope wmb_entry_read_req_success_set
+addSubGroup "LSU-WMB-Entry-7-read-resp"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/x_ct_lsu_wmb_entry_7/wmb_entry_read_resp_set
+endSubGroup "LSU-WMB-Entry-7-read-resp"
+addSubGroup "LSU-WMB-Entry-7-write-req"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/x_ct_lsu_wmb_entry_7/wmb_entry_write_req
+addSignal -h 21 -holdScope wmb_entry_write_biu_req
+addSignal -h 21 -holdScope wmb_entry_wo_st_write_biu_req
+addSignal -h 21 -holdScope wmb_entry_write_biu_dp_req
+addSignal -h 21 -holdScope wmb_entry_write_dcache_req
+addSignal -h 21 -holdScope wmb_entry_write_vb_req
+addSignal -h 21 -holdScope wmb_entry_write_ptr_shift_imme
+addSignal -h 21 -holdScope wmb_entry_write_req_success_set
+endSubGroup "LSU-WMB-Entry-7-write-req"
+addSubGroup "LSU-WMB-Entry-7-write-resp"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/x_ct_lsu_wmb_entry_7/wmb_entry_write_resp_set
+endSubGroup "LSU-WMB-Entry-7-write-resp"
+addSubGroup "LSU-WMB-Entry-7-data-req"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/x_ct_lsu_wmb_entry_7/wmb_entry_data_req
+addSignal -h 21 -holdScope wmb_entry_data_biu_req
+addSignal -h 21 -holdScope wmb_entry_data_req_success_set
+endSubGroup "LSU-WMB-Entry-7-data-req"
+endSubGroup "LSU-WMB-Entry-7-read-req"
+endSubGroup "LSU-WMB-Entry-7"
+endSubGroup "LSU-WMB-Entry"
+addSubGroup "LSU-WMB-BUS"
+addSubGroup "LSU-WMB-BUS-W"
+addSignal -h 21 -UNSIGNED -HEX /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_w_data[127:0]
+addSignal -h 21 -holdScope wmb_biu_w_id[4:0]
+addSignal -h 21 -holdScope wmb_biu_w_req
+addSignal -h 21 -holdScope wmb_biu_w_vld
+endSubGroup "LSU-WMB-BUS-W"
+addSubGroup "LSU-WMB-BUS-AW"
+addSignal -h 21 -UNSIGNED -HEX /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_aw_addr[39:0]
+addSignal -h 21 -holdScope wmb_biu_aw_id[4:0]
+addSignal -h 21 -holdScope wmb_biu_aw_snoop[2:0]
+addSignal -h 21 -holdScope wmb_biu_aw_req
+endSubGroup "LSU-WMB-BUS-AW"
+addSubGroup "LSU-WMB-BUS-AR"
+addSignal -h 21 -UNSIGNED -HEX /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_ar_addr[39:0]
+addSignal -h 21 -holdScope wmb_biu_ar_id[4:0]
+addSignal -h 21 -holdScope wmb_biu_ar_snoop[3:0]
+addSignal -h 21 -holdScope wmb_biu_ar_req
+endSubGroup "LSU-WMB-BUS-AR"
+endSubGroup "LSU-WMB-BUS"
+addSubGroup "LSU-WMB-Ctrl"
+endSubGroup "LSU-WMB-Ctrl"
+addSubGroup "G11"
+addSignal -h 21 -UNSIGNED -HEX /Sim_Top/Top/sim_cycles[63:0]
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/pll_core_clk
+endSubGroup "G11"
+endSubGroup "LSU-WMB"
+addSubGroup "LSU-Snoop"
+addSubGroup "LSU-Snoop-snq"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_snoop_snq/snpdt_cur_state[1:0]
+addSignal -h 21 -holdScope snq_snpdt_start
+endSubGroup "LSU-Snoop-snq"
+addSubGroup "LSU-Snoop-Bus"
+addSubGroup "LSU-Snoop-Bus-CR"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_biu_top/biu_pad_crresp[4:0]
+addSignal -h 21 -holdScope biu_pad_crvalid
+addSignal -h 21 -holdScope pad_biu_crready
+endSubGroup "LSU-Snoop-Bus-CR"
+addSubGroup "LSU-Snoop-Bus-CD"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_biu_top/biu_pad_cddata[127:0]
+addSignal -h 21 -holdScope biu_pad_cdlast
+addSignal -h 21 -holdScope biu_pad_cdvalid
+addSignal -h 21 -holdScope pad_biu_cdready
+endSubGroup "LSU-Snoop-Bus-CD"
+addSubGroup "LSU-Snoop-Bus-AC"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_biu_top/pad_biu_acaddr[39:0]
+addSignal -h 21 -holdScope pad_biu_acsnoop[3:0]
+addSignal -h 21 -holdScope pad_biu_acvalid
+addSignal -h 21 -holdScope biu_pad_acready
+endSubGroup "LSU-Snoop-Bus-AC"
+endSubGroup "LSU-Snoop-Bus"
+addSubGroup "LSU-Snoop-Req"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_snoop_req_arbiter/biu_lsu_ac_addr[39:0]
+addSignal -h 21 -holdScope biu_lsu_ac_snoop[3:0]
+addSignal -h 21 -holdScope biu_lsu_ac_prot[2:0]
+addSignal -h 21 -holdScope biu_lsu_ac_req
+endSubGroup "LSU-Snoop-Req"
+addSubGroup "LSU-Snoop-ctrl" -e FALSE
+endSubGroup "LSU-Snoop-ctrl"
+endSubGroup "LSU-Snoop"
+addSubGroup "LSU-VB"
+addSubGroup "LSU-VB-w"
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_vb/vb_biu_w_id[4:0]
+addSignal -h 21 -holdScope vb_biu_w_req
+addSignal -h 21 -holdScope vb_biu_w_data[127:0]
+addSignal -h 21 -holdScope vb_biu_w_vld
+addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_vb_sdb_data/x_ct_lsu_vb_sdb_data_entry_0/vb_data_entry_data[255:0]
+endSubGroup "LSU-VB-w"
+addSubGroup "LSU-VB-aw"
+endSubGroup "LSU-VB-aw"
+endSubGroup "LSU-VB"
 addSubGroup "LSU-lfb"
 addSubGroup "LSU-lfb-tag"
 addSignal -h 21 /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_lfb/lfb_dcache_arb_ld_tag_din[53:0]
@@ -1306,14 +1435,14 @@ addSignal -h 21 -UNSIGNED -HEX -holdScope wmb_dcache_arb_ld_data_high_din[127:0]
 addSignal -h 21 -UNSIGNED -HEX -holdScope wmb_dcache_arb_ld_data_low_din[127:0]
 addSignal -h 21 -UNSIGNED -HEX -holdScope wmb_ld_da_fwd_data[127:0]
 endSubGroup "LSU-sq"
-addSubGroup "LSU-wmb" -e FALSE
+addSubGroup "LSU-wmb"
 addSubGroup "LSU-wmb-write"
 addSignal -h 21 -UNSIGNED -HEX /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_aw_addr[39:0]
 addSignal -h 21 -holdScope wmb_biu_aw_req
 addSignal -h 21 -UNSIGNED -HEX -holdScope wmb_biu_w_data[127:0]
 addSignal -h 21 -holdScope wmb_biu_w_vld
 endSubGroup "LSU-wmb-write"
-addSubGroup "LSU-wmb-read" -e FALSE
+addSubGroup "LSU-wmb-read"
 addSignal -h 21 -UNSIGNED -HEX /Sim_Top/Top/cpu_subsystem/core0_subsystem/core_top_0/x_ct_core/x_ct_lsu_top/x_ct_lsu_wmb/wmb_biu_ar_addr[39:0]
 addSignal -h 21 -holdScope wmb_biu_ar_req
 addSignal -h 21 -holdScope biu_lsu_r_vld

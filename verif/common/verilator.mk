@@ -73,7 +73,7 @@ CXXFLAGS += -stdlib=libstdc++
 LDFLAGS += -stdlib=libstdc++
 endif
 
-CXXFLAGS_OPTIMIZE += -O0 -g  
+CXXFLAGS_OPTIMIZE += -O3 -g  
 CXXFLAGS += $(CXXFLAGS_OPTIMIZE)
 
 ifeq ("$(RANDOM_INIT)", "1")
@@ -143,7 +143,7 @@ VERILATOR_SRC   += -f $(VERILATOR_FILELISTS)
 VERILATOR_INPUT ?= $(VERILATOR_DEFINE) --top-module Top ${VERILATOR_SRC} -Wno-CMPCONST -Wno-fatal
 
 ######################################################################
-default: run
+default: sub-run run
 
 vtop_mk    := ./obj_dir/VTop.mk
 vtop_xml   := ./obj_dir/VTop.xml

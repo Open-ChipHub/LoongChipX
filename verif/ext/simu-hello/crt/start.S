@@ -55,44 +55,79 @@ _start:
     li.d  $r12, 0x10
     csrwr $r12, 0x0  # Cache ON
 
-    li.d   $a1, 0x100
-    li.d   $a2, 0x101
-    li.d   $a3, 0x110
-    li.d   $a4, 0x103
-    la.abs $r12, atomic
-    li.d   $r13, 4
-    li.d   $r16, 7
-    stx.b  $a1, $r12, $r13
-    stx.b  $a2, $r12, $r13
+    li.d  $r10, 0x1111111111111111
+    li.d  $r11, 0x2222222222222222
 
-    addi.d $r13, $r12, 6
-    asrtle.d $r12, $r13
-    asrtgt.d $r13, $r12
-    
-    li.d   $r14, 5
-    stx.b  $a3, $r12, $r14
-    stx.b  $a3, $r12, $r14
-    
-    li.d   $r15, 6
-    stx.b  $a4, $r12, $r15
-    stx.b  $a4, $r12, $r15
-    
-    stx.b  $a4, $r12, $r16
-    stx.b  $a4, $r12, $r16
+    li.d  $r13, 0x19D78
+    li.d  $r14, 0x1DD78
 
-    # tlbclr
-    # tlbflush
-    # tlbsrch
-    # tlbrd
-    # tlbwr
-    # tlbfill
+    st.d  $r10, $r13, 0
 
-    # FPU
-    ftintrz.w.d     $fa3, $fa0
-    ffint.d.w       $fa1, $fa3
-    ffint.d.l       $fa1, $fa1
-    fsub.d          $fa5, $fa5, $fa1
-    fadd.d          $fa1, $fa1, $fa1
+    // clean cache
+    cacop 0, $zero, 0
+
+    ld.d $r15, $r13, 0
+    nop
+    nop
+    nop
+    nop
+    nop
+    st.d  $r11, $r14, 0
+
+    dbar 0
+
+    # ibar 0
+    nop 
+    nop 
+    nop 
+    nop 
+    nop 
+    nop 
+    nop 
+    nop 
+
+    ld.d $r15, $r13, 0
+
+    add.d $r16, $r15, $zero
+
+    # li.d   $a1, 0x100
+    # li.d   $a2, 0x101
+    # li.d   $a3, 0x110
+    # li.d   $a4, 0x103
+    # la.abs $r12, atomic
+    # li.d   $r13, 4
+    # li.d   $r16, 7
+    # stx.b  $a1, $r12, $r13
+    # stx.b  $a2, $r12, $r13
+
+    # addi.d $r13, $r12, 6
+    # asrtle.d $r12, $r13
+    # asrtgt.d $r13, $r12
+    
+    # li.d   $r14, 5
+    # stx.b  $a3, $r12, $r14
+    # stx.b  $a3, $r12, $r14
+    
+    # li.d   $r15, 6
+    # stx.b  $a4, $r12, $r15
+    # stx.b  $a4, $r12, $r15
+    
+    # stx.b  $a4, $r12, $r16
+    # stx.b  $a4, $r12, $r16
+
+    # # tlbclr
+    # # tlbflush
+    # # tlbsrch
+    # # tlbrd
+    # # tlbwr
+    # # tlbfill
+
+    # # FPU
+    # ftintrz.w.d     $fa3, $fa0
+    # ffint.d.w       $fa1, $fa3
+    # ffint.d.l       $fa1, $fa1
+    # fsub.d          $fa5, $fa5, $fa1
+    # fadd.d          $fa1, $fa1, $fa1
 
     la.abs $r12, main
     jirl $r1, $r12, 0

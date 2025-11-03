@@ -37,7 +37,6 @@
 #include "initialize.h"
 
 #include "snapshot.h"
-#include "../softfpu/softfpu.h"
 #include "dramsim3.h"
 #include "fpr.h"
 #include "commonprint.h"
@@ -391,7 +390,7 @@ int main(int argc, char** argv, char** env) {
     // Top->dump_cycles = 0x0;
 
     // dump pc trace.
-    // Top->debug_dump_on = 1;
+    Top->debug_dump_on = 1;
 
     if(sim_cfg.wave_begin_cycles != 0){
         snapshot->wave = 0;
@@ -413,7 +412,7 @@ int main(int argc, char** argv, char** env) {
     dbg_sim_cycles = 0;
 
     sim_wave_on = false;
-    // sim_wave_on = true;
+    sim_wave_on = true;
 
     // Simulate until $finish
     while (!contextp->gotFinish() && !sim_finish && sim_cycles < sim_cycles_limit) {

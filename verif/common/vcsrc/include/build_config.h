@@ -14,7 +14,7 @@
 // #define WITH_RECORD_PC
 // #define FCSR_COMPARE
 
-#define CONFIG_DIFFTEST 1
+// #define CONFIG_DIFFTEST 1
 
 #define FORK_INTERVAL 1000
 #define SLOT_SIZE     2

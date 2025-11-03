@@ -1,5 +1,5 @@
 bios_mode=auto
-kernel=../../../ext/simu-kernel/vmlinux
+kernel=../../ext/simu-kernel/vmlinux
 log_dir=logs
 log_insn_trace=1
 #wave_begin=80000
