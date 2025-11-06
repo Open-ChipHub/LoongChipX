@@ -158,41 +158,6 @@ static const char* rpg_ename[] = {
     "TLBFI",
 };
 
-static const char* rtl_ename[] = {
-    [PIL]  = "PIL",
-    [PIS]  = "PIS",
-    [PIF]  = "PIF",
-    [PME]  = "PME",
-    [PNR]  = "PNR",
-    [PNX]  = "PNX",
-    [PPI]  = "PPI",
-    [ADEF] = "ADEF",
-    [ADEM] = "ADEM",
-    [ALE]  = "ALE",
-    [BCE]  = "BCE",
-    [SYS]  = "SYS",
-    [BRK]  = "BRK",
-    [INE]  = "INE",
-    [IPE]  = "IPE",
-    [FPD]  = "FPD",
-    [SXD]  = "SXD",
-    [ASXD] = "ASXD",
-    [FPE]  = "FPE",
-    [VFPE] = "VFPE",
-    [WPEF] = "WPEF",
-    [WPEM] = "WPEM",
-    [BTD]  = "BTD",
-    [BTE]  = "BTE",
-    [GSPR] = "GSPR",
-    [HVC]  = "HVC",
-    [GCSC] = "GCSC",
-    [GCHC] = "GCHC",
-    [REDO] = "REDO",
-    [TLBR] = "TLBR",
-    [ERTN] = "ERTN",
-    [NONE] = "NONE",
-};
-
 static inline uint64_t is_random_test_pc(uint64_t pc) {
     static uint64_t pc_has_been_zero = 0;
     if (pc == 0) {pc_has_been_zero = 1;}

@@ -46,8 +46,6 @@ static int dead_clock = 0;
 #endif
 extern long long inst_total;
 
-uint32_t split_num = 0;
-
 int debug = 0;
 int debug_hit_num = 0;
 
@@ -145,14 +143,14 @@ int Difftest::step(vluint64_t &main_time) {
     //     #endif
     // }
 
-    /* check if instruction is split */
-    if (do_check_instruction_split(insn, &split_num)) {
-        dut.commit[0].valid = 0;
-        return STATE_RUNNING;
-    }
+    // /* check if instruction is split */
+    // if (do_check_instruction_split(insn, &split_num)) {
+    //     dut.commit[0].valid = 0;
+    //     return STATE_RUNNING;
+    // }
 
-    /* clear split info */
-    split_num = 0;
+    // /* clear split info */
+    // split_num = 0;
 
     /* exec the first instruction */
     do_first_instr_commit();
@@ -270,12 +268,15 @@ int Difftest::step(vluint64_t &main_time) {
         printf("[ERROR]: Ecode Error!\n");
     }
 
+    bool pc_unmatch = false;
+
     if (idx_commit > 0)
         if (dut.commit[0].pc != ref.csr.cur_pc) {
             printf("MisMatch PC: 0x%08lx-> 0x%08lx\n", dut.commit[0].pc, ref.csr.cur_pc);
         #ifdef SIMU_TRACE
             fprintf(trace_out, "MisMatch PC: 0x%08lx-> 0x%08lx\n", dut.commit[0].pc, ref.csr.cur_pc);
         #endif
+            pc_unmatch = true;
         }
 
     if (memcmp(dut_regs_ptr, ref_regs_ptr, DIFFTEST_NR_GREG * sizeof(uint64_t)) && 0){
@@ -309,6 +310,7 @@ int Difftest::step(vluint64_t &main_time) {
         }
         return STATE_ABORT;
     } else {
+        if (pc_unmatch) return STATE_ABORT;
         return STATE_RUNNING;
     }
 #endif
@@ -340,6 +342,8 @@ void Difftest::do_instr_commit(int i) {
         proxy->timercpy(&timer);
     }
 
+    state->record_inst(dut.commit[i].pc, dut.commit[i].inst, dut.commit[i].wen, dut.commit[i].wdest, dut.commit[i].wdata, dut.commit[i].skip);
+
     /* single step exec */
     auto start = std::chrono::steady_clock::now();
     proxy->exec(1);
@@ -350,18 +354,19 @@ void Difftest::do_instr_commit(int i) {
 
 void Difftest::display() {
     fflush(NULL);
+    state->display();
     printf("\n==============  DUT Regs  ==============\n");
     for (int i = 0; i < 32; i ++) {
-        printf("%s(r%2d): 0x%08x ", reg_name[i], i, dut_regs_ptr[i]);
+        printf("%s(r%2d): 0x%016lx ", reg_name[i], i, dut_regs_ptr[i]);
         if (i % 4 == 3) printf("\n");
     }
-    printf("pc: 0x%08lx\n", dut.csr.cur_pc);
-    printf("CRMD: 0x%08lx,    PRMD: 0x%08lx,   EUEN: 0x%08lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
-    printf("ECFG: 0x%08lx,   ESTAT: 0x%08lx,    ERA: 0x%08lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
-    printf("BADV: 0x%08lx,  EENTRY: 0x%08lx, LLBCTL: 0x%08lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
+    printf("pc: 0x%016lx\n", dut.csr.cur_pc);
+    printf("CRMD: 0x%016lx,    PRMD: 0x%016lx,   EUEN: 0x%016lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
+    printf("ECFG: 0x%016lx,   ESTAT: 0x%016lx,    ERA: 0x%016lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
+    printf("BADV: 0x%016lx,  EENTRY: 0x%016lx, LLBCTL: 0x%016lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
     printf("cpu.ll_bit: %lu\n", dut.csr.llbctl & 0x1);
-    printf("INDEX: 0x%08lx, TLBEHI: 0x%08lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
-    printf("ASID: 0x%08lx, TLBRENTRY: 0x%08lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
+    printf("INDEX: 0x%016lx, TLBEHI: 0x%016lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
+    printf("ASID: 0x%016lx, TLBRENTRY: 0x%016lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
     printf("*******************************************************************************\n");
 #ifdef SIMU_TRACE
     fprintf(trace_out,"\n==============  DUT Regs  ==============\n");
@@ -383,237 +388,6 @@ void Difftest::display() {
 
     proxy->isa_reg_display();
     fflush(NULL);
-}
-
-bool Difftest::do_check_instruction_split(uint32_t inst, uint32_t *split_num) {
-    /// in soclab164 Core, the following instruction is split
-    
-    /// invtlb: 00000110010010011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0xc93) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-#if 0
-    /// amswap.w: 00111000011000000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c0) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amswap.d: 00111000011000001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c1) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd.w: 00111000011000010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c2) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd.d: 00111000011000011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c3) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand.w: 00111000011000100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c4) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand.d: 00111000011000101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c5) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor.w: 00111000011000110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c6) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor.d: 00111000011000111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c7) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor.w: 00111000011001000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c8) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor.d: 00111000011001001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c9) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.w: 00111000011001010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70ca) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.d: 00111000011001011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cb) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.w: 00111000011001100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cc) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.d: 00111000011001101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cd) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.wu: 00111000011001110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70ce) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.du: 00111000011001111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cf) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.wu: 00111000011010000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d0) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.du: 00111000011010001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d1) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-#endif
-
-    /// barrier
-    /// amswap_db.w: 00111000011010010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d2) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amswap_db.d: 00111000011010011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d3) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd_db.w: 00111000011010100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d4) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd_db.d: 00111000011010101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d5) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand_db.w: 00111000011010110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d6) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand_db.d: 00111000011010111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d7) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor_db.w: 00111000011011000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d8) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor_db.d: 00111000011011001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d9) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor_db.w: 00111000011011010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70da) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor_db.d: 00111000011011011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70db) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.w: 00111000011011100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70dc) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.d: 00111000011011101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70dd) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.w: 00111000011011110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70de) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.d: 00111000011011111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70df) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.wu: 00111000011100000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e0) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.du: 00111000011100001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e1) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.wu: 00111000011100010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e2) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.du: 00111000011100011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e3) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    return false;
 }
 
 bool Difftest::do_check_instruction_skip(uint32_t inst, bool &is_copy) {
@@ -781,9 +555,12 @@ bool do_check_inst_rdtime(uint32_t inst) {
 
 Difftest::Difftest(int coreid): coreid(coreid) {
     proxy = new DIFF_PROXY(coreid);
+    state = new DiffState;
 }
 
 Difftest::~Difftest() {
     delete proxy;
     proxy = NULL;
+    delete state;
+    state = NULL;
 }

@@ -504,5 +504,7 @@ void RAM::ram_set_cpu_irq(qemu_irq_handler handler) {
 }
 
 void RAM::ram_update_io(void) {
-    serial_check_io(this->ss);
+    if (this->ss != NULL) {
+        serial_check_io(this->ss);
+    }
 }

@@ -1106,6 +1106,8 @@ wire         rtu_wb0_vld;
 wire [63 :0] rtu_wb1_data;
 wire [5  :0] rtu_wb1_reg;
 wire         rtu_wb1_vld;
+wire         diff_commit_valid;
+reg          diff_split_stall;
 
 assign rtu_wb0_data[63:0] = `RTU.rtu_idu_wb0_data[63:0];
 assign rtu_wb0_reg [5 :0] = `RTU.rtu_idu_wb0_reg[5 :0];
@@ -1122,12 +1124,24 @@ assign rtu_wb_vld         = rtu_wb0_vld || rtu_wb1_vld;
 
 assign timer_64_value[63: 0] = `CP0_TRAP_CSR.csrtimer_value[63:0];
 
+always @(posedge forever_cpuclk or negedge cpurst_b)begin
+    if(!cpurst_b)begin
+        diff_split_stall <= 1'b0;
+    end
+    else begin
+        if (retire_ex2_retire_vld)begin
+            diff_split_stall <= dp_retire_ex2_inst_split;
+        end
+    end
+end
+
+assign diff_commit_valid = retire_ex2_retire_vld && !diff_split_stall;
 
 DifftestInstrCommit DifftestInstrCommit(
     .clock              (forever_cpuclk             ),
     .coreid             ('0                         ),
     .index              ('0                         ),
-    .valid              (retire_ex2_retire_vld      ),
+    .valid              (diff_commit_valid          ),
     .pc                 (dp_retire_ex2_cur_pc[63:0] ),
     .instr              (32'b0                      ),
     .skip               ('0                         ),

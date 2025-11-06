@@ -140,6 +140,16 @@ public:
         retire_inst_pointer = (retire_inst_pointer + 1) % DEBUG_INST_TRACE_SIZE;
     }
 
+    void display() {
+        int i = DEBUG_INST_TRACE_SIZE;
+        while (i > 0) {
+            i--;
+            printf("pc: 0x%016lx, inst: 0x%08x, wen: %d, wdest: %d, wdata: 0x%016lx\n",
+                retire_inst_pc_queue[retire_inst_pointer], retire_inst_inst_queue[retire_inst_pointer], retire_inst_wen_queue[retire_inst_pointer], retire_inst_wdst_queue[retire_inst_pointer], retire_inst_wdata_queue[retire_inst_pointer]);
+            retire_inst_pointer = (retire_inst_pointer + 1) % DEBUG_INST_TRACE_SIZE;
+        }
+    }
+
 private:
     int retire_inst_pointer = 0;
     uint64_t retire_inst_pc_queue[DEBUG_INST_TRACE_SIZE] = {0};
@@ -181,8 +191,6 @@ private:
 
     /* copy dut initialized state to ref when instruction is the first instruction */
     void do_first_instr_commit();
-
-    bool do_check_instruction_split(uint32_t inst, uint32_t *split_num);
 
     bool do_check_instruction_skip(uint32_t inst, bool &is_copy);
 

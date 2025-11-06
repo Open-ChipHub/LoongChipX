@@ -172,7 +172,7 @@ void sim_initialize(Config& config, const SimConfig& sim_cfg, RAM& ram, rand64& 
     else if (sim_cfg.run_random) {
 #ifndef CONFIG_INSN_TRACE
         log_fatal("random test must define CONFIG_INSN_TRACE");
-        return 1;
+        return;
 #endif
         random_test.enable = true;
         random_test.fpr_bits =  config.has_key("fpr_bits") ? atoi(config.get_value("fpr_bits").c_str()) : 0;

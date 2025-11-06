@@ -60,6 +60,7 @@ double sc_time_stamp() { return 0; }
 
 #ifdef CONFIG_DIFFTEST
 Emulator *emulator;
+extern char* difftest_ref_so;
 #endif
 
 void cpu_irq_handler(void *opaque, int n, int level) {
@@ -358,6 +359,11 @@ int main(int argc, char** argv, char** env) {
     const char ram_file[] = "ram.dat";
     const char data_vlog_file[] = "data.vlog";
 
+    const char* diff_so = config.get_value_or_cstr("diff_so_path", NULL);
+    if (diff_so != NULL) {
+        difftest_ref_so = const_cast<char*>(diff_so);
+    }
+
     emulator = new Emulator(Top, "./", simu_trace_file, uart_output_file, ram_file, data_vlog_file);
     emulator->init_emu(&sim_cycles);
 
@@ -485,7 +491,10 @@ int main(int argc, char** argv, char** env) {
         }
 
 #ifdef CONFIG_DIFFTEST
-        emulator->process();
+        if(emulator->process()) {
+            sim_finish = true;
+            break;
+        }
 #endif
 
         if (sim_cycles/10 % 10000 == 1000) {

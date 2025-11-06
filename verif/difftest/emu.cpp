@@ -225,10 +225,10 @@ int Emulator::process() {
     }
 
     trapCode = dm->difftest_state();
-    if (trapCode != STATE_RUNNING) {
-        printf("trapeCode = %d\n", trapCode);
-        return 0;
-    }
+    // if (trapCode != STATE_RUNNING) {
+    //     printf("trapeCode = %d\n", trapCode);
+    //     return 0;
+    // }
     auto start = std::chrono::steady_clock::now();
     trapCode = dm->do_step(*main_time);
     auto end = std::chrono::steady_clock::now();
@@ -256,6 +256,7 @@ int Emulator::process() {
         case STATE_TIME_LIMIT:
             return status_time_limit;
         default:
+            dm->display();
             return status_trace_err;
     }
 }

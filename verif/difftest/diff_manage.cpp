@@ -51,6 +51,12 @@ int DiffManage::check_end() {
     return end;
 }
 
+void DiffManage::display() {
+    for (int i = 0; i < NUM_CORES; ++i) {
+        difftest[i]->display();
+    }
+}
+
 DiffManage::~DiffManage() {
     for(int i = 0; i < NUM_CORES; ++i) {
         delete difftest[i];
