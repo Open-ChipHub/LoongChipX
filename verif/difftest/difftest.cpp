@@ -529,6 +529,11 @@ bool Difftest::do_check_instruction_skip(uint32_t inst, bool &is_copy) {
     if (((inst >> 15) == 0x7068)) {
         return true;
     }
+
+    /// iocsr: 0000011001001000000
+    if ((inst >> 13) == 0x3240) {
+        return true;
+    }
 #endif
 
     return false;
