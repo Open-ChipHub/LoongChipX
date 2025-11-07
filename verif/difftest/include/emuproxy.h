@@ -26,6 +26,7 @@ public:
     void (*memcpy)(paddr_t emu_addr, void* dut_buf, size_t n, bool direction);
     void (*regcpy)(void* dut, bool direction, int reg_type);
     void (*csrcpy)(void* dut, bool direction);
+    void (*csrcpy_idx)(int csr_idx, uint64_t* dut_buf, uint64_t mask, bool direction);
     int  (*store_commit)(uint64_t saddr, uint64_t sdata);
     void (*exec)(uint64_t n);
     void (*raise_trap)(int is_interrupt, uint64_t is, uint64_t ecode);

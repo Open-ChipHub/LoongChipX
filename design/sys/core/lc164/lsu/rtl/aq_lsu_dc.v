@@ -78,6 +78,9 @@ module aq_lsu_dc (
   input    wire           lfb_dc_bus_err,
   input    wire  [7  :0]  lfb_dc_bytes_vld,
   input    wire  [63 :0]  lfb_dc_data,
+`ifdef CHECK_DIFFTEST
+  input    wire  [39 :0]  lfb_dc_paddr,
+`endif
   input    wire  [3  :0]  lfb_dc_data_shift,
   input    wire           lfb_dc_data_vld,
   input    wire  [5  :0]  lfb_dc_dest_reg,
@@ -1422,6 +1425,36 @@ begin
 // &CombEnd; @977
 end
     
+`ifdef CHECK_DIFFTEST
+    // only consider lfb(mmio load)
+    reg diff_load_wb;
+    reg [39:0] diff_load_addr;
+    reg diff_load_wb_n;
+    reg [39:0] diff_load_addr_n;
+
+    always @(posedge forever_cpuclk or negedge cpurst_b)begin
+        if(!cpurst_b)begin
+            diff_load_wb <= 1'b0;
+            diff_load_addr <= 40'b0;
+            diff_load_wb_n <= 1'b0;
+            diff_load_addr_n <= 40'b0;
+        end
+        else begin
+            diff_load_wb <= dc_data_sel[2];
+            diff_load_addr[39:0] <= lfb_dc_paddr[39:0];
+            diff_load_wb_n <= diff_load_wb;
+            diff_load_addr_n[39:0] <= diff_load_addr[39:0];
+        end
+    end
+    DifftestLoadEvent DifftestLoadEvent(
+        .clock(forever_cpuclk),
+        .coreid(8'b0),
+        .index(8'b0),
+        .valid({7'b0, diff_load_wb_n}),
+        .paddr({24'b0, diff_load_addr_n[39:0]}),
+        .vaddr(64'b0)
+    );
+`endif
 
 
 //================================================

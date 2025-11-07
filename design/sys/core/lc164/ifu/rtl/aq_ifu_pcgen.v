@@ -72,6 +72,7 @@ wire            pcgen_cpuclk;
 wire    [63:0]  pcgen_delay_chgflw_pc;      
 wire            pcgen_delay_chgflw_vld;     
 wire            pcgen_delay_chgflw_vld_gate; 
+
 wire    [63:0]  pcgen_fetch_pc;             
 wire            pcgen_icg_en;               
 wire    [63:0]  pcgen_ifpc_inc;             

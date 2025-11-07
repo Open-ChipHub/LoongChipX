@@ -73,6 +73,8 @@ EmuProxy::EmuProxy(int coreid) {
     get_prev_pc = (uint64_t (*)(void))dlsym(handle, "loong64_difftest_get_prev_pc");
     check_and_assert(get_prev_pc);
 
+    csrcpy_idx = (void (*)(int, uint64_t*, uint64_t, bool))dlsym(handle, "loong64_difftest_csrcpy_idx");
+    check_and_assert(csrcpy_idx);
 
 #else
     printf("The current platform is not supported.\n");

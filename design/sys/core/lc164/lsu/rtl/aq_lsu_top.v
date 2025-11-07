@@ -504,7 +504,8 @@ wire    [4  :0]  lfb_dc_amo_func;
 wire             lfb_dc_amo_inst;             
 wire             lfb_dc_bus_err;              
 wire    [7  :0]  lfb_dc_bytes_vld;            
-wire    [63 :0]  lfb_dc_data;                 
+wire    [63 :0]  lfb_dc_data;         
+wire    [63 :0]  lfb_dc_paddr;        
 wire    [3  :0]  lfb_dc_data_shift;           
 wire             lfb_dc_data_vld;             
 wire    [5  :0]  lfb_dc_dest_reg;             
@@ -992,6 +993,9 @@ aq_lsu_dc  x_aq_lsu_dc (
   .lfb_dc_bus_err              (lfb_dc_bus_err             ),
   .lfb_dc_bytes_vld            (lfb_dc_bytes_vld           ),
   .lfb_dc_data                 (lfb_dc_data                ),
+`ifdef CHECK_DIFFTEST
+  .lfb_dc_paddr                (lfb_dc_paddr               ),
+`endif
   .lfb_dc_data_shift           (lfb_dc_data_shift          ),
   .lfb_dc_data_vld             (lfb_dc_data_vld            ),
   .lfb_dc_dest_reg             (lfb_dc_dest_reg            ),
@@ -1181,6 +1185,9 @@ aq_lsu_lfb  x_aq_lsu_lfb (
   .lfb_dc_bus_err        (lfb_dc_bus_err       ),
   .lfb_dc_bytes_vld      (lfb_dc_bytes_vld     ),
   .lfb_dc_data           (lfb_dc_data          ),
+`ifdef CHECK_DIFFTEST
+  .lfb_dc_paddr          (lfb_dc_paddr         ),
+`endif
   .lfb_dc_data_shift     (lfb_dc_data_shift    ),
   .lfb_dc_data_vld       (lfb_dc_data_vld      ),
   .lfb_dc_dest_reg       (lfb_dc_dest_reg      ),

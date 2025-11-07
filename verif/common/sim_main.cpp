@@ -352,6 +352,7 @@ int main(int argc, char** argv, char** env) {
         ram.ram_load_serial(irq, (image_dir + "/checkpoint_serial.bin").c_str());
     }
 
+    auto now = std::chrono::system_clock::now();
 
 #ifdef CONFIG_DIFFTEST
     const char simu_trace_file[] = "./simu_trace.txt";
@@ -418,7 +419,7 @@ int main(int argc, char** argv, char** env) {
     dbg_sim_cycles = 0;
 
     sim_wave_on = false;
-    sim_wave_on = true;
+    // sim_wave_on = true;
 
     // Simulate until $finish
     while (!contextp->gotFinish() && !sim_finish && sim_cycles < sim_cycles_limit) {
@@ -604,6 +605,10 @@ int main(int argc, char** argv, char** env) {
             contextp->coveragep()->write("logs/coverage.dat");
         #endif
         delete contextp;
+        auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-now);
+        printf("Guest cycle spent: %ld (this will be different from cycleCnt if emu loads a snapshot)\n",
+            sim_cycles);
+        printf("Host time spent: %'ldms\n" , elapsed_time.count());
     }
     return ret;
 }

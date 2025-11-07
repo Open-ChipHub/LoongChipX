@@ -1135,7 +1135,7 @@ always @(posedge forever_cpuclk or negedge cpurst_b)begin
     end
 end
 
-assign diff_commit_valid = retire_ex2_retire_vld && !diff_split_stall;
+assign diff_commit_valid = retire_ex2_retire_vld && !dp_retire_ex2_inst_split;
 
 DifftestInstrCommit DifftestInstrCommit(
     .clock              (forever_cpuclk             ),
@@ -1170,7 +1170,7 @@ DifftestExcpEvent DifftestExcpEvent(
     .excp_valid         (rtu_yy_xx_expt_vld              ),
     .eret               (dp_retire_ex2_inst_ertn         ),
     .intrNo             ({19'b0, csr_cause[12:0]}        ),
-    .cause              ({26'b0, rtu_yy_xx_expt_vec[5:0]}),
+    .cause              ({17'b0,rtu_yy_xx_expt_vec[14:0]}),
     .exceptionPC        (rtu_cp0_epc[63:0]               ),
     .exceptionInst      (32'b0                           )
 );

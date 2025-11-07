@@ -26,7 +26,7 @@ COMPILE.cc = $(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 CPPFLAGS += -MMD -MP
 
 # Compile in Verilator runtime debugging, so +verilator+debug works
-CPPFLAGS += -DVL_DEBUG=1
+# CPPFLAGS += -DVL_DEBUG=1
 
 # Turn on some more compiler lint flags (when configured appropriately)
 # For testing inside Verilator, "configure --enable-ccwarn" will do this

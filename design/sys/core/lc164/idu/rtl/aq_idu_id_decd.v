@@ -1064,10 +1064,7 @@ assign decd_fp_sel  = (x_inst[31:22] == 10'b0000000100) || // fp other
 
 //32 bits
 assign decd_sel[0] = decd_length
-                     && !decd_fp_sel
-                     && !decd_sel[3]
-                     && !decd_sel[4]
-                     && !decd_sel[5];
+                     && !decd_fp_sel;
 //16 bits
 assign decd_sel[1] = !decd_length;
 //fp

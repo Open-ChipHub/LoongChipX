@@ -243,6 +243,7 @@ int Difftest::step(vluint64_t &main_time) {
     proxy->regcpy(ref_regs_ptr, REF_TO_DUT, DIFF_TO_REF_ALL);
 
     proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
+    proxy->csrcpy_idx(0x41, &dut.csr.tcfg, 0xffffffffffffffff,  DUT_TO_REF);
 
     ref.csr.tval = dut.csr.tval;
     if(dut.excp.excp_valid){
@@ -279,7 +280,7 @@ int Difftest::step(vluint64_t &main_time) {
             pc_unmatch = true;
         }
 
-    if (memcmp(dut_regs_ptr, ref_regs_ptr, DIFFTEST_NR_GREG * sizeof(uint64_t)) && 0){
+    if (memcmp(dut_regs_ptr, ref_regs_ptr, DIFFTEST_NR_GREG * sizeof(uint64_t))){
         for (int i = 0; i < DIFFTEST_NR_GREG; i ++) {
             if (dut_regs_ptr[i] != ref_regs_ptr[i]) {
                 printf("%2s(r%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n", reg_name[i], i,
@@ -336,7 +337,7 @@ void Difftest::do_instr_commit(int i) {
     if (do_check_inst_rdtime(dut.commit[i].inst)) {
         struct la64_timer timer;
         timer.counter_id = dut.csr.tid;
-        timer.stable_timer = dut.commit[i].timer_64_value;
+        timer.stable_timer = dut.commit[i].timer_64_value - 1;
         timer.time_val = dut.csr.tval;
         // printf("timer64: 0x%lx, low: 0x%x, high: 0x%x\n",dut.commit[i].timer_64_value,timer_low,timer_high);
         proxy->timercpy(&timer);
