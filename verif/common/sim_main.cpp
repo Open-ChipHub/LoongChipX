@@ -263,10 +263,10 @@ int main(int argc, char** argv, char** env) {
     uint64_t random_test_mat  = config.get_value_or_else("random_test_mat", 0x1);
     uint64_t random_fill_type = config.get_value_or_else("random_fill_type", 1);
 
-    if (sim_cfg.wave_begin_cycles >= sim_cfg.wave_end_cycles) {
-        fprintf(stderr, "error, wave_begin:%ld, wave_end:%ld\n", sim_cfg.wave_begin_cycles, sim_cfg.wave_end_cycles);
-        return 0;
-    }
+    // if (sim_cfg.wave_begin_cycles >= sim_cfg.wave_end_cycles) {
+    //     fprintf(stderr, "error, wave_begin:%ld, wave_end:%ld\n", sim_cfg.wave_begin_cycles, sim_cfg.wave_end_cycles);
+    //     return 0;
+    // }
 
 
 #ifdef WITH_PMSLICE
@@ -423,12 +423,16 @@ int main(int argc, char** argv, char** env) {
 
     // Simulate until $finish
     while (!contextp->gotFinish() && !sim_finish && sim_cycles < sim_cycles_limit) {
-        if (sim_cycles / 2 == sim_cfg.wave_begin_cycles) {
-            //snapshot->wave = sim_cfg.runtime_wave;
-        }
-        if (sim_cycles / 2 == sim_cfg.wave_end_cycles) {
-            //snapshot->wave = 0;
-            sim_finish = true;
+        if (!sim_cfg.snapshot_on_failure) {
+            if (sim_cycles / 2 == sim_cfg.wave_begin_cycles && sim_cfg.wave_end_cycles != 0) {
+                //snapshot->wave = sim_cfg.runtime_wave;
+                sim_wave_on = true;
+            }
+            if (sim_cycles / 2 == sim_cfg.wave_end_cycles) {
+                //snapshot->wave = 0;
+                // sim_finish = true;
+                sim_wave_on = false;
+            }
         }
 
         ++ sim_cycles;
@@ -523,24 +527,22 @@ int main(int argc, char** argv, char** env) {
         }
 #endif
 
-#ifdef GEN_SNAPSHOT
-        if(snapshot->snapshot_isparent()){
+        if(sim_cfg.snapshot_on_failure && snapshot->snapshot_isparent()){
             int cycle = sim_cycles/2;
             if(cycle % snapshot_dist == 11){
                 // snapshot->snapshot_stats();
-                log_info("snapshot gen at cycle %d",cycle);
                 snapshot->snapshot_gen();
             }
         }
-#endif
 
         if(snapshot->trace_reopen){
             if(!snapshot->trace_opened){
-                if (sim_wave_on) {
+                if (sim_wave_on || !snapshot->snapshot_isparent()) {
 #ifndef WAVE_NONE
                     Top->trace(trace, 99, 0);
                     trace->open(trace_name.c_str());
 #endif
+                    sim_wave_on = !snapshot->snapshot_isparent();
                     snapshot->trace_reopen = false;
                     snapshot->trace_opened = true;
 #if VERILATOR_THREAD_NUM > 1
@@ -555,7 +557,7 @@ int main(int argc, char** argv, char** env) {
         }
     }
 
-    if(snapshot->snapshot_isparent()){
+    if(sim_cfg.snapshot_on_failure && snapshot->snapshot_isparent()){
         if(snapshot->error) {
             if(snapshot->trace_opened){
                 log_info("Find error, and waveform is already opened. (Do not wake up snapshot)");
@@ -566,7 +568,7 @@ int main(int argc, char** argv, char** env) {
                 snapshot->snapshot_wakeup();
             }
         }
-        else if(sim_cfg.snapshot_on_failure && contextp->gotFinish() && !snapshot->trace_opened){
+        else if((contextp->gotFinish() || sim_finish) && !snapshot->trace_opened){
             log_info("Find error, try to wake up snapshot");
             snapshot->snapshot_wakeup();
         }

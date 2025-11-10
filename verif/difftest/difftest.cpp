@@ -245,6 +245,12 @@ int Difftest::step(vluint64_t &main_time) {
     proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
     proxy->csrcpy_idx(0x41, &dut.csr.tcfg, 0xffffffffffffffff,  DUT_TO_REF);
 
+    proxy->csrcpy_idx(0x19, &ref.csr.pgdl, 0xffffffffffffffff,  REF_TO_DUT);
+    if (ref.csr.pgdl != dut.csr.pgdl) {
+        printf("warning: pgdl error, dut = %x, ref = %x\n", dut.csr.pgdl, ref.csr.pgdl);
+        return STATE_ABORT;
+    }   
+
     ref.csr.tval = dut.csr.tval;
     if(dut.excp.excp_valid){
         dut.csr.cur_pc = ref.csr.cur_pc;

@@ -28,7 +28,7 @@ void SimConfig::setup(Config& config){
     action_on_sigint = config.get_value_or_cstr("action_on_sigint", "quit");
 
     wave_begin_cycles = config.get_value_or_else("wave_begin" , 0         );
-    wave_end_cycles   = config.get_value_or_else("wave_end"   , UINT64_MAX);
+    wave_end_cycles   = config.get_value_or_else("wave_end"   , 0);
     sim_cycles_limit  = config.get_value_or_else("sim_cycles" , UINT64_MAX / 2) * 2;
     ins_cnt_end       = config.get_value_or_else("ins_cnt_end", UINT64_MAX);
     // by default, when run kernel, only record user performance counters

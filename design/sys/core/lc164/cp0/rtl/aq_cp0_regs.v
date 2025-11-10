@@ -1344,6 +1344,8 @@ always @( scer2_value[63:0]
        or csrtlbrentry_value[63:0]
        or csrmerrentry_value[63:0]
        or csrtlbidx_value[63:0]
+       or csrpgdl_value[63:0]
+       or csrpgdh_value[63:0]
        or csrpwcl_value[63:0]
        or csrpwch_value[63:0]
        or csrstlbps_value[63:0]
@@ -1399,6 +1401,8 @@ begin
     TLBRENTRY : regs_csr_rdata[63:0] = csrtlbrentry_value[63:0];
     MERRENTRY : regs_csr_rdata[63:0] = csrmerrentry_value[63:0];
     TLBIDX    : regs_csr_rdata[63:0] = csrtlbidx_value[63:0];
+    PGDL      : regs_csr_rdata[63:0] = csrpgdl_value[63:0];
+    PGDH      : regs_csr_rdata[63:0] = csrpgdh_value[63:0];
     PWCL      : regs_csr_rdata[63:0] = csrpwcl_value[63:0];
     PWCH      : regs_csr_rdata[63:0] = csrpwch_value[63:0];
     STLBPS    : regs_csr_rdata[63:0] = csrstlbps_value[63:0];
