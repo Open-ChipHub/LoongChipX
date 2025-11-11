@@ -125,7 +125,9 @@ module aq_ifu_top (
   output   wire           ifu_rtu_warm_up,
   output   wire           ifu_vidu_warm_up,
   output   wire           ifu_vpu_warm_up,
-  output   wire           ifu_yy_xx_no_op
+  output   wire           ifu_yy_xx_no_op,
+  output   wire           diff_pc_valid,
+  output   wire  [63 :0]  diff_pc
 ); 
 
 
@@ -276,7 +278,9 @@ aq_ifu_pcgen  x_aq_ifu_pcgen (
   .rtu_ifu_chgflw_pc          (rtu_ifu_chgflw_pc         ),
   .rtu_ifu_chgflw_vld         (rtu_ifu_chgflw_vld        ),
   .vec_pcgen_idle             (vec_pcgen_idle            ),
-  .vec_pcgen_rst_vld          (vec_pcgen_rst_vld         )
+  .vec_pcgen_rst_vld          (vec_pcgen_rst_vld         ),
+  .diff_pc_valid              (diff_pc_valid             ),
+  .diff_pc                    (diff_pc                   )
 );
 
 

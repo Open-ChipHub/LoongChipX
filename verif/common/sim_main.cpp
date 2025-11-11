@@ -342,6 +342,11 @@ int main(int argc, char** argv, char** env) {
     auto ram = RAM(0, sim_cfg.real_log_dir);
     auto random_test = rand64(&ram);
 
+    if (sim_cfg.fastforward_cycles) {
+        contextp->time(sim_cfg.fastforward_cycles);
+        sim_cycles = sim_cfg.fastforward_cycles * 2;
+    }
+
     extern std::string image_dir;
     sim_initialize(config, sim_cfg, ram, random_test);
     if (sim_cfg.with_serial && !checkpoint) {
@@ -376,8 +381,9 @@ int main(int argc, char** argv, char** env) {
     
     /// emulator->init_ram(ram.get_ram_base());
     /// copy memory to emulator ram by 4GB.
-    /// FIXME: size is 4GB
-    memcpy(emulator_ram, ram.base, (1ull << 32));
+    for (auto& map : ram.addr_maps) {
+        memcpy(emulator_ram + map.start, ram.base + map.start, map.size);
+    }
     emulator->init_ram(emulator_ram);
 #endif
 
@@ -413,6 +419,11 @@ int main(int argc, char** argv, char** env) {
 #else
     AXISim::AXI_wrapper axi_wrapper(Top,&ram);
 #endif
+
+    if (sim_cfg.fastforward_cycles != 0) {
+        emulator->fastforward(sim_cfg.fastforward_cycles);
+        ram.memcpy_ram(emulator_ram, 1ull << 32);
+    }
 
     uint64_t dram_cnt = 0;//Dram用的计数器，用来分半频
 
@@ -513,10 +524,12 @@ int main(int argc, char** argv, char** env) {
         ++ sim_cycles;
         contextp->timeInc(1);
         Top->clk = !Top->clk;
-        if (contextp->time() > 1 && contextp->time() < 10) {
-            Top->reset = !0;  // Assert reset
-        } else {
-            Top->reset = !1;  // Deassert reset
+        if (sim_cfg.fastforward_cycles == 0) {
+            if (contextp->time() > 1 && contextp->time() < 10) {
+                Top->reset = !0;  // Assert reset
+            } else {
+                Top->reset = !1;  // Deassert reset
+            }
         }
         Top->eval();
         
@@ -542,7 +555,7 @@ int main(int argc, char** argv, char** env) {
                     Top->trace(trace, 99, 0);
                     trace->open(trace_name.c_str());
 #endif
-                    sim_wave_on = !snapshot->snapshot_isparent();
+                    sim_wave_on = !sim_cfg.snapshot_on_failure || !snapshot->snapshot_isparent();
                     snapshot->trace_reopen = false;
                     snapshot->trace_opened = true;
 #if VERILATOR_THREAD_NUM > 1

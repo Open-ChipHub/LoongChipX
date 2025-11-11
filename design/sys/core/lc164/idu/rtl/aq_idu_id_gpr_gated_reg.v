@@ -24,6 +24,8 @@ module aq_idu_id_gpr_gated_reg (
   input    wire  [63:0]  rtu_idu_wb1_data,
   input    wire          wb0_vld_x,
   input    wire          wb1_vld_x,
+  input    wire          dbg_wvld,
+  input    wire  [63:0]  dbg_wdata,
   output   wire  [63:0]  read_data_y
 ); 
 
@@ -65,17 +67,20 @@ gated_clk_cell  x_reg_gated_clk (
 //==========================================================
 //                     Write Port
 //==========================================================
-assign write_en = wb0_vld_x || wb1_vld_x;
+assign write_en = wb0_vld_x || wb1_vld_x || dbg_wvld;
 // &CombBeg; @45
 always @( rtu_idu_wb1_data[63:0]
        or rtu_idu_wb0_data[63:0]
+       or dbg_wdata
        or wb1_vld_x
        or wb0_vld_x
+       or dbg_wvld
        or reg_dout[63:0])
 begin
-  case ({wb1_vld_x,wb0_vld_x})
-    2'b01  : write_data[63:0] = rtu_idu_wb0_data[63:0];
-    2'b10  : write_data[63:0] = rtu_idu_wb1_data[63:0];
+  case ({dbg_wvld, wb1_vld_x,wb0_vld_x})
+    3'b001 : write_data[63:0] = rtu_idu_wb0_data[63:0];
+    3'b010 : write_data[63:0] = rtu_idu_wb1_data[63:0];
+    3'b100 : write_data[63:0] = dbg_wdata[63:0];
     default: write_data[63:0] = reg_dout[63:0];
   endcase
 // &CombEnd; @51

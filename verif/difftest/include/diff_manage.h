@@ -15,7 +15,8 @@ public:
     int do_step(vluint64_t& main_time);
     int check_end();
     void display();
-
+    void fastforward(uint64_t cycles);
+    void fastforward_end();
     ~DiffManage();
 };
 

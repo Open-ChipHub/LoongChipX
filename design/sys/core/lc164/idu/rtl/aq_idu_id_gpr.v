@@ -80,6 +80,39 @@ wire    [7 :0]  read_data_fcc;
 wire    [31:0]  wb0_vld;           
 wire    [31:0]  wb1_vld;      
 
+wire            diff_data_vld;
+wire    [63:0]  diff_data_1;       
+wire    [63:0]  diff_data_10;      
+wire    [63:0]  diff_data_11;      
+wire    [63:0]  diff_data_12;      
+wire    [63:0]  diff_data_13;      
+wire    [63:0]  diff_data_14;      
+wire    [63:0]  diff_data_15;      
+wire    [63:0]  diff_data_16;      
+wire    [63:0]  diff_data_17;      
+wire    [63:0]  diff_data_18;      
+wire    [63:0]  diff_data_19;      
+wire    [63:0]  diff_data_2;       
+wire    [63:0]  diff_data_20;      
+wire    [63:0]  diff_data_21;      
+wire    [63:0]  diff_data_22;      
+wire    [63:0]  diff_data_23;      
+wire    [63:0]  diff_data_24;      
+wire    [63:0]  diff_data_25;      
+wire    [63:0]  diff_data_26;      
+wire    [63:0]  diff_data_27;      
+wire    [63:0]  diff_data_28;      
+wire    [63:0]  diff_data_29;      
+wire    [63:0]  diff_data_3;       
+wire    [63:0]  diff_data_30;      
+wire    [63:0]  diff_data_31;      
+wire    [63:0]  diff_data_4;       
+wire    [63:0]  diff_data_5;       
+wire    [63:0]  diff_data_6;       
+wire    [63:0]  diff_data_7;       
+wire    [63:0]  diff_data_8;       
+wire    [63:0]  diff_data_9;  
+wire    [7 :0]  diff_fcc_data;
 
 
 //==========================================================
@@ -105,7 +138,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_1 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[1]        ),
-  .wb1_vld_x          (wb1_vld[1]        )
+  .wb1_vld_x          (wb1_vld[1]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_1       )
 );
 
 // &ConnRule(s/_x$/[2]/); @43
@@ -120,7 +155,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_2 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[2]        ),
-  .wb1_vld_x          (wb1_vld[2]        )
+  .wb1_vld_x          (wb1_vld[2]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_2       )
 );
 
 // &ConnRule(s/_x$/[3]/); @46
@@ -135,7 +172,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_3 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[3]        ),
-  .wb1_vld_x          (wb1_vld[3]        )
+  .wb1_vld_x          (wb1_vld[3]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_3       )
 );
 
 // &ConnRule(s/_x$/[4]/); @49
@@ -150,7 +189,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_4 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[4]        ),
-  .wb1_vld_x          (wb1_vld[4]        )
+  .wb1_vld_x          (wb1_vld[4]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_4       )
 );
 
 // &ConnRule(s/_x$/[5]/); @52
@@ -165,7 +206,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_5 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[5]        ),
-  .wb1_vld_x          (wb1_vld[5]        )
+  .wb1_vld_x          (wb1_vld[5]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_5       )
 );
 
 // &ConnRule(s/_x$/[6]/); @55
@@ -180,7 +223,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_6 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[6]        ),
-  .wb1_vld_x          (wb1_vld[6]        )
+  .wb1_vld_x          (wb1_vld[6]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_6       )
 );
 
 // &ConnRule(s/_x$/[7]/); @58
@@ -195,7 +240,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_7 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[7]        ),
-  .wb1_vld_x          (wb1_vld[7]        )
+  .wb1_vld_x          (wb1_vld[7]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_7       )
 );
 
 // &ConnRule(s/_x$/[8]/); @61
@@ -210,7 +257,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_8 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[8]        ),
-  .wb1_vld_x          (wb1_vld[8]        )
+  .wb1_vld_x          (wb1_vld[8]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_8       )
 );
 
 // &ConnRule(s/_x$/[9]/); @64
@@ -225,7 +274,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_9 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[9]        ),
-  .wb1_vld_x          (wb1_vld[9]        )
+  .wb1_vld_x          (wb1_vld[9]        ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_9       )
 );
 
 // &ConnRule(s/_x$/[10]/); @67
@@ -240,7 +291,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_10 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[10]       ),
-  .wb1_vld_x          (wb1_vld[10]       )
+  .wb1_vld_x          (wb1_vld[10]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_10      )
 );
 
 // &ConnRule(s/_x$/[11]/); @70
@@ -255,7 +308,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_11 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[11]       ),
-  .wb1_vld_x          (wb1_vld[11]       )
+  .wb1_vld_x          (wb1_vld[11]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_11      )
 );
 
 // &ConnRule(s/_x$/[12]/); @73
@@ -270,7 +325,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_12 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[12]       ),
-  .wb1_vld_x          (wb1_vld[12]       )
+  .wb1_vld_x          (wb1_vld[12]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_12      )
 );
 
 // &ConnRule(s/_x$/[13]/); @76
@@ -285,7 +342,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_13 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[13]       ),
-  .wb1_vld_x          (wb1_vld[13]       )
+  .wb1_vld_x          (wb1_vld[13]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_13      )
 );
 
 // &ConnRule(s/_x$/[14]/); @79
@@ -300,7 +359,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_14 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[14]       ),
-  .wb1_vld_x          (wb1_vld[14]       )
+  .wb1_vld_x          (wb1_vld[14]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_14      )
 );
 
 // &ConnRule(s/_x$/[15]/); @82
@@ -315,7 +376,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_15 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[15]       ),
-  .wb1_vld_x          (wb1_vld[15]       )
+  .wb1_vld_x          (wb1_vld[15]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_15      )
 );
 
 // &ConnRule(s/_x$/[16]/); @85
@@ -330,7 +393,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_16 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[16]       ),
-  .wb1_vld_x          (wb1_vld[16]       )
+  .wb1_vld_x          (wb1_vld[16]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_16      )
 );
 
 // &ConnRule(s/_x$/[17]/); @88
@@ -345,7 +410,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_17 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[17]       ),
-  .wb1_vld_x          (wb1_vld[17]       )
+  .wb1_vld_x          (wb1_vld[17]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_17      )
 );
 
 // &ConnRule(s/_x$/[18]/); @91
@@ -360,7 +427,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_18 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[18]       ),
-  .wb1_vld_x          (wb1_vld[18]       )
+  .wb1_vld_x          (wb1_vld[18]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_18      )
 );
 
 // &ConnRule(s/_x$/[19]/); @94
@@ -375,7 +444,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_19 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[19]       ),
-  .wb1_vld_x          (wb1_vld[19]       )
+  .wb1_vld_x          (wb1_vld[19]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_19      )
 );
 
 // &ConnRule(s/_x$/[20]/); @97
@@ -390,7 +461,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_20 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[20]       ),
-  .wb1_vld_x          (wb1_vld[20]       )
+  .wb1_vld_x          (wb1_vld[20]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_20      )
 );
 
 // &ConnRule(s/_x$/[21]/); @100
@@ -405,7 +478,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_21 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[21]       ),
-  .wb1_vld_x          (wb1_vld[21]       )
+  .wb1_vld_x          (wb1_vld[21]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_21      )
 );
 
 // &ConnRule(s/_x$/[22]/); @103
@@ -420,7 +495,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_22 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[22]       ),
-  .wb1_vld_x          (wb1_vld[22]       )
+  .wb1_vld_x          (wb1_vld[22]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_22      )
 );
 
 // &ConnRule(s/_x$/[23]/); @106
@@ -435,7 +512,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_23 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[23]       ),
-  .wb1_vld_x          (wb1_vld[23]       )
+  .wb1_vld_x          (wb1_vld[23]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_23      )
 );
 
 // &ConnRule(s/_x$/[24]/); @109
@@ -450,7 +529,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_24 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[24]       ),
-  .wb1_vld_x          (wb1_vld[24]       )
+  .wb1_vld_x          (wb1_vld[24]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_24      )
 );
 
 // &ConnRule(s/_x$/[25]/); @112
@@ -465,7 +546,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_25 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[25]       ),
-  .wb1_vld_x          (wb1_vld[25]       )
+  .wb1_vld_x          (wb1_vld[25]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_25      )
 );
 
 // &ConnRule(s/_x$/[26]/); @115
@@ -480,7 +563,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_26 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[26]       ),
-  .wb1_vld_x          (wb1_vld[26]       )
+  .wb1_vld_x          (wb1_vld[26]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_26      )
 );
 
 // &ConnRule(s/_x$/[27]/); @118
@@ -495,7 +580,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_27 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[27]       ),
-  .wb1_vld_x          (wb1_vld[27]       )
+  .wb1_vld_x          (wb1_vld[27]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_27      )
 );
 
 // &ConnRule(s/_x$/[28]/); @121
@@ -510,7 +597,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_28 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[28]       ),
-  .wb1_vld_x          (wb1_vld[28]       )
+  .wb1_vld_x          (wb1_vld[28]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_28      )
 );
 
 // &ConnRule(s/_x$/[29]/); @124
@@ -525,7 +614,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_29 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[29]       ),
-  .wb1_vld_x          (wb1_vld[29]       )
+  .wb1_vld_x          (wb1_vld[29]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_29      )
 );
 
 // &ConnRule(s/_x$/[30]/); @127
@@ -540,7 +631,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_30 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[30]       ),
-  .wb1_vld_x          (wb1_vld[30]       )
+  .wb1_vld_x          (wb1_vld[30]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_30      )
 );
 
 // &ConnRule(s/_x$/[31]/); @130
@@ -555,7 +648,9 @@ aq_idu_id_gpr_gated_reg  x_aq_idu_id_gpr_gated_reg_31 (
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
   .wb0_vld_x          (wb0_vld[31]       ),
-  .wb1_vld_x          (wb1_vld[31]       )
+  .wb1_vld_x          (wb1_vld[31]       ),
+  .dbg_wvld           (diff_data_vld     ),
+  .dbg_wdata          (diff_data_31      )
 );
 
 
@@ -804,7 +899,7 @@ end
 //                      Entry 0~7
 //----------------------------------------------------------
 
-assign write_data = dp_gpr_wbc_vld[7:0] & {8{rtu_idu_wbc_data}} | ~dp_gpr_wbc_vld[7:0] & fcc_data;
+assign write_data = dp_gpr_wbc_vld[7:0] & {8{rtu_idu_wbc_data}} | ~dp_gpr_wbc_vld[7:0] & fcc_data | {8{diff_data_vld}} & diff_fcc_data;
 assign read_data_fcc = write_data;
 
 always @(posedge fcc_clk)begin
@@ -884,6 +979,49 @@ DifftestGRegState DifftestGRegState(
     .gpr_30             (read_data_30[63:0] ),
     .gpr_31             (read_data_31[63:0] )
 );
+`endif
+
+`ifdef DIFF_FASTFORWARD
+     
+DifftestGRegRestore DifftestGRegRestore(
+    .valid              (diff_data_vld      ),
+    .clock              (forever_cpuclk     ),
+    .coreid             (8'd0               ),
+    .gpr_1              (diff_data_1[63:0]  ),
+    .gpr_2              (diff_data_2[63:0]  ),
+    .gpr_3              (diff_data_3[63:0]  ),
+    .gpr_4              (diff_data_4[63:0]  ),
+    .gpr_5              (diff_data_5[63:0]  ),
+    .gpr_6              (diff_data_6[63:0]  ),
+    .gpr_7              (diff_data_7[63:0]  ),
+    .gpr_8              (diff_data_8[63:0]  ),
+    .gpr_9              (diff_data_9[63:0]  ),
+    .gpr_10             (diff_data_10[63:0] ),
+    .gpr_11             (diff_data_11[63:0] ),
+    .gpr_12             (diff_data_12[63:0] ),
+    .gpr_13             (diff_data_13[63:0] ),
+    .gpr_14             (diff_data_14[63:0] ),
+    .gpr_15             (diff_data_15[63:0] ),
+    .gpr_16             (diff_data_16[63:0] ),
+    .gpr_17             (diff_data_17[63:0] ),
+    .gpr_18             (diff_data_18[63:0] ),
+    .gpr_19             (diff_data_19[63:0] ),
+    .gpr_20             (diff_data_20[63:0] ),
+    .gpr_21             (diff_data_21[63:0] ),
+    .gpr_22             (diff_data_22[63:0] ),
+    .gpr_23             (diff_data_23[63:0] ),
+    .gpr_24             (diff_data_24[63:0] ),
+    .gpr_25             (diff_data_25[63:0] ),
+    .gpr_26             (diff_data_26[63:0] ),
+    .gpr_27             (diff_data_27[63:0] ),
+    .gpr_28             (diff_data_28[63:0] ),
+    .gpr_29             (diff_data_29[63:0] ),
+    .gpr_30             (diff_data_30[63:0] ),
+    .gpr_31             (diff_data_31[63:0] ),
+    .fcc                (diff_fcc_data[7:0] )
+);
+`else
+    assign diff_data_vld = 1'b0;
 `endif
 
 

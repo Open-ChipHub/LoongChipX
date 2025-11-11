@@ -718,6 +718,8 @@ wire    [4  :0]  vpu_vidu_wbt_fp_wb0_reg;
 wire             vpu_vidu_wbt_fp_wb0_vld;         
 wire    [4  :0]  vpu_vidu_wbt_fp_wb1_reg;         
 wire             vpu_vidu_wbt_fp_wb1_vld;         
+wire             diff_pc_valid;
+wire    [63 :0]  diff_pc;
 
 
 // &Force("input", "pad_yy_scan_mode"); @30
@@ -842,7 +844,9 @@ aq_ifu_top  x_aq_ifu_top (
   .rtu_ifu_chgflw_vld           (rtu_ifu_chgflw_vld          ),
   .rtu_ifu_dbg_mask             (rtu_ifu_dbg_mask            ),
   .rtu_ifu_flush_fe             (rtu_ifu_flush_fe            ),
-  .rtu_yy_xx_dbgon              (rtu_yy_xx_dbgon             )
+  .rtu_yy_xx_dbgon              (rtu_yy_xx_dbgon             ),
+  .diff_pc_valid                (diff_pc_valid               ),
+  .diff_pc                      (diff_pc                     )
 );
 
 
@@ -1108,6 +1112,8 @@ aq_iu_top  x_aq_iu_top (
   .ifu_iu_ex1_pc_pred           (ifu_iu_ex1_pc_pred          ),
   .ifu_iu_reset_vld             (ifu_iu_reset_vld            ),
   .ifu_iu_warm_up               (ifu_iu_warm_up              ),
+  .diff_pc_valid                (diff_pc_valid               ),
+  .diff_pc                      (diff_pc                     ),
   .iu_cp0_ex1_cur_pc            (iu_cp0_ex1_cur_pc           ),
   .iu_dtu_debug_info            (iu_dtu_debug_info           ),
   .iu_hpcp_inst_bht_mispred     (iu_hpcp_inst_bht_mispred    ),

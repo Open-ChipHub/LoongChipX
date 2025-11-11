@@ -261,6 +261,22 @@ int Emulator::process() {
     }
 }
 
+void Emulator::fastforward(uint64_t cycles) {
+    for (int i = 0; i < 10; i++) {
+        top->clk = !top->clk;
+        top->eval();
+        top->clk = !top->clk;
+        top->eval();
+    }
+    dm->fastforward(cycles);
+    top->reset = !1;
+    top->clk = !top->clk;
+    top->eval();
+    top->clk = !top->clk;
+    top->eval();
+    dm->fastforward_end();
+}
+
 void Emulator::fork_child_init() {
 #ifdef VERILATOR_VERSION_INTEGER // >= v4.220
     #if VERILATOR_VERSION_INTEGER >= 5016000

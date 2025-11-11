@@ -396,6 +396,7 @@ int RAM::ram_load_elf(const char *filename, uint64_t& entry_addr) {
                     goto fail;
                 }
                 this->writen(ph->p_paddr & 0xffffffff, data, file_size);
+                addr_maps.push_back({ph->p_paddr & 0xffffffff, file_size});
                 DEBUG(DEBUG_RAM,PRINT_DEBUG, "%lx, %lx, \n", ph->p_paddr, file_size);
             }
         }
@@ -507,4 +508,8 @@ void RAM::ram_update_io(void) {
     if (this->ss != NULL) {
         serial_check_io(this->ss);
     }
+}
+
+void RAM::memcpy_ram(void* src, uint64_t size) {
+    memcpy(base, src, size);
 }

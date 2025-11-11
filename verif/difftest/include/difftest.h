@@ -98,6 +98,18 @@ typedef struct __attribute__((packed)) {
     uint64_t cur_pc;
 } arch_csr_state_t;
 
+typedef struct __attribute__((packed)) {
+    uint64_t cntc;
+    uint64_t ticlr;
+    uint64_t misc;
+    uint64_t badi;
+    uint64_t pwcl;
+    uint64_t pwch;
+    uint64_t stlbps;
+    uint64_t rvacfg;
+    uint64_t tlbrehi;
+} arch_csr_state_t_ext;
+
 typedef struct {
     uint8_t  valid = 0;
     uint64_t paddr;
@@ -173,6 +185,7 @@ private:
     /* dut/ref core info */
     difftest_core_state_t dut;
     difftest_core_state_t ref;
+    arch_csr_state_t_ext ref_ext;
     uint64_t *dut_regs_ptr = (uint64_t *)&dut.regs;
     uint64_t *ref_regs_ptr = (uint64_t *)&ref.regs;
 
@@ -198,7 +211,9 @@ private:
     void do_instr_commit(int index);
 
 public:
-
+    bool _fastforward = false;
+    uint64_t _fastforward_cycles = 0;
+    uint64_t _fastforward_pc = 0;
     /* Trigger a difftest checking produre */
     int step(vluint64_t& main_time);
 
@@ -229,6 +244,15 @@ public:
     inline load_event_t *get_load_event(uint8_t index) {
         return &(dut.load[index]);
     }
+    inline arch_greg_state_t* get_ref_greg_state() {
+        return &(ref.regs);
+    }
+    inline arch_csr_state_t* get_ref_csr_state() {
+        return &(ref.csr);
+    }
+    inline arch_csr_state_t_ext* get_ref_csr_state_ext() {
+        return &(ref_ext);
+    }
 
     inline bool get_trap_valid() const {
         return dut.trap.valid;
@@ -238,6 +262,15 @@ public:
     }
     inline int get_proxy_check_end() const {
         return proxy->check_end();
+    }
+    void fastforward(uint64_t cycles);
+    inline DIFF_PROXY* get_proxy() {
+        return proxy;
+    }
+    uint64_t get_ref_csr(int csr_idx) {
+        uint64_t data;
+        proxy->csrcpy_idx(csr_idx, &data, 0xffffffffffffffffULL, REF_TO_DUT);
+        return data;
     }
     void init_ram(uint8_t* ram) {
         proxy->init(ram);

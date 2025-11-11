@@ -45,7 +45,10 @@
 `define DPIC_ARG_BYTE input byte
 `define DPIC_ARG_INT  input int
 `define DPIC_ARG_LONG input longint
-
+`define DPIC_ARG_BIT_OUT  output bit
+`define DPIC_ARG_BYTE_OUT output byte
+`define DPIC_ARG_INT_OUT  output int
+`define DPIC_ARG_LONG_OUT output longint
 // DifftestInstrCommit
 `DIFFTEST_DPIC_FUNC_DECL(InstrCommit) (
     `DPIC_ARG_BYTE coreid,
@@ -418,5 +421,270 @@ endmodule
         fpr_24, fpr_25, fpr_26, fpr_27, fpr_28, fpr_29, fpr_30, fpr_31,
         fccr, fcsr0
         ) `DIFFTEST_MOD_DPIC_CALL_END(FPRegState)
+endmodule
+
+`DIFFTEST_DPIC_FUNC_DECL(GRegRestore) (
+    `DPIC_ARG_BYTE_OUT valid,
+    `DPIC_ARG_BYTE     coreid,
+    `DPIC_ARG_LONG_OUT gpr_0,
+    `DPIC_ARG_LONG_OUT gpr_1,
+    `DPIC_ARG_LONG_OUT gpr_2,
+    `DPIC_ARG_LONG_OUT gpr_3,
+    `DPIC_ARG_LONG_OUT gpr_4,
+    `DPIC_ARG_LONG_OUT gpr_5,
+    `DPIC_ARG_LONG_OUT gpr_6,
+    `DPIC_ARG_LONG_OUT gpr_7,
+    `DPIC_ARG_LONG_OUT gpr_8,
+    `DPIC_ARG_LONG_OUT gpr_9,
+    `DPIC_ARG_LONG_OUT gpr_10,
+    `DPIC_ARG_LONG_OUT gpr_11,
+    `DPIC_ARG_LONG_OUT gpr_12,
+    `DPIC_ARG_LONG_OUT gpr_13,
+    `DPIC_ARG_LONG_OUT gpr_14,
+    `DPIC_ARG_LONG_OUT gpr_15,
+    `DPIC_ARG_LONG_OUT gpr_16,
+    `DPIC_ARG_LONG_OUT gpr_17,
+    `DPIC_ARG_LONG_OUT gpr_18,
+    `DPIC_ARG_LONG_OUT gpr_19,
+    `DPIC_ARG_LONG_OUT gpr_20,
+    `DPIC_ARG_LONG_OUT gpr_21,
+    `DPIC_ARG_LONG_OUT gpr_22,
+    `DPIC_ARG_LONG_OUT gpr_23,
+    `DPIC_ARG_LONG_OUT gpr_24,
+    `DPIC_ARG_LONG_OUT gpr_25,
+    `DPIC_ARG_LONG_OUT gpr_26,
+    `DPIC_ARG_LONG_OUT gpr_27,
+    `DPIC_ARG_LONG_OUT gpr_28,
+    `DPIC_ARG_LONG_OUT gpr_29,
+    `DPIC_ARG_LONG_OUT gpr_30,
+    `DPIC_ARG_LONG_OUT gpr_31,
+    `DPIC_ARG_BYTE_OUT fcc
+);
+`DIFFTEST_MOD_DECL(GRegRestore)(
+    output         valid,
+    input          clock,
+    input  [7:0]   coreid,
+    output [63:0]  gpr_0,
+    output [63:0]  gpr_1,
+    output [63:0]  gpr_2,
+    output [63:0]  gpr_3,
+    output [63:0]  gpr_4,
+    output [63:0]  gpr_5,
+    output [63:0]  gpr_6,
+    output [63:0]  gpr_7,
+    output [63:0]  gpr_8,
+    output [63:0]  gpr_9,
+    output [63:0]  gpr_10,
+    output [63:0]  gpr_11,
+    output [63:0]  gpr_12,
+    output [63:0]  gpr_13,
+    output [63:0]  gpr_14,
+    output [63:0]  gpr_15,
+    output [63:0]  gpr_16,
+    output [63:0]  gpr_17,
+    output [63:0]  gpr_18,
+    output [63:0]  gpr_19,
+    output [63:0]  gpr_20,
+    output [63:0]  gpr_21,
+    output [63:0]  gpr_22,
+    output [63:0]  gpr_23,
+    output [63:0]  gpr_24,
+    output [63:0]  gpr_25,
+    output [63:0]  gpr_26,
+    output [63:0]  gpr_27,
+    output [63:0]  gpr_28,
+    output [63:0]  gpr_29,
+    output [63:0]  gpr_30,
+    output [63:0]  gpr_31,
+    output [7:0]   fcc
+);
+    `DIFFTEST_MOD_DPIC_CALL_BEGIN(GRegRestore) (
+        valid, coreid,
+        gpr_0,  gpr_1,  gpr_2,  gpr_3,  gpr_4,  gpr_5,  gpr_6,  gpr_7,
+        gpr_8,  gpr_9,  gpr_10, gpr_11, gpr_12, gpr_13, gpr_14, gpr_15,
+        gpr_16, gpr_17, gpr_18, gpr_19, gpr_20, gpr_21, gpr_22, gpr_23,
+        gpr_24, gpr_25, gpr_26, gpr_27, gpr_28, gpr_29, gpr_30, gpr_31, fcc
+        ) `DIFFTEST_MOD_DPIC_CALL_END(GRegRestore)
+endmodule
+
+`DIFFTEST_DPIC_FUNC_DECL(FPRegRestore) (
+    `DPIC_ARG_BYTE_OUT valid,
+    `DPIC_ARG_BYTE     coreid,
+    `DPIC_ARG_LONG_OUT fpr_0,
+    `DPIC_ARG_LONG_OUT fpr_1,
+    `DPIC_ARG_LONG_OUT fpr_2,
+    `DPIC_ARG_LONG_OUT fpr_3,
+    `DPIC_ARG_LONG_OUT fpr_4,
+    `DPIC_ARG_LONG_OUT fpr_5,
+    `DPIC_ARG_LONG_OUT fpr_6,
+    `DPIC_ARG_LONG_OUT fpr_7,
+    `DPIC_ARG_LONG_OUT fpr_8,
+    `DPIC_ARG_LONG_OUT fpr_9,
+    `DPIC_ARG_LONG_OUT fpr_10,
+    `DPIC_ARG_LONG_OUT fpr_11,
+    `DPIC_ARG_LONG_OUT fpr_12,
+    `DPIC_ARG_LONG_OUT fpr_13,
+    `DPIC_ARG_LONG_OUT fpr_14,
+    `DPIC_ARG_LONG_OUT fpr_15,
+    `DPIC_ARG_LONG_OUT fpr_16,
+    `DPIC_ARG_LONG_OUT fpr_17,
+    `DPIC_ARG_LONG_OUT fpr_18,
+    `DPIC_ARG_LONG_OUT fpr_19,
+    `DPIC_ARG_LONG_OUT fpr_20,
+    `DPIC_ARG_LONG_OUT fpr_21,
+    `DPIC_ARG_LONG_OUT fpr_22,
+    `DPIC_ARG_LONG_OUT fpr_23,
+    `DPIC_ARG_LONG_OUT fpr_24,
+    `DPIC_ARG_LONG_OUT fpr_25,
+    `DPIC_ARG_LONG_OUT fpr_26,
+    `DPIC_ARG_LONG_OUT fpr_27,
+    `DPIC_ARG_LONG_OUT fpr_28,
+    `DPIC_ARG_LONG_OUT fpr_29,
+    `DPIC_ARG_LONG_OUT fpr_30,
+    `DPIC_ARG_LONG_OUT fpr_31
+);
+`DIFFTEST_MOD_DECL(FPRegRestore)(
+    output         valid,
+    input          clock,
+    input  [7:0]   coreid,
+    output [63:0]  fpr_0,
+    output [63:0]  fpr_1,
+    output [63:0]  fpr_2,
+    output [63:0]  fpr_3,
+    output [63:0]  fpr_4,
+    output [63:0]  fpr_5,
+    output [63:0]  fpr_6,
+    output [63:0]  fpr_7,
+    output [63:0]  fpr_8,
+    output [63:0]  fpr_9,
+    output [63:0]  fpr_10,
+    output [63:0]  fpr_11,
+    output [63:0]  fpr_12,
+    output [63:0]  fpr_13,
+    output [63:0]  fpr_14,
+    output [63:0]  fpr_15,
+    output [63:0]  fpr_16,
+    output [63:0]  fpr_17,
+    output [63:0]  fpr_18,
+    output [63:0]  fpr_19,
+    output [63:0]  fpr_20,
+    output [63:0]  fpr_21,
+    output [63:0]  fpr_22,
+    output [63:0]  fpr_23,
+    output [63:0]  fpr_24,
+    output [63:0]  fpr_25,
+    output [63:0]  fpr_26,
+    output [63:0]  fpr_27,
+    output [63:0]  fpr_28,
+    output [63:0]  fpr_29,
+    output [63:0]  fpr_30,
+    output [63:0]  fpr_31
+);
+    `DIFFTEST_MOD_DPIC_CALL_BEGIN(FPRegRestore) (
+        valid, coreid,
+        fpr_0,  fpr_1,  fpr_2,  fpr_3,  fpr_4,  fpr_5,  fpr_6,  fpr_7,
+        fpr_8,  fpr_9,  fpr_10, fpr_11, fpr_12, fpr_13, fpr_14, fpr_15,
+        fpr_16, fpr_17, fpr_18, fpr_19, fpr_20, fpr_21, fpr_22, fpr_23,
+        fpr_24, fpr_25, fpr_26, fpr_27, fpr_28, fpr_29, fpr_30, fpr_31
+        ) `DIFFTEST_MOD_DPIC_CALL_END(FPRegRestore)
+endmodule
+
+`DIFFTEST_DPIC_FUNC_DECL(CSRRegRestore) (
+    `DPIC_ARG_BYTE_OUT valid,
+    `DPIC_ARG_BYTE     coreid,
+    `DPIC_ARG_LONG_OUT crmd,
+    `DPIC_ARG_LONG_OUT prmd,
+    `DPIC_ARG_LONG_OUT euen,
+    `DPIC_ARG_LONG_OUT misc,
+    `DPIC_ARG_LONG_OUT ecfg,
+    `DPIC_ARG_LONG_OUT estat,
+    `DPIC_ARG_LONG_OUT era,
+    `DPIC_ARG_LONG_OUT badv,
+    `DPIC_ARG_LONG_OUT badi,
+    `DPIC_ARG_LONG_OUT eentry,
+    `DPIC_ARG_LONG_OUT tlbidx,
+    `DPIC_ARG_LONG_OUT asid,
+    `DPIC_ARG_LONG_OUT pgdl,
+    `DPIC_ARG_LONG_OUT pgdh,
+    `DPIC_ARG_LONG_OUT pwcl,
+    `DPIC_ARG_LONG_OUT pwch,
+    `DPIC_ARG_LONG_OUT stlbps,
+    `DPIC_ARG_LONG_OUT rvacfg,
+    `DPIC_ARG_LONG_OUT save0,
+    `DPIC_ARG_LONG_OUT save1,
+    `DPIC_ARG_LONG_OUT save2,
+    `DPIC_ARG_LONG_OUT save3,
+    `DPIC_ARG_LONG_OUT tid,
+    `DPIC_ARG_LONG_OUT tcfg,
+    `DPIC_ARG_LONG_OUT tval,
+    `DPIC_ARG_LONG_OUT ticlr,
+    `DPIC_ARG_LONG_OUT cntc,
+    `DPIC_ARG_LONG_OUT timer,
+    `DPIC_ARG_LONG_OUT tlbrentry,
+    `DPIC_ARG_LONG_OUT tlbrehi,
+    `DPIC_ARG_LONG_OUT dmw0,
+    `DPIC_ARG_LONG_OUT dmw1,
+    `DPIC_ARG_LONG_OUT fcsr
+);
+`DIFFTEST_MOD_DECL(CSRRegRestore)(
+    output        valid,
+    input         clock,
+    input  [7:0]  coreid,
+    output [63:0] crmd,
+    output [63:0] prmd,
+    output [63:0] euen,
+    output [63:0] misc,
+    output [63:0] ecfg,
+    output [63:0] estat,
+    output [63:0] era,
+    output [63:0] badv,
+    output [63:0] badi,
+    output [63:0] eentry,
+    output [63:0] tlbidx,
+    output [63:0] asid,
+    output [63:0] pgdl,
+    output [63:0] pgdh,
+    output [63:0] pwcl,
+    output [63:0] pwch,
+    output [63:0] stlbps,
+    output [63:0] rvacfg,
+    output [63:0] save0,
+    output [63:0] save1,
+    output [63:0] save2,
+    output [63:0] save3,
+    output [63:0] tid,
+    output [63:0] tcfg,
+    output [63:0] tval,
+    output [63:0] ticlr,
+    output [63:0] cntc,
+    output [63:0] timer,
+    output [63:0] tlbrentry,
+    output [63:0] tlbrehi,
+    output [63:0] dmw0,
+    output [63:0] dmw1,
+    output [63:0] fcsr
+);
+    `DIFFTEST_MOD_DPIC_CALL_BEGIN(CSRRegRestore) (
+        valid, coreid, crmd, prmd, euen, misc, ecfg, estat, era, badv, badi, eentry,
+        tlbidx, asid, pgdl, pgdh, pwcl, pwch, stlbps, rvacfg,
+        save0, save1, save2, save3, tid, tcfg, tval, ticlr, cntc, timer, tlbrentry, tlbrehi,
+        dmw0, dmw1, fcsr
+        ) `DIFFTEST_MOD_DPIC_CALL_END(CSRRegRestore)
+endmodule
+
+`DIFFTEST_DPIC_FUNC_DECL(PCRestore) (
+    `DPIC_ARG_BYTE_OUT valid,
+    `DPIC_ARG_BYTE     coreid,
+    `DPIC_ARG_LONG_OUT pc
+);
+`DIFFTEST_MOD_DECL(PCRestore)(
+    output          valid,
+    input           clock,
+    input  [7:0]    coreid,
+    output [63:0]   pc
+);
+    `DIFFTEST_MOD_DPIC_CALL_BEGIN(PCRestore) (
+        valid, coreid, pc
+        ) `DIFFTEST_MOD_DPIC_CALL_END(PCRestore)
 endmodule
 

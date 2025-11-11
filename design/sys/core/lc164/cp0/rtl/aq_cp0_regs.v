@@ -331,7 +331,8 @@ wire             vs_dirty_upd_gate;
 wire    [63 :0]  vstart_value;                 
 wire    [63 :0]  vtype_value;                  
 wire    [63 :0]  vxrm_value;                   
-wire    [63 :0]  vxsat_value;                  
+wire    [63 :0]  vxsat_value;     
+wire             diff_data_valid;             
 
 wire             crmd_local_en;
 wire             prmd_local_en;
@@ -1608,6 +1609,7 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .biu_cp0_se_int           (biu_cp0_se_int          ),
   .biu_cp0_ss_int           (biu_cp0_ss_int          ),
   .biu_cp0_st_int           (biu_cp0_st_int          ),
+  .forever_cpuclk           (forever_cpuclk          ),
   .cp0_dtu_mexpt_vld        (cp0_dtu_mexpt_vld       ),
   .cp0_hpcp_int_off_vld     (cp0_hpcp_int_off_vld    ),
   .cp0_idu_fs               (cp0_idu_fs              ),
@@ -1822,7 +1824,8 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .stval_value              (stval_value             ),
   .stvec_local_en           (stvec_local_en          ),
   .stvec_value              (stvec_value             ),
-  .vs_dirty_upd_gate        (vs_dirty_upd_gate       )
+  .vs_dirty_upd_gate        (vs_dirty_upd_gate       ),
+  .diff_data_valid          (diff_data_valid         )
 );
 
 
@@ -2069,7 +2072,8 @@ assign regs_flush_clk_en = rtu_cp0_exit_debug
                         || iui_regs_inst_sret
                         || rtu_yy_xx_expt_vld
                         || regs_mcor_busy
-                        || regs_mcins_busy;
+                        || regs_mcins_busy
+                        || diff_data_valid;
 // &Instance("gated_clk_cell", "x_regs_flush_clk"); @1230
 gated_clk_cell  x_regs_flush_clk (
   .clk_in             (forever_cpuclk    ),

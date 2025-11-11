@@ -397,6 +397,26 @@ void Difftest::display() {
     fflush(NULL);
 }
 
+void Difftest::fastforward(uint64_t cycles) {
+    for (int i = 0; i < cycles; i++) {
+        proxy->exec(1);
+    }
+    proxy->regcpy(ref_regs_ptr, REF_TO_DUT, DIFF_TO_REF_ALL);
+    proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
+    ref_ext.misc = get_ref_csr(0x3);
+    ref_ext.badi = get_ref_csr(0x8);
+    ref_ext.pwcl = get_ref_csr(0x1c);
+    ref_ext.pwch = get_ref_csr(0x1d);
+    ref_ext.stlbps = get_ref_csr(0x1e);
+    ref_ext.rvacfg = get_ref_csr(0x1f);
+    ref_ext.cntc = get_ref_csr(0x43);
+    ref_ext.ticlr = get_ref_csr(0x44);
+    ref_ext.tlbrehi = get_ref_csr(0x8e);
+
+    _fastforward_cycles = cycles;
+    _fastforward_pc = proxy->get_cur_pc();
+}
+
 bool Difftest::do_check_instruction_skip(uint32_t inst, bool &is_copy) {
 
     /// stand for if we need copy gpr(because of instruction lazy write back)

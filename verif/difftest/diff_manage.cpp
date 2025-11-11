@@ -57,6 +57,15 @@ void DiffManage::display() {
     }
 }
 
+void DiffManage::fastforward(uint64_t cycles) {
+    difftest[0]->_fastforward = true;
+    difftest[0]->fastforward(cycles);
+}
+
+void DiffManage::fastforward_end() {
+    difftest[0]->_fastforward = false;
+}
+
 DiffManage::~DiffManage() {
     for(int i = 0; i < NUM_CORES; ++i) {
         delete difftest[i];

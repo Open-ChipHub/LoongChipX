@@ -42,6 +42,7 @@ public:
     uint64_t pmcfg_plv ;
     bool snapshot_on_failure ;
     std::string action_on_sigint ;
+    uint64_t fastforward_cycles;
 
     void setup(Config& config);
     void setup_dir(Config& config);

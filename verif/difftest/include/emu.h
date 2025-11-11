@@ -7,7 +7,6 @@
 #include "common.h"
 #include "lightsss.h"
 
-
 static const int status_cause        = 0xff;
 static const int status_trace_err    = 0x700;
 static const int status_trace_err_rf = 0x100;
@@ -45,7 +44,6 @@ private:
     }
 public:
     DiffManage* dm;
-
     uint8_t *ram;
 
     /* input: ram img path */
@@ -80,6 +78,7 @@ public:
     int process();
     /* used by slice */
     void close();
+    void fastforward(uint64_t cycles);
 };
 
 #endif //CHIPLAB_EMU_H

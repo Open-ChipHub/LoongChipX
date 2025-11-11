@@ -22,6 +22,7 @@ module aq_cp0_trap_csr (
   input    wire          biu_cp0_se_int,
   input    wire          biu_cp0_ss_int,
   input    wire          biu_cp0_st_int,
+  input    wire          forever_cpuclk,
   input    wire          cpurst_b,
   input    wire  [7 :0]  ext_interrupt,
   input    wire          dtu_cp0_dcsr_mprven,
@@ -237,7 +238,8 @@ module aq_cp0_trap_csr (
   output   wire  [63:0]  sstatus_value,
   output   wire  [63:0]  stval_value,
   output   wire  [63:0]  stvec_value,
-  output   wire          vs_dirty_upd_gate
+  output   wire          vs_dirty_upd_gate,
+  output   wire          diff_data_valid
 ); 
 
 
@@ -370,6 +372,43 @@ wire    [63:0]  cpcsr_value;
 wire    [63:0]  cpcsr_crmd_value;
 
 
+wire  [63:0]  diff_csrcrmd_value;
+wire  [63:0]  diff_csrprmd_value;
+wire  [63:0]  diff_csreuen_value;
+wire  [63:0]  diff_csrmisc_value;
+wire  [63:0]  diff_csrecfg_value;
+wire  [63:0]  diff_csrestat_value;
+wire  [63:0]  diff_csrera_value;
+wire  [63:0]  diff_csrbadv_value;
+wire  [63:0]  diff_csrbadi_value;
+wire  [63:0]  diff_csreentry_value;
+wire  [63:0]  diff_csrtlbrentry_value;
+wire  [63:0]  diff_csrtlbrehi_value;
+wire  [63:0]  diff_csrmerrentry_value;
+wire  [63:0]  diff_csrtlbidx_value;
+wire  [63:0]  diff_csrpwcl_value;
+wire  [63:0]  diff_csrpwch_value;
+wire  [63:0]  diff_csrstlbps_value;
+wire  [63:0]  diff_csrrvacfg_value;
+wire  [63:0]  diff_csrasid_value;
+wire  [63:0]  diff_csrdmw0_value;
+wire  [63:0]  diff_csrdmw1_value;
+wire  [63:0]  diff_csrdmw2_value;
+wire  [63:0]  diff_csrdmw3_value;
+wire  [63:0]  diff_csrtid_value;
+wire  [63:0]  diff_csrtcfg_value;
+wire  [63:0]  diff_csrtval_value;
+wire  [63:0]  diff_csrcntc_value;
+wire  [63:0]  diff_csrtimer_value;
+wire  [63:0]  diff_csrticlr_value;
+wire  [63:0]  diff_csrsave0_value;
+wire  [63:0]  diff_csrsave1_value;
+wire  [63:0]  diff_csrsave2_value;
+wire  [63:0]  diff_csrsave3_value;
+wire  [63:0]  diff_csrpgdl_value;
+wire  [63:0]  diff_csrpgdh_value;
+wire  [63:0]  diff_csrrehi_value;
+wire  [63:0]  diff_fcsr_value;
 
 //==========================================================
 //                      Arch Control Registers
@@ -416,6 +455,10 @@ begin
     crmd_plv  <= 2'b0;
     crmd_ie   <= 1'b0;
   end  
+  else if (diff_data_valid)begin
+    crmd_plv <= diff_csrcrmd_value[1:0];
+    crmd_ie <= diff_csrcrmd_value[2];
+  end
   else if(rtu_yy_xx_expt_vld) begin
     crmd_plv  <= 2'b0;
     crmd_ie   <= 1'b0;
@@ -461,6 +504,12 @@ begin
     crmd_pg   <= 1'b0;
     crmd_datf <= 2'b0;
     crmd_datm <= 2'b0;
+  end
+  else if (diff_data_valid)begin
+    crmd_da <= diff_csrcrmd_value[3];
+    crmd_pg <= diff_csrcrmd_value[4];
+    crmd_datf <= diff_csrcrmd_value[6:5];
+    crmd_datm <= diff_csrcrmd_value[8:7];
   end
   /// NOTING: expt not clear da pg
   // else if(rtu_yy_xx_expt_vld) begin
@@ -508,6 +557,7 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     crmd_we   <= 1'b0;
+  else if(diff_data_valid) crmd_we <= diff_csrcrmd_value[9];
   else if(rtu_yy_xx_expt_vld)
     crmd_we   <= 1'b0;
   else if(csr_errctl_ismerr)
@@ -544,6 +594,11 @@ begin
     prmd_pie   <= 1'b0;
     prmd_pwe   <= 1'b0;
   end  
+  else if(diff_data_valid)begin
+    prmd_pplv  <= diff_csrprmd_value[1:0];
+    prmd_pie   <= diff_csrprmd_value[2];
+    prmd_pwe   <= diff_csrprmd_value[3];
+  end
   else if(rtu_yy_xx_expt_vld) begin
     prmd_pplv  <= crmd_plv;
     prmd_pie   <= crmd_ie;
@@ -584,6 +639,12 @@ begin
     sxe   <= 1'b0;
     asxe  <= 1'b0;
     bte   <= 1'b0;
+  end
+  else if(diff_data_valid)begin
+    fpe   <= diff_csreuen_value[0];
+    sxe   <= diff_csreuen_value[1];
+    asxe  <= diff_csreuen_value[2];
+    bte   <= diff_csreuen_value[3];
   end
   else if(euen_local_en) begin
     fpe   <= iui_regs_wdata[0];
@@ -642,6 +703,24 @@ begin
     dwpl1    <= 1'b0;
     dwpl2    <= 1'b0;
   end
+  else if(diff_data_valid)begin
+    va32l1   <= diff_csrmisc_value[1];
+    va32l2   <= diff_csrmisc_value[2];
+    va32l3   <= diff_csrmisc_value[3];
+    drdtl1   <= diff_csrmisc_value[5];
+    drdtl2   <= diff_csrmisc_value[6];
+    drdtl3   <= diff_csrmisc_value[7];
+    rpcntl1  <= diff_csrmisc_value[9];
+    rpcntl2  <= diff_csrmisc_value[10];
+    rpcntl3  <= diff_csrmisc_value[11];
+    alcl0    <= diff_csrmisc_value[12];
+    alcl1    <= diff_csrmisc_value[13];
+    alcl2    <= diff_csrmisc_value[14];
+    alcl3    <= diff_csrmisc_value[15];
+    dwpl0    <= diff_csrmisc_value[16];
+    dwpl1    <= diff_csrmisc_value[17];
+    dwpl2    <= diff_csrmisc_value[18];
+  end
   else if(misc_local_en) begin
     va32l1   <= iui_regs_wdata[1];
     va32l2   <= iui_regs_wdata[2];
@@ -699,6 +778,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     csrera[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    csrera[63:0] <= diff_csrera_value[63:0];
   else if(rtu_yy_xx_expt_vld)
     csrera[63:0] <= rtu_cp0_epc[63:0];
   else if(era_local_en)
@@ -721,6 +802,8 @@ always @(posedge regs_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     csreentry[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    csreentry[63:0] <= diff_csreentry_value[63:0];
   else if(eentry_local_en)
     csreentry[63:0] <= iui_regs_wdata[63:0];
   else
@@ -740,6 +823,10 @@ begin
   if(!cpurst_b) begin
     lie[12:0]   <= 13'b0;
     evs[2:0]     <= 3'b0;
+  end
+  else if(diff_data_valid)begin
+    lie[12:0]   <= diff_csrecfg_value[12:0];
+    evs[2:0]    <= diff_csrecfg_value[18:16];
   end
   else if(ecfg_local_en) begin
     lie[12:0]   <= iui_regs_wdata[12:0];
@@ -771,6 +858,9 @@ begin
   if(!cpurst_b) begin
     swis[1:0]  <= 2'b0;
   end
+  else if(diff_data_valid)begin
+    swis[1:0]  <= diff_csrestat_value[1:0];
+  end
   else if(estat_local_en) begin
     swis[1:0]  <= iui_regs_wdata[1:0];
   end
@@ -798,6 +888,9 @@ begin
   if(!cpurst_b) begin
     ext_is[7:0]  <= 8'b0;
   end
+  else if(diff_data_valid)begin
+    ext_is[7:0]  <= diff_csrestat_value[7:0];
+  end
   else if(estat_local_en) begin
     ext_is[7:0]  <= iui_regs_wdata[7:0];
   end
@@ -813,6 +906,9 @@ begin
   if(!cpurst_b) begin
     perfm_is  <= 1'b0;
   end
+  else if(diff_data_valid)begin
+    perfm_is  <= diff_csrestat_value[8];
+  end
   else if(estat_local_en) begin
     perfm_is  <= iui_regs_wdata[8];
   end
@@ -827,6 +923,9 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b) begin
     timer_is  <= 1'b0;
+  end
+  else if(diff_data_valid)begin
+    timer_is  <= diff_csrestat_value[9];
   end
   else if(estat_local_en) begin
     timer_is  <= iui_regs_wdata[9];
@@ -849,6 +948,9 @@ begin
   if(!cpurst_b) begin
     ipi_is  <= 1'b0;
   end
+  else if(diff_data_valid)begin
+    ipi_is  <= diff_csrestat_value[10];
+  end
   else if(estat_local_en) begin
     ipi_is  <= iui_regs_wdata[10];
   end
@@ -865,6 +967,10 @@ begin
   if(!cpurst_b) begin
     ecode[5:0]      <= 6'b0;
     subecode[8:0]   <= 9'b0;
+  end
+  else if(diff_data_valid)begin
+    ecode[5:0]      <= diff_csrestat_value[21:16];
+    subecode[8:0]   <= diff_csrestat_value[30:22];
   end
   else if(rtu_yy_xx_expt_vld) begin
     ecode[5:0]      <= rtu_yy_xx_expt_vec[5:0];
@@ -915,6 +1021,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     badv[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    badv[63:0] <= diff_csrbadv_value[63:0];
   else if(rtu_yy_xx_expt_vld) 
     badv[63:0] <= mtval_upd_data[63:0];
   else if(badv_local_en)
@@ -934,6 +1042,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     badi[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    badi[63:0] <= diff_csrbadi_value[63:0];
   else if(rtu_yy_xx_expt_vld) 
     badi[63:0] <= mtval_upd_data[63:0];
   else if(badv_local_en)
@@ -955,6 +1065,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     asid[9:0] <= 10'b0;
+  else if(diff_data_valid)
+    asid[9:0] <= diff_csrasid_value[9:0];
   else if(asid_local_en)
     asid[9:0] <= iui_regs_wdata[9:0];
   else
@@ -971,6 +1083,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     pgdl[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    pgdl[63:0] <= diff_csrpgdl_value[63:0];
   else if(pgdl_local_en)
     pgdl[63:0] <= {iui_regs_wdata[63:12], {12{1'b0}}};
   else
@@ -989,6 +1103,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     pgdh[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    pgdh[63:0] <= diff_csrpgdh_value[63:0];
   else if(pgdh_local_en)
     pgdh[63:0] <= {iui_regs_wdata[63:12], {12{1'b0}}};
   else
@@ -1011,6 +1127,11 @@ begin
     tlb_index <= 16'b0;
     tlb_ps    <= 6'hc;
     tlb_ne    <= 1'b1;
+  end
+  else if(diff_data_valid)begin
+    tlb_index <= diff_csrtlbidx_value[15:0];
+    tlb_ps    <= diff_csrtlbidx_value[29:24];
+    tlb_ne    <= diff_csrtlbidx_value[31];
   end
   else if(tlbidx_local_en) begin
     tlb_index <= iui_regs_wdata[15:0];
@@ -1048,6 +1169,15 @@ begin
     dir2_base   <= 5'd30;
     dir2_width  <= 5'd9;
     ptewidth    <= 2'd0;
+  end
+  else if(diff_data_valid)begin
+    ptbase      <= diff_csrpwcl_value[4:0];
+    ptwidth     <= diff_csrpwcl_value[9:5];
+    dir1_base   <= diff_csrpwcl_value[14:10];
+    dir1_width  <= diff_csrpwcl_value[19:15];
+    dir2_base   <= diff_csrpwcl_value[24:20];
+    dir2_width  <= diff_csrpwcl_value[29:25];
+    ptewidth    <= diff_csrpwcl_value[31:30];
   end
   else if(pwcl_local_en) begin
     ptbase      <= iui_regs_wdata[4:0];
@@ -1088,6 +1218,12 @@ begin
     dir4_base   <= 6'd48;
     dir4_width  <= 6'd0;
   end
+  else if(diff_data_valid)begin
+    dir3_base   <= diff_csrpwch_value[5 : 0];
+    dir3_width  <= diff_csrpwch_value[11: 6];
+    dir4_base   <= diff_csrpwch_value[17:12];
+    dir4_width  <= diff_csrpwch_value[23:18];
+  end
   else if(pwch_local_en) begin
     dir3_base   <= iui_regs_wdata[5 : 0];
     dir3_width  <= iui_regs_wdata[11: 6];
@@ -1115,6 +1251,9 @@ begin
   if(!cpurst_b) begin
     stlbps_ps   <= 6'd0;
   end
+  else if(diff_data_valid)begin
+    stlbps_ps   <= diff_csrstlbps_value[5:0];
+  end
   else if(stlbps_local_en) begin
     stlbps_ps   <= iui_regs_wdata[5 : 0];
   end
@@ -1136,6 +1275,9 @@ begin
   if(!cpurst_b) begin
     rvacfg_rbits   <= 4'd0;
   end
+  else if(diff_data_valid)begin
+    rvacfg_rbits   <= diff_csrrvacfg_value[3:0];
+  end
   else if(rvacfg_local_en) begin
     rvacfg_rbits   <= iui_regs_wdata[3 : 0];
   end
@@ -1155,6 +1297,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     tid[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    tid[63:0] <= diff_csrtid_value[63:0];
   else if(tid_local_en)
     tid[63:0] <= {iui_regs_wdata[63:0]};
   else
@@ -1175,6 +1319,10 @@ begin
   if(!cpurst_b) begin
     tcfg_initval[61:0] <= 62'b0;
     tcfg_periodic      <= 1'b0;
+  end
+  else if(diff_data_valid)begin
+    tcfg_initval[61:0] <= diff_csrtcfg_value[63:2];
+    tcfg_periodic      <= diff_csrtcfg_value[1];
   end
   else if(tcfg_local_en) begin
     tcfg_initval[61:0] <= iui_regs_wdata[63:2];
@@ -1198,6 +1346,9 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b) begin
     tcfg_en   <= 1'b0;
+  end
+  else if(diff_data_valid)begin
+    tcfg_en   <= diff_csrtcfg_value[0];
   end
   else if(tcfg_local_en) begin
     tcfg_en   <= iui_regs_wdata[0];
@@ -1229,6 +1380,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     timer_clr  <= 1'b0;
+  else if(diff_data_valid)
+    timer_clr  <= diff_csrticlr_value[0];
   else if(ticlr_local_en)
     timer_clr  <= {iui_regs_wdata[0]};
   else if (timer_clr)
@@ -1248,6 +1401,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     tval[63:0] <= 64'h0;
+  else if(diff_data_valid)
+    tval[63:0] <= diff_csrtval_value[63:0];
   // when write tcfg, we need update tval
   else if(tcfg_local_en)
     tval[63:0] <= {iui_regs_wdata[63:2], {2'b0}};
@@ -1276,6 +1431,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     cntc[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    cntc[63:0] <= diff_csrcntc_value[63:0];
   else if(cntc_local_en)
     cntc[63:0] <= {iui_regs_wdata[63:0]};
   else
@@ -1293,6 +1450,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     timer[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    timer[63:0] <= diff_csrtimer_value[63:0];
   else
     timer[63:0] <= timer[63:0] + 1'b1;
 end 
@@ -1309,6 +1468,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     save0[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    save0[63:0] <= diff_csrsave0_value[63:0];
   else if(save0_local_en)
     save0[63:0] <= {iui_regs_wdata[63:0]};
   else
@@ -1326,6 +1487,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     save1[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    save1[63:0] <= diff_csrsave1_value[63:0];
   else if(save1_local_en)
     save1[63:0] <= {iui_regs_wdata[63:0]};
   else
@@ -1343,6 +1506,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     save2[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    save2[63:0] <= diff_csrsave2_value[63:0];
   else if(save2_local_en)
     save2[63:0] <= {iui_regs_wdata[63:0]};
   else
@@ -1360,6 +1525,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     save3[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    save3[63:0] <= diff_csrsave3_value[63:0];
   else if(save3_local_en)
     save3[63:0] <= {iui_regs_wdata[63:0]};
   else
@@ -1379,6 +1546,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     tlbr_entry[63:0] <= 64'b0;
+  else if(diff_data_valid)
+    tlbr_entry[63:0]  <= diff_csrtlbrentry_value[63:0];
   else if(tlbrentry_local_en)
     tlbr_entry[63:0] <= {iui_regs_wdata[63:12], {12'b0}};
   else
@@ -1401,6 +1570,11 @@ begin
     tlbrehi_ps       <= 6'd12;
     tlbrehi_vppn     <= 27'h0;
     tlbrehi_sign_ext <= 24'b0;
+  end
+  else if(diff_data_valid)begin
+    tlbrehi_ps       <= diff_csrtlbrehi_value[5:0];
+    tlbrehi_vppn     <= diff_csrtlbrehi_value[39:13];
+    tlbrehi_sign_ext <= diff_csrtlbrehi_value[63:40];
   end
   else if(tlbrehi_local_en) begin
     tlbrehi_ps       <= iui_regs_wdata[5:0];
@@ -1455,6 +1629,14 @@ begin
     dmw0_mat[1:0]  <= 2'b0;
     dmw0_vseg[3:0] <= 4'b0;
   end
+  else if(diff_data_valid)begin
+    dmw0_plv0      <= diff_csrdmw0_value[0];
+    dmw0_plv1      <= diff_csrdmw0_value[1];
+    dmw0_plv2      <= diff_csrdmw0_value[2];
+    dmw0_plv3      <= diff_csrdmw0_value[3];
+    dmw0_mat[1:0]  <= diff_csrdmw0_value[5:4];
+    dmw0_vseg[3:0] <= diff_csrdmw0_value[63:60];
+  end
   else if(dmw0_local_en) begin
     dmw0_plv0      <= iui_regs_wdata[0];
     dmw0_plv1      <= iui_regs_wdata[1];
@@ -1496,6 +1678,14 @@ begin
     dmw1_plv3      <= 1'b0;
     dmw1_mat[1:0]  <= 2'b0;
     dmw1_vseg[3:0] <= 4'b0;
+  end
+  else if(diff_data_valid)begin
+    dmw1_plv0      <= diff_csrdmw1_value[0];
+    dmw1_plv1      <= diff_csrdmw1_value[1];
+    dmw1_plv2      <= diff_csrdmw1_value[2];
+    dmw1_plv3      <= diff_csrdmw1_value[3];
+    dmw1_mat[1:0]  <= diff_csrdmw1_value[5:4];
+    dmw1_vseg[3:0] <= diff_csrdmw1_value[63:60];
   end
   else if(dmw1_local_en) begin
     dmw1_plv0      <= iui_regs_wdata[0];
@@ -1826,6 +2016,8 @@ always @(posedge regs_flush_clk or negedge cpurst_b)
 begin
   if(!cpurst_b)
     fcsr0_reg[63:0]  <= 64'b0;
+  else if(diff_data_valid)
+    fcsr0_reg[63:0]  <= diff_fcsr_value[63:0];
   else if(fcsr0_local_en)
     fcsr0_reg[63:0]  <= {iui_regs_wdata[63:0]};
   else if(fcsr1_local_en)
@@ -3205,6 +3397,48 @@ DifftestCSRRegState DifftestCSRRegState(
 );
 `endif
 
+`ifdef DIFF_FASTFORWARD
+DifftestCSRRegRestore DifftestCSRRegRestore(
+    .valid              (diff_data_valid        ),
+    .clock              (forever_cpuclk         ),
+    .coreid             (8'd0                   ),
+    .crmd               (diff_csrcrmd_value[63:0]    ),
+    .prmd               (diff_csrprmd_value[63:0]    ),
+    .euen               (diff_csreuen_value[63:0]    ),
+    .misc               (diff_csrmisc_value[63:0]    ),
+    .ecfg               (diff_csrecfg_value[63:0]    ),
+    .estat              (diff_csrestat_value[63:0]   ),
+    .era                (diff_csrera_value[63:0]     ),
+    .badv               (diff_csrbadv_value[63:0]    ),
+    .badi               (diff_csrbadi_value[63:0]    ),
+    .eentry             (diff_csreentry_value[63:0]  ),
+    .tlbidx             (diff_csrtlbidx_value[63:0]  ),
+    .asid               (diff_csrasid_value[63:0]    ),
+    .pgdl               (diff_csrpgdl_value[63:0]    ),
+    .pgdh               (diff_csrpgdh_value[63:0]    ),
+    .pwcl               (diff_csrpwch_value[63:0]    ),
+    .pwch               (diff_csrpwch_value[63:0]    ),
+    .stlbps             (diff_csrstlbps_value[63:0]  ),
+    .rvacfg             (diff_csrrvacfg_value[63:0]  ),
+    .save0              (diff_csrsave0_value[63:0]   ),
+    .save1              (diff_csrsave1_value[63:0]   ),
+    .save2              (diff_csrsave2_value[63:0]   ),
+    .save3              (diff_csrsave3_value[63:0]   ),
+    .tid                (diff_csrtid_value[63:0]     ),
+    .tcfg               (diff_csrtcfg_value[63:0]    ),
+    .tval               (diff_csrtval_value[63:0]    ),
+    .ticlr              (diff_csrticlr_value[63:0]   ),
+    .cntc               (diff_csrcntc_value[63:0]    ),
+    .timer              (diff_csrtimer_value[63:0]   ),
+    .tlbrentry          (diff_csrtlbrentry_value[63:0]),
+    .tlbrehi            (diff_csrtlbrehi_value[63:0] ),
+    .dmw0               (diff_csrdmw0_value[63:0]    ),
+    .dmw1               (diff_csrdmw1_value[63:0]    ),
+    .fcsr               (diff_fcsr_value[63:0]       )
+);
+`else
+    assign diff_data_valid = 1'b0;
+`endif
 
 
 // &ModuleEnd; @1155

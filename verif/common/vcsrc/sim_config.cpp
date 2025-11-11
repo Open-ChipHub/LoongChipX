@@ -27,13 +27,14 @@ void SimConfig::setup(Config& config){
     snapshot_on_failure = config.get_value_or_bool("snapshot_on_failure", false);
     action_on_sigint = config.get_value_or_cstr("action_on_sigint", "quit");
 
-    wave_begin_cycles = config.get_value_or_else("wave_begin" , 0         );
+    wave_begin_cycles = config.get_value_or_else("wave_begin" , 0);
     wave_end_cycles   = config.get_value_or_else("wave_end"   , 0);
     sim_cycles_limit  = config.get_value_or_else("sim_cycles" , UINT64_MAX / 2) * 2;
     ins_cnt_end       = config.get_value_or_else("ins_cnt_end", UINT64_MAX);
     // by default, when run kernel, only record user performance counters
     pmcfg_plv = config.get_value_or_else("pmcfg_plv"   , run_kernel ? 0x8 : 0xf);
     watch_paddr = config.get_value_or_else("watch_paddr", 0);
+    fastforward_cycles = config.get_value_or_else("fastforward_cycles", 0);
 
     setup_dir(config);
 
