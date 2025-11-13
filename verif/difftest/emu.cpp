@@ -261,6 +261,7 @@ int Emulator::process() {
     }
 }
 
+// BUG: restore to keeptiming_advance() may fall into infinite loop
 void Emulator::fastforward(uint64_t cycles) {
     for (int i = 0; i < 10; i++) {
         top->clk = !top->clk;
@@ -270,10 +271,12 @@ void Emulator::fastforward(uint64_t cycles) {
     }
     dm->fastforward(cycles);
     top->reset = !1;
-    top->clk = !top->clk;
-    top->eval();
-    top->clk = !top->clk;
-    top->eval();
+    for (int i = 0; i < 2; i++) {
+        top->clk = !top->clk;
+        top->eval();
+        top->clk = !top->clk;
+        top->eval();
+    }
     dm->fastforward_end();
 }
 

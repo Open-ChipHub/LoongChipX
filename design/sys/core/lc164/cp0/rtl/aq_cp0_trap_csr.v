@@ -889,7 +889,7 @@ begin
     ext_is[7:0]  <= 8'b0;
   end
   else if(diff_data_valid)begin
-    ext_is[7:0]  <= diff_csrestat_value[7:0];
+    ext_is[7:0]  <= diff_csrestat_value[9:2];
   end
   else if(estat_local_en) begin
     ext_is[7:0]  <= iui_regs_wdata[7:0];
@@ -907,7 +907,7 @@ begin
     perfm_is  <= 1'b0;
   end
   else if(diff_data_valid)begin
-    perfm_is  <= diff_csrestat_value[8];
+    perfm_is  <= diff_csrestat_value[10];
   end
   else if(estat_local_en) begin
     perfm_is  <= iui_regs_wdata[8];
@@ -925,7 +925,7 @@ begin
     timer_is  <= 1'b0;
   end
   else if(diff_data_valid)begin
-    timer_is  <= diff_csrestat_value[9];
+    timer_is  <= diff_csrestat_value[11];
   end
   else if(estat_local_en) begin
     timer_is  <= iui_regs_wdata[9];
@@ -949,7 +949,7 @@ begin
     ipi_is  <= 1'b0;
   end
   else if(diff_data_valid)begin
-    ipi_is  <= diff_csrestat_value[10];
+    ipi_is  <= diff_csrestat_value[12];
   end
   else if(estat_local_en) begin
     ipi_is  <= iui_regs_wdata[10];

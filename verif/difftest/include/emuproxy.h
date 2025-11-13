@@ -28,10 +28,10 @@ public:
     void (*csrcpy)(void* dut, bool direction);
     void (*csrcpy_idx)(int csr_idx, uint64_t* dut_buf, uint64_t mask, bool direction);
     int  (*store_commit)(uint64_t saddr, uint64_t sdata);
-    void (*exec)(uint64_t n);
+    void (*exec)(uint64_t n, bool fastforward);
     void (*raise_trap)(int is_interrupt, uint64_t is, uint64_t ecode);
     void (*isa_reg_display)();
-    void (*timercpy)(void* dut);
+    void (*timercpy)(void* dut, bool direction);
     void (*estat_sync)(uint64_t index, uint64_t mask);
     void (*init)(uint8_t* ram);
     uint32_t (*get_inst)(uint64_t addr);

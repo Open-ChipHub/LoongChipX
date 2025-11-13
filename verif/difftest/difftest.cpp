@@ -346,14 +346,14 @@ void Difftest::do_instr_commit(int i) {
         timer.stable_timer = dut.commit[i].timer_64_value - 1;
         timer.time_val = dut.csr.tval;
         // printf("timer64: 0x%lx, low: 0x%x, high: 0x%x\n",dut.commit[i].timer_64_value,timer_low,timer_high);
-        proxy->timercpy(&timer);
+        proxy->timercpy(&timer, DUT_TO_REF);
     }
 
     state->record_inst(dut.commit[i].pc, dut.commit[i].inst, dut.commit[i].wen, dut.commit[i].wdest, dut.commit[i].wdata, dut.commit[i].skip);
 
     /* single step exec */
     auto start = std::chrono::steady_clock::now();
-    proxy->exec(1);
+    proxy->exec(1, false);
     auto end = std::chrono::steady_clock::now();
     emu_nano_seconds += std::chrono::nanoseconds(end-start);
 
@@ -399,10 +399,13 @@ void Difftest::display() {
 
 void Difftest::fastforward(uint64_t cycles) {
     for (int i = 0; i < cycles; i++) {
-        proxy->exec(1);
+        proxy->exec(1, true);
     }
     proxy->regcpy(ref_regs_ptr, REF_TO_DUT, DIFF_TO_REF_ALL);
     proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
+    struct la64_timer timer;
+    proxy->timercpy(&timer, REF_TO_DUT);
+    _fastforward_timer = timer.stable_timer;
     ref_ext.misc = get_ref_csr(0x3);
     ref_ext.badi = get_ref_csr(0x8);
     ref_ext.pwcl = get_ref_csr(0x1c);
@@ -415,6 +418,8 @@ void Difftest::fastforward(uint64_t cycles) {
 
     _fastforward_cycles = cycles;
     _fastforward_pc = proxy->get_cur_pc();
+    inst_total = cycles;
+    printf("fastforward pc: %lx\n", _fastforward_pc);
 }
 
 bool Difftest::do_check_instruction_skip(uint32_t inst, bool &is_copy) {

@@ -62,6 +62,7 @@ double sc_time_stamp() { return 0; }
 Emulator *emulator;
 extern char* difftest_ref_so;
 #endif
+extern long long inst_total;
 
 void cpu_irq_handler(void *opaque, int n, int level) {
     VTop *Top = (VTop *)opaque;
@@ -624,6 +625,7 @@ int main(int argc, char** argv, char** env) {
         printf("Guest cycle spent: %ld (this will be different from cycleCnt if emu loads a snapshot)\n",
             sim_cycles);
         printf("Host time spent: %'ldms\n" , elapsed_time.count());
+        printf("total inst: %ld\n", inst_total);
     }
     return ret;
 }

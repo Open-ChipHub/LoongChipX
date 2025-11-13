@@ -943,8 +943,10 @@ assign decd_c_illegal = 1'b0;
 //----------------------------------------------------------
 //FP load/store illegal:
 //when FS=0,execute RV64F/D inst will trigger illegal
-assign decd_flsu_illegal = 1'b0;
-
+assign decd_flsu_illegal = (x_inst[31:24] == 8'b00101011 || // fld, fst
+                           x_inst[31:20] == 12'b001110000011 || // fldx, fstx
+                           x_inst[31:18] == 12'b00111000011101) && // fldgt
+                            fp_fs_illegal;
 assign decd_lsu_illegal = decd_flsu_illegal || decd_vlsu_illegal || 
                           (x_inst[31:21] == 11'b00111000010) ||
                           (x_inst[31:26] == 6'b001111) ||

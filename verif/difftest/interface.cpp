@@ -285,7 +285,6 @@ INTERFACE_CSRREG_RESTORE {
     auto packet = difftest[coreid]->get_ref_csr_state();
     auto packet_ext = difftest[coreid]->get_ref_csr_state_ext();
     auto proxy = difftest[coreid]->get_proxy();
-    printf("crmd: %llx, prmd: %llx, euen: %llx, pgdl: %llx\n", packet->crmd, packet->prmd, packet->euen, packet->pgdl);
     *crmd = packet->crmd;
     *prmd = packet->prmd;
     *euen = packet->euen;
@@ -313,7 +312,7 @@ INTERFACE_CSRREG_RESTORE {
     *tval = packet->tval;
     *cntc = packet_ext->cntc;
     *ticlr = packet_ext->ticlr;    
-    *timer = difftest[coreid]->_fastforward_cycles;
+    *timer = difftest[coreid]->_fastforward_timer;
     *tlbrentry = packet->tlbrentry;
     *tlbrehi = packet_ext->tlbrehi;
     *dmw0 = packet->dmw0;

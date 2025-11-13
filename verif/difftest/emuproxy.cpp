@@ -40,7 +40,7 @@ EmuProxy::EmuProxy(int coreid) {
     csrcpy = (void (*)(void*, bool))dlsym(handle, "loong64_difftest_csrcpy");
     check_and_assert(csrcpy);
 
-    exec = (void (*)(uint64_t))dlsym(handle, "loong64_difftest_exec");
+    exec = (void (*)(uint64_t, bool))dlsym(handle, "loong64_difftest_exec");
     check_and_assert(exec);
 
     check_end = (int(*)(void))dlsym(handle, "loong64_difftest_cosim_end");
@@ -55,7 +55,7 @@ EmuProxy::EmuProxy(int coreid) {
     isa_reg_display = (void (*)(void))dlsym(handle, "loong64_isa_reg_display");
     check_and_assert(isa_reg_display);
 
-    timercpy = (void (*)(void*))dlsym(handle, "loong64_difftest_timercpy");
+    timercpy = (void (*)(void*, bool))dlsym(handle, "loong64_difftest_timercpy");
     check_and_assert(timercpy);
 
     estat_sync = (void (*)(uint64_t, uint64_t))dlsym(handle, "loong64_difftest_estat_sync");

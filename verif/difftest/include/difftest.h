@@ -214,6 +214,7 @@ public:
     bool _fastforward = false;
     uint64_t _fastforward_cycles = 0;
     uint64_t _fastforward_pc = 0;
+    uint64_t _fastforward_timer = 0;
     /* Trigger a difftest checking produre */
     int step(vluint64_t& main_time);
 
