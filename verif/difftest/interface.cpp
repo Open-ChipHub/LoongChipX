@@ -68,8 +68,8 @@ INTERFACE_STORE_EVENT {
     packet->valid = valid;
     if (packet->valid) {
         packet->paddr = storePAddr;
-        packet->vaddr = storeVAddr;
         packet->data = storeData;
+        packet->mask = storeMask;
     }
 }
 

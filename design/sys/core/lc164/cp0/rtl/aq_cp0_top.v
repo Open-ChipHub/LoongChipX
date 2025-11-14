@@ -232,6 +232,7 @@ module aq_cp0_top (
   output   wire           cp0_vpu_xx_dqnan,
   output   wire  [2  :0]  cp0_vpu_xx_rm,
   output   wire  [4  :0]  cp0_vpu_fflags_enable,
+  output   wire  [63 :0]  cp0_vidu_fcsr,
   output   wire  [63 :0]  cp0_xx_mrvbr,
   output   wire           cp0_yy_clk_en,
   output   wire  [1  :0]  cp0_yy_priv_mode
@@ -513,6 +514,7 @@ aq_cp0_regs  x_aq_cp0_regs (
   .cp0_vpu_xx_dqnan              (cp0_vpu_xx_dqnan             ),
   .cp0_vpu_xx_rm                 (cp0_vpu_xx_rm                ),
   .cp0_vpu_fflags_enable         (cp0_vpu_fflags_enable        ),
+  .cp0_vidu_fcsr                 (cp0_vidu_fcsr                ),
   .cp0_xx_mrvbr                  (cp0_xx_mrvbr                 ),
   .cp0_yy_clk_en                 (cp0_yy_clk_en                ),
   .cp0_yy_priv_mode              (cp0_yy_priv_mode             ),

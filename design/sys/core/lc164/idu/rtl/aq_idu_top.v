@@ -157,7 +157,8 @@ module aq_idu_top (
   output   wire  [184:0]  idu_vidu_ex1_inst_data,
   output   wire           idu_vidu_ex1_vec_dp_sel,
   output   wire           idu_vidu_ex1_vec_gateclk_sel,
-  output   wire           idu_vidu_ex1_vec_sel
+  output   wire           idu_vidu_ex1_vec_sel,
+  output   wire  [7  :0]  idu_vidu_fcc
 ); 
 
 
@@ -304,7 +305,8 @@ aq_idu_id_gpr  x_aq_idu_id_gpr (
   .pad_yy_icg_scan_en (pad_yy_icg_scan_en),
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
-  .rtu_idu_wbc_data   (rtu_idu_wbc_data  )
+  .rtu_idu_wbc_data   (rtu_idu_wbc_data  ),
+  .idu_vidu_fcc       (idu_vidu_fcc      )
 );
 
 // &Instance("aq_idu_id_wbt",   "x_aq_idu_id_wbt"); @35

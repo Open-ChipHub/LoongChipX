@@ -543,7 +543,7 @@ int main(int argc, char** argv, char** env) {
 
         if(sim_cfg.snapshot_on_failure && snapshot->snapshot_isparent()){
             int cycle = sim_cycles/2;
-            if(cycle % snapshot_dist == 11){
+            if(cycle % snapshot_dist == 11 || !snapshot->snap_init){
                 // snapshot->snapshot_stats();
                 snapshot->snapshot_gen();
             }

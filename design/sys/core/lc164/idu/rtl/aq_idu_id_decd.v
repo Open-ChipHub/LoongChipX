@@ -835,7 +835,8 @@ assign decd_dst0_reg[4:0] = decd_inst_branch_link ?
                             : x_inst[4:0];
 
 
-assign decd_inst_preld   =   (x_inst[31:22] == 10'b0010101011)         //preld
+assign decd_inst_preld   =   (x_inst[31:15] == 17'b00000110010010001)  //idle
+                          || (x_inst[31:22] == 10'b0010101011)         //preld
                           || (x_inst[31:15] == 17'b00111000001011000); //preldx
 
 //output
@@ -2701,8 +2702,9 @@ begin
       decd_32_eu[`EU_WIDTH-1:0]     = `EU_CP0;
       decd_32_func[`FUNC_WIDTH-1:0] = `FUNC_IBAR;
       end
-    22'b00000110010010001_????? :begin  // wait
-      //deal in fence
+    22'b00000110010010001_????? :begin  // idle
+      decd_32_eu[`EU_WIDTH-1:0]     = `EU_ALU;
+      decd_32_func[`FUNC_WIDTH-1:0] = `FUNC_ANDI;
       end
     22'b00000110010010000_01110 :begin  // ertn
       decd_32_eu[`EU_WIDTH-1:0]     = `EU_CP0;

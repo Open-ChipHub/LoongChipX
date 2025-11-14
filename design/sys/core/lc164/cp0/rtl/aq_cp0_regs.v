@@ -163,6 +163,7 @@ module aq_cp0_regs (
   output   wire           cp0_vpu_xx_dqnan,
   output   wire  [2  :0]  cp0_vpu_xx_rm,
   output   wire  [4  :0]  cp0_vpu_fflags_enable,
+  output   wire  [63 :0]  cp0_vidu_fcsr,
   output   wire  [63 :0]  cp0_xx_mrvbr,
   output   wire  [1  :0]  cp0_yy_priv_mode,
   output   wire           regs_clk,
@@ -2105,6 +2106,8 @@ assign regs_iui_rdata_for_w[63:0] = regs_csr_rdata_for_w[63:0];
 assign cp0_mmu_cur_asid[15:0]     = csrasid_value[15:0];
 assign cp0_mmu_ptw_pgdh[63:0]     = csrpgdh_value[63:0];
 assign cp0_mmu_ptw_pgdl[63:0]     = csrpgdl_value[63:0];
+
+assign cp0_vidu_fcsr[63:0]        =  fcsr0_value[63:0];
 
 // &Force("output", "regs_xx_icg_en"); @1248
 // &Force("output", "regs_clk"); @1249

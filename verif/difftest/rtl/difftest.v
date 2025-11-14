@@ -145,8 +145,8 @@ endmodule
     `DPIC_ARG_BYTE index,
     `DPIC_ARG_BYTE valid,
     `DPIC_ARG_LONG storePAddr,
-    `DPIC_ARG_LONG storeVAddr,
-    `DPIC_ARG_LONG storeData
+    `DPIC_ARG_LONG storeData,
+    `DPIC_ARG_BYTE storeMask
 );
 `DIFFTEST_MOD_DECL(StoreEvent)(
     input        clock,
@@ -154,11 +154,11 @@ endmodule
     input [ 7:0] index,
     input [ 7:0] valid,
     input [63:0] storePAddr,
-    input [63:0] storeVAddr,
-    input [63:0] storeData
+    input [63:0] storeData,
+    input [7 :0] storeMask
 );
     `DIFFTEST_MOD_DPIC_CALL_BEGIN(StoreEvent) (
-        coreid, index, valid, storePAddr, storeVAddr, storeData
+        coreid, index, valid, storePAddr, storeData, storeMask
         )
     `DIFFTEST_MOD_DPIC_CALL_END(StoreEvent)
 endmodule

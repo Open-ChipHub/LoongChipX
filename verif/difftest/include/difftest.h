@@ -7,6 +7,7 @@
 #include "common.h"
 #include "emuproxy.h"
 #include "build_config.h"
+#include <queue>
 
 #define DIFF_PROXY EmuProxy
 
@@ -113,8 +114,8 @@ typedef struct __attribute__((packed)) {
 typedef struct {
     uint8_t  valid = 0;
     uint64_t paddr;
-    uint64_t vaddr;
     uint64_t data;
+    uint8_t  mask;
 } store_event_t;
 
 typedef struct {
@@ -201,6 +202,8 @@ private:
 
     /* control whether to compare between duf and ref */
     bool progress = false;
+
+    std::queue<store_data_t> store_queue;
 
     /* copy dut initialized state to ref when instruction is the first instruction */
     void do_first_instr_commit();

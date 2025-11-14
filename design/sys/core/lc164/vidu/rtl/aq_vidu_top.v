@@ -29,6 +29,7 @@ module aq_vidu_top (
   input    wire           idu_vidu_ex1_vec_dp_sel,
   input    wire           idu_vidu_ex1_vec_gateclk_sel,
   input    wire           idu_vidu_ex1_vec_sel,
+  input    wire  [7  :0]  idu_vidu_fcc,
   input    wire           ifu_vidu_warm_up,
   input    wire           pad_yy_icg_scan_en,
   input    wire           rtu_vidu_flush_wbt,
@@ -45,6 +46,7 @@ module aq_vidu_top (
   input    wire  [4  :0]  vpu_vidu_wbt_fp_wb1_reg,
   input    wire           vpu_vidu_wbt_fp_wb1_vld,
   input    wire           lsu_vlsu_st_stall,
+  input    wire  [63 :0]  cp0_vidu_fcsr,
   output   wire           vidu_cp0_vid_fof_vld,
   output   wire  [7  :0]  vidu_dtu_debug_info,
   output   wire           vidu_idu_fp_full,
@@ -283,7 +285,9 @@ aq_vidu_vid_gpr_fp  x_aq_vidu_vid_gpr_fp (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
   .vpu_vidu_fp_wb_reg  (vpu_vidu_fp_wb_reg ),
-  .vpu_vidu_fp_wb_vld  (vpu_vidu_fp_wb_vld )
+  .vpu_vidu_fp_wb_vld  (vpu_vidu_fp_wb_vld ),
+  .cp0_vidu_fcsr       (cp0_vidu_fcsr      ),
+  .idu_vidu_fcc        (idu_vidu_fcc       )
 );
 
 

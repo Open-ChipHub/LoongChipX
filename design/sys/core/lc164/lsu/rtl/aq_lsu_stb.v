@@ -1483,6 +1483,75 @@ aq_lsu_stb_entry  x_aq_lsu_stb_entry_3 (
 // &Force("nonport", "stb_merge_vld"); @976
 
 // &ModuleEnd; @985
+
+`ifdef CHECK_DIFFTEST
+    wire diff_store_valid;
+    reg [39:0] diff_pa;
+    wire [63:0] diff_mask;
+    reg [111:0] diff_data_0;
+    reg [111:0] diff_data_1;
+    reg [111:0] diff_data_2;
+    reg [111:0] diff_data_3;
+    wire [111:0] diff_data_i;
+    reg [111:0] diff_data_o;
+    reg [3:0] diff_data_valid;
+    reg [3:0] diff_ptr_vec;
+    wire diff_valid;
+    
+    always @(*) begin
+        case(dcache_req_sel[DEPTH-1:0])
+        4'b0001: diff_pa[39:0] = stb_entry0_pa[39:0];
+        4'b0010: diff_pa[39:0] = stb_entry1_pa[39:0];
+        4'b0100: diff_pa[39:0] = stb_entry2_pa[39:0];
+        4'b1000: diff_pa[39:0] = stb_entry3_pa[39:0];
+        default: diff_pa[39:0] = 40'bx;
+        endcase
+        case(diff_ptr_vec[3:0])
+        4'b0001: diff_data_o = diff_data_0;
+        4'b0010: diff_data_o = diff_data_1;
+        4'b0100: diff_data_o = diff_data_2;
+        4'b1000: diff_data_o = diff_data_3;
+        default: diff_data_o = 112'bx;
+        endcase
+    end
+
+    assign diff_data_i = {diff_pa, stb_arb_data & diff_mask, stb_arb_wen};
+    always @(posedge forever_cpuclk)begin
+      if (diff_store_valid)begin
+        if (dcache_req_sel[0]) diff_data_0 <= diff_data_i;
+        if (dcache_req_sel[1]) diff_data_1 <= diff_data_i;
+        if (dcache_req_sel[2]) diff_data_2 <= diff_data_i;
+        if (dcache_req_sel[3]) diff_data_3 <= diff_data_i;
+      end
+    end
+
+    always @(posedge forever_cpuclk or negedge cpurst_b)begin
+      if(!cpurst_b)begin
+        diff_data_valid <= 0;
+        diff_ptr_vec <= 4'b1;
+      end
+      else begin
+        diff_data_valid <= diff_data_valid & ~diff_ptr_vec | dcache_req_sel[3:0] & {4{diff_store_valid}};
+        if (diff_valid) diff_ptr_vec <= {diff_ptr_vec[2:0], diff_ptr_vec[3]};
+      end
+    end
+
+    assign diff_mask[63:0] = {{8{stb_arb_wen[7]}}, {8{stb_arb_wen[6]}}, {8{stb_arb_wen[5]}}, {8{stb_arb_wen[4]}},
+                              {8{stb_arb_wen[3]}}, {8{stb_arb_wen[2]}}, {8{stb_arb_wen[1]}}, {8{stb_arb_wen[0]}}};
+
+    assign diff_store_valid = stb_arb_req & arb_stb_grant;
+    assign diff_valid = diff_data_valid & diff_ptr_vec;
+    DifftestStoreEvent DifftestStoreEvent(
+      .clock        (forever_cpuclk        ),
+      .coreid       (8'b0                  ),
+      .valid        (diff_valid            ),
+      .index        (8'b0                  ),
+      .storePAddr   ({24'b0, diff_data_o[111 -: 40]}),
+      .storeData    (diff_data_o[8 +: 64]  ),
+      .storeMask    (diff_data_o[7:0]      )
+    );
+`endif
+
 endmodule
 
 

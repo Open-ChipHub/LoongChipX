@@ -73,8 +73,8 @@
     DPIC_ARG_BYTE index,                 \
     DPIC_ARG_BIT  valid,                 \
     DPIC_ARG_LONG storePAddr,            \
-    DPIC_ARG_LONG storeVAddr,            \
-    DPIC_ARG_LONG storeData              \
+    DPIC_ARG_LONG storeData,             \
+    DPIC_ARG_BYTE storeMask              \
   )
 
 // v_difftest_LoadEvent

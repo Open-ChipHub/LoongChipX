@@ -12,6 +12,12 @@ struct la64_timer {
     uint64_t time_val;
 };
 
+typedef struct {
+    uint64_t paddr;
+    uint64_t data;
+    uint8_t  mask;
+} store_data_t;
+
 typedef uint64_t paddr_t;
 typedef uint64_t vaddr_t;
 
@@ -38,6 +44,7 @@ public:
     uint64_t (*get_cur_pc)(void);
     uint64_t (*get_prev_pc)(void);
     int  (*check_end)();
+    bool (*get_store)(store_data_t* store_data);
 };
 
 #define check_and_assert(func)                \

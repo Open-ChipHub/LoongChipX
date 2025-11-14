@@ -9,7 +9,7 @@ extern FILE* uart_out;
 // not compare estat
 static const int DIFFTEST_NR_GREG   = 32;
 static const int DIFFTEST_NR_CSRREG = 12;
-static const int DIFFTEST_NR_FPREG  = 32;
+static const int DIFFTEST_NR_FPREG  = 34;
 static const int DIFFTEST_NR_REG = DIFFTEST_NR_GREG + DIFFTEST_NR_CSRREG;
 
 static const char* reg_name[] = {
@@ -88,6 +88,36 @@ int Difftest::step(vluint64_t &main_time) {
 
 #endif
         idx_commit++;
+    }
+
+    /* store difftest. valid = {4'b0, sc(llbit=1), stw, sth, stb} */
+    for (int index = 0; index < DIFFTEST_COMMIT_WIDTH; index++) {
+        if (dut.store[index].valid) {
+            store_queue.push({dut.store[index].paddr, dut.store[index].data, dut.store[index].mask});
+        }
+    }
+
+    if (!store_queue.empty()) {
+        store_data_t ref_store_data;
+        while (proxy->get_store(&ref_store_data)) {
+            
+            store_data_t dut_store_data = store_queue.front();
+            store_queue.pop();
+            if (ref_store_data.paddr != dut_store_data.paddr ||
+                ref_store_data.data != dut_store_data.data ||
+                ref_store_data.mask != dut_store_data.mask) {
+                printf("store different:\n");
+                printf("ref_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", ref_store_data.paddr, ref_store_data.data, ref_store_data.mask);
+                printf(" dut_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", dut_store_data.paddr, dut_store_data.data, dut_store_data.mask);
+#ifdef SIMU_TRACE
+                fprintf(trace_out,"store different:\n");
+                fprintf(trace_out,"ref_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", ref_store_data.paddr, ref_store_data.data, ref_store_data.mask);
+                fprintf(trace_out," dut_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", dut_store_data.paddr, dut_store_data.data, dut_store_data.mask);
+#endif
+                return STATE_ABORT;
+            }
+            if (store_queue.empty()) break;
+        }
     }
 
     if(idx_commit == 0 && !dut.excp.excp_valid){
@@ -195,19 +225,6 @@ int Difftest::step(vluint64_t &main_time) {
         return STATE_RUNNING;
     }
 
-    /* store difftest. valid = {4'b0, sc(llbit=1), stw, sth, stb} */
-    for (index = 0; index < idx_commit; index++) {
-        if (dut.store[index].valid) {
-            if (proxy->store_commit(dut.store[index].paddr, dut.store[index].data)) {
-                printf("dut different at pc = 0x%08x, paddr = 0x%lx, vaddr = 0x%lx, data = 0x%lx\n", dut.commit[index].pc, dut.store[index].paddr, dut.store[index].vaddr, dut.store[index].data);
-#ifdef SIMU_TRACE
-                fprintf(trace_out,"dut different at pc = 0x%08x, paddr = 0x%lx, vaddr = 0x%lx, data = 0x%lx\n", dut.commit[index].pc, dut.store[index].paddr, dut.store[index].vaddr, dut.store[index].data);
-#endif
-                return STATE_ABORT;
-            }
-        }
-    }
-
     /* load address of peripherals */
     for (index = 0; index < idx_commit; index++) {
 #ifdef RAND_TEST
@@ -305,7 +322,7 @@ int Difftest::step(vluint64_t &main_time) {
     if (memcmp(&dut.regs.fpr[0], &ref.regs.fpr[0], DIFFTEST_NR_FPREG * sizeof(uint64_t))){
         for (int i = 0; i < DIFFTEST_NR_GREG; i ++) {
             if (dut.regs.fpr[i] != ref.regs.fpr[i]) {
-                if ((dut.regs.fpr[i] & 0xffffffff) == (ref.regs.fpr[i] & 0xffffffff))
+                if ((dut.regs.fpr[i]) == (ref.regs.fpr[i]))
                     continue;
                 printf("%2s(f%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
                        reg_name[i], i, ref.csr.cur_pc, ref.regs.fpr[i], dut.regs.fpr[i]);
@@ -314,6 +331,22 @@ int Difftest::step(vluint64_t &main_time) {
                         reg_name[i], i, ref.csr.cur_pc, ref.regs.fpr[i], dut.regs.fpr[i]);
 #endif
             }
+        }
+        if (dut.regs.fccr != ref.regs.fccr) {
+            printf("fccr different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fccr, dut.regs.fccr);
+#ifdef SIMU_TRACE
+            fprintf(trace_out, "fccr different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fccr, dut.regs.fccr);
+#endif
+        }
+        if (dut.regs.fcsr0 != ref.regs.fcsr0) {
+            printf("fcsr0 different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fcsr0, dut.regs.fcsr0);
+#ifdef SIMU_TRACE
+            fprintf(trace_out, "fcsr0 different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fcsr0, dut.regs.fcsr0);
+#endif
         }
         return STATE_ABORT;
     } else {
@@ -415,6 +448,8 @@ void Difftest::fastforward(uint64_t cycles) {
     ref_ext.cntc = get_ref_csr(0x43);
     ref_ext.ticlr = get_ref_csr(0x44);
     ref_ext.tlbrehi = get_ref_csr(0x8e);
+    store_data_t store_data;
+    while (proxy->get_store(&store_data));
 
     _fastforward_cycles = cycles;
     _fastforward_pc = proxy->get_cur_pc();

@@ -26,6 +26,8 @@ module aq_vidu_vid_gpr_fp (
   input    wire  [63:0]  vpu_vidu_fp_wb_data,
   input    wire  [4 :0]  vpu_vidu_fp_wb_reg,
   input    wire          vpu_vidu_fp_wb_vld,
+  input    wire  [63:0]  cp0_vidu_fcsr,
+  input    wire  [7 :0]  idu_vidu_fcc,
   output   reg   [63:0]  gpr_fp_dp_src0_data,
   output   reg   [63:0]  gpr_fp_dp_src1_data,
   output   reg   [63:0]  gpr_fp_dp_src2_data
@@ -846,8 +848,8 @@ end
 DifftestFPRegState DifftestFPRegState (
     .clock              (forever_cpuclk     ),
     .coreid             ('0                 ),
-    .fccr               (8'b0               ),
-    .fcsr0              (32'b0              ),
+    .fccr               (idu_vidu_fcc[7:0]  ),
+    .fcsr0              (cp0_vidu_fcsr[31:0]),
     .fpr_0              (read_data_0[63:0]  ),
     .fpr_1              (read_data_1[63:0]  ),
     .fpr_2              (read_data_2[63:0]  ),

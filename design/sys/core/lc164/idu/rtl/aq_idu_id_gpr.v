@@ -33,7 +33,8 @@ module aq_idu_id_gpr (
   output   reg   [63:0]  gpr_dp_src0_data,
   output   reg   [63:0]  gpr_dp_src1_data,
   output   reg   [63:0]  gpr_dp_src2_data,
-  output   reg           gpr_dp_srcc_data
+  output   reg           gpr_dp_srcc_data,
+  output   wire  [7 :0]  idu_vidu_fcc
 ); 
 
 
@@ -905,6 +906,8 @@ assign read_data_fcc = write_data;
 always @(posedge fcc_clk)begin
   fcc_data <= write_data;
 end
+
+assign idu_vidu_fcc[7:0] = fcc_data[7:0];
 
 gated_clk_cell  x_reg_gated_clk (
   .clk_in             (forever_cpuclk      ),

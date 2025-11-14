@@ -364,6 +364,7 @@ wire             cp0_vpu_xx_bf16;
 wire             cp0_vpu_xx_dqnan;                
 wire    [2  :0]  cp0_vpu_xx_rm;             
 wire    [4  :0]  cp0_vpu_fflags_enable;      
+wire    [63 :0]  cp0_vidu_fcsr;
 wire    [63 :0]  cp0_xx_mrvbr;                    
 wire    [63 :0]  da_xx_fwd_data;                  
 wire    [5  :0]  da_xx_fwd_dst_reg;               
@@ -438,7 +439,8 @@ wire             idu_vidu_ex1_fp_sel;
 wire    [184:0]  idu_vidu_ex1_inst_data;          
 wire             idu_vidu_ex1_vec_dp_sel;         
 wire             idu_vidu_ex1_vec_gateclk_sel;    
-wire             idu_vidu_ex1_vec_sel;            
+wire             idu_vidu_ex1_vec_sel;        
+wire    [7  :0]  idu_vidu_fcc;    
 wire             ifu_cp0_bht_inv_done;            
 wire             ifu_cp0_icache_inv_done;         
 wire    [127:0]  ifu_cp0_icache_read_data;        
@@ -949,6 +951,7 @@ aq_idu_top  x_aq_idu_top (
   .idu_vidu_ex1_vec_dp_sel      (idu_vidu_ex1_vec_dp_sel     ),
   .idu_vidu_ex1_vec_gateclk_sel (idu_vidu_ex1_vec_gateclk_sel),
   .idu_vidu_ex1_vec_sel         (idu_vidu_ex1_vec_sel        ),
+  .idu_vidu_fcc                 (idu_vidu_fcc                ),
   .ifu_idu_id_bht_pred          (ifu_idu_id_bht_pred         ),
   .ifu_idu_id_expt_acc_error    (ifu_idu_id_expt_acc_error   ),
   .ifu_idu_id_expt_high         (ifu_idu_id_expt_high        ),
@@ -1015,6 +1018,7 @@ aq_vidu_top  x_aq_vidu_top (
   .idu_vidu_ex1_vec_dp_sel          (idu_vidu_ex1_vec_dp_sel         ),
   .idu_vidu_ex1_vec_gateclk_sel     (idu_vidu_ex1_vec_gateclk_sel    ),
   .idu_vidu_ex1_vec_sel             (idu_vidu_ex1_vec_sel            ),
+  .idu_vidu_fcc                     (idu_vidu_fcc                    ),
   .ifu_vidu_warm_up                 (ifu_vidu_warm_up                ),
   .pad_yy_icg_scan_en               (pad_yy_icg_scan_en              ),
   .rtu_vidu_flush_wbt               (rtu_vidu_flush_wbt              ),
@@ -1059,7 +1063,8 @@ aq_vidu_top  x_aq_vidu_top (
   .vpu_vidu_wbt_fp_wb0_reg          (vpu_vidu_wbt_fp_wb0_reg         ),
   .vpu_vidu_wbt_fp_wb0_vld          (vpu_vidu_wbt_fp_wb0_vld         ),
   .vpu_vidu_wbt_fp_wb1_reg          (vpu_vidu_wbt_fp_wb1_reg         ),
-  .vpu_vidu_wbt_fp_wb1_vld          (vpu_vidu_wbt_fp_wb1_vld         )
+  .vpu_vidu_wbt_fp_wb1_vld          (vpu_vidu_wbt_fp_wb1_vld         ),
+  .cp0_vidu_fcsr                    (cp0_vidu_fcsr                   )
 );
 
 
@@ -1677,6 +1682,7 @@ aq_cp0_top  x_aq_cp0_top (
   .cp0_vpu_xx_dqnan             (cp0_vpu_xx_dqnan            ),
   .cp0_vpu_xx_rm                (cp0_vpu_xx_rm               ),
   .cp0_vpu_fflags_enable        (cp0_vpu_fflags_enable       ),
+  .cp0_vidu_fcsr                (cp0_vidu_fcsr               ),
   .cp0_xx_mrvbr                 (cp0_xx_mrvbr                ),
   .cp0_yy_clk_en                (cp0_yy_clk_en               ),
   .cp0_yy_priv_mode             (cp0_yy_priv_mode            ),
