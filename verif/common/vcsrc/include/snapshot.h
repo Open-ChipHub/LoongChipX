@@ -78,6 +78,8 @@ public:
     bool trace_reopen;
     bool trace_opened;
     int rollback_dist;
+    bool snap_init = false;
+    bool save_checkpoint = false;
 
     int  error_set();
     int  error_clear();

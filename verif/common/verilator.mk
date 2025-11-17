@@ -53,8 +53,9 @@ CXXFLAGS      ?=
 LDFLAGS       ?=
 OBJCACHE	  ?= $(shell command -v ccache >/dev/null 2>&1; if [ $$? -eq 0 ]; then echo "ccache"; fi)
 
-WAVE          ?= VCD
+WAVE          ?= FST
 CONFIG        ?= $(VERIF_DIR)/config/config.hello
+PROFILE       ?= 0
 
 # Generate makefile dependencies (not shown as complicates the Makefile)
 #VERILATOR_FLAGS += -MMD
@@ -73,7 +74,7 @@ CXXFLAGS += -stdlib=libstdc++
 LDFLAGS += -stdlib=libstdc++
 endif
 
-CXXFLAGS_OPTIMIZE += -O3 -g  
+CXXFLAGS_OPTIMIZE += -O3
 CXXFLAGS += $(CXXFLAGS_OPTIMIZE)
 
 ifeq ("$(RANDOM_INIT)", "1")
@@ -95,6 +96,7 @@ CXXFLAGS+=-I$(COMMON_DIR)/memory/
 LDFLAGS +=-L$(COMMON_DIR)/memory/DRAMsim3/
 LDFLAGS +=-L$(COMMON_DIR)/softfpu
 LIBS    += -ldramsim3
+LIBS    += -lz
 
 ifeq ("$(WAVE)", "FST")
     WAVE_FLAGS=--trace-fst
@@ -113,6 +115,10 @@ VERILATOR_FLAGS += --threads $(VERILATOR_THREAD_NUM)
 # this just slightly increase the speed of wave dump
 VERILATOR_FLAGS += --trace-threads 2
 CXXFLAGS += -DVERILATOR_THREAD_NUM=$(VERILATOR_THREAD_NUM)
+endif
+
+ifneq ($(PROFILE),0)
+VERILATOR_FLAGS += --prof-c
 endif
 
 
@@ -256,6 +262,9 @@ clean:
 	 files.verdi.lst
 
 clean_all: mostlyclean
+
+clean_obj:
+	-rm -rf obj_dir
 
 distclean: clean
 	-rm -rf logs find_out_*

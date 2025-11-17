@@ -78,6 +78,12 @@ EmuProxy::EmuProxy(int coreid) {
 
     get_store = (bool (*)(store_data_t*))dlsym(handle, "loong64_difftest_get_store");
     check_and_assert(get_store);
+
+    save_checkpoint = (void (*)(const char*))dlsym(handle, "loong64_difftest_save_checkpoint");
+    check_and_assert(save_checkpoint);
+
+    restore_checkpoint = (void (*)(const char*))dlsym(handle, "loong64_difftest_restore_checkpoint");
+    check_and_assert(restore_checkpoint);
 #else
     printf("The current platform is not supported.\n");
     exit(1);

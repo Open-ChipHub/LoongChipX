@@ -451,9 +451,9 @@ void Difftest::fastforward(uint64_t cycles) {
     store_data_t store_data;
     while (proxy->get_store(&store_data));
 
-    _fastforward_cycles = cycles;
+    _fastforward_cycles = timer.stable_timer;
     _fastforward_pc = proxy->get_cur_pc();
-    inst_total = cycles;
+    inst_total = timer.stable_timer;
     printf("fastforward pc: %lx\n", _fastforward_pc);
 }
 

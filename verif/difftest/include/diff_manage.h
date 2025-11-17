@@ -17,6 +17,9 @@ public:
     void display();
     void fastforward(uint64_t cycles);
     void fastforward_end();
+    void restore_checkpoint(const char* path);
+    void save_checkpoint(const char* path);
+    uint64_t get_fastforward_cycle();
     ~DiffManage();
 };
 

@@ -45,6 +45,7 @@ private:
 public:
     DiffManage* dm;
     uint8_t *ram;
+    uint64_t ram_size;
 
     /* input: ram img path */
     char img[128];
@@ -54,7 +55,7 @@ public:
 
     Emulator(VTop *top, const char*path, const char* file_out, const char*uart_path, const char*file_in, const char*data_vlog);
     ~Emulator();
-    void init_ram(uint8_t* ram);
+    void init_ram(uint8_t* ram, uint64_t size);
 
     /* do init work such as init_difftest, init_nemuproxy */
     void init_emu(vluint64_t* main_time);
@@ -79,6 +80,8 @@ public:
     /* used by slice */
     void close();
     void fastforward(uint64_t cycles);
+    void restore_checkpoint(const char* path);
+    void save_checkpoint(const char* path);
 };
 
 #endif //CHIPLAB_EMU_H

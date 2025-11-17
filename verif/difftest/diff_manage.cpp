@@ -66,6 +66,18 @@ void DiffManage::fastforward_end() {
     difftest[0]->_fastforward = false;
 }
 
+uint64_t DiffManage::get_fastforward_cycle() {
+    return difftest[0]->_fastforward_cycles;
+}
+
+void DiffManage::save_checkpoint(const char* path) {
+    difftest[0]->get_proxy()->save_checkpoint(path);
+}
+
+void DiffManage::restore_checkpoint(const char* path) {
+    difftest[0]->get_proxy()->restore_checkpoint(path);
+}
+
 DiffManage::~DiffManage() {
     for(int i = 0; i < NUM_CORES; ++i) {
         delete difftest[i];

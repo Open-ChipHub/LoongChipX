@@ -343,11 +343,6 @@ int main(int argc, char** argv, char** env) {
     auto ram = RAM(0, sim_cfg.real_log_dir);
     auto random_test = rand64(&ram);
 
-    if (sim_cfg.fastforward_cycles) {
-        contextp->time(sim_cfg.fastforward_cycles);
-        sim_cycles = sim_cfg.fastforward_cycles * 2;
-    }
-
     extern std::string image_dir;
     sim_initialize(config, sim_cfg, ram, random_test);
     if (sim_cfg.with_serial && !checkpoint) {
@@ -382,10 +377,12 @@ int main(int argc, char** argv, char** env) {
     
     /// emulator->init_ram(ram.get_ram_base());
     /// copy memory to emulator ram by 4GB.
-    for (auto& map : ram.addr_maps) {
-        memcpy(emulator_ram + map.start, ram.base + map.start, map.size);
+    if (!sim_cfg.restore_checkpoint) {
+        for (auto& map : ram.addr_maps) {
+            memcpy(emulator_ram + map.start, ram.base + map.start, map.size);
+        }
     }
-    emulator->init_ram(emulator_ram);
+    emulator->init_ram(emulator_ram, (2ull << 32));
 #endif
 
     // Set VTop's input signals
@@ -420,11 +417,17 @@ int main(int argc, char** argv, char** env) {
 #else
     AXISim::AXI_wrapper axi_wrapper(Top,&ram);
 #endif
-
-    if (sim_cfg.fastforward_cycles != 0) {
+#ifdef CONFIG_DIFFTEST
+    if (sim_cfg.restore_checkpoint) {
+        emulator->restore_checkpoint(sim_cfg.checkpoint_path.c_str());
+    }
+    if (sim_cfg.fastforward_cycles != 0 || sim_cfg.restore_checkpoint) {
         emulator->fastforward(sim_cfg.fastforward_cycles);
+        contextp->time(sim_cycles);
+        sim_cycles *= 2;
         ram.memcpy_ram(emulator_ram, 1ull << 32);
     }
+#endif
 
     uint64_t dram_cnt = 0;//Dram用的计数器，用来分半频
 
@@ -547,6 +550,12 @@ int main(int argc, char** argv, char** env) {
                 // snapshot->snapshot_stats();
                 snapshot->snapshot_gen();
             }
+        }
+
+        if (sim_cfg.checkpoint_on_failure && !snapshot->snapshot_isparent() && !snapshot->save_checkpoint ||
+            sim_cfg.checkpoint_cycles != 0 && sim_cfg.checkpoint_cycles == inst_total && snapshot->snapshot_isparent()) {
+            emulator->save_checkpoint(sim_cfg.real_log_dir.c_str());
+            snapshot->save_checkpoint = true;
         }
 
         if(snapshot->trace_reopen){

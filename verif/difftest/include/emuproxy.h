@@ -45,6 +45,8 @@ public:
     uint64_t (*get_prev_pc)(void);
     int  (*check_end)();
     bool (*get_store)(store_data_t* store_data);
+    void (*save_checkpoint)(const char* path);
+    void (*restore_checkpoint)(const char* path);
 };
 
 #define check_and_assert(func)                \

@@ -54,4 +54,9 @@ void SimConfig::setup(Config& config){
     random_fill_type = config.get_value_or_else("random_fill_type", 1);
 
     ipc_monitor_alert = config.get_value_or_bool("ipc_monitor_alert", false);
+
+    checkpoint_on_failure = config.get_value_or_bool("checkpoint_on_failure", false);
+    restore_checkpoint = config.get_value_or_bool("restore_checkpoint", false);
+    checkpoint_path = config.get_value_or_cstr("checkpoint_path", "");
+    checkpoint_cycles = config.get_value_or_else("checkpoint_cycles", 0);
 }

@@ -4,6 +4,8 @@
 #include "emu.h"
 #include "lightsss.h"
 #include "build_config.h"
+#include <zlib.h>
+#include "compress.h"
 
 int enable_fork = 0;
 
@@ -93,9 +95,10 @@ void Emulator::init_emu(vluint64_t* main_time) {
     dm->init_difftest();
 }
 
-void Emulator::init_ram(uint8_t* ram) {
+void Emulator::init_ram(uint8_t* ram, uint64_t size) {
     assert(ram != NULL);
     this->ram = ram;
+    this->ram_size = size;
     dm->init_ram(ram);
 }
 
@@ -278,6 +281,21 @@ void Emulator::fastforward(uint64_t cycles) {
         top->eval();
     }
     dm->fastforward_end();
+    *main_time = dm->get_fastforward_cycle();
+}
+
+void Emulator::save_checkpoint(const char* path) {
+    dm->save_checkpoint(path);
+    char buf[1024];
+    sprintf(buf, "%s/ram.gz", path);
+    MMapCompressor::compressAndSave(this->ram, this->ram_size, buf);
+}
+
+void Emulator::restore_checkpoint(const char* path) {
+    dm->restore_checkpoint(path);
+    char buf[1024];
+    sprintf(buf, "%s/ram.gz", path);
+    MMapCompressor::loadAndDecompress(buf, this->ram);
 }
 
 void Emulator::fork_child_init() {
