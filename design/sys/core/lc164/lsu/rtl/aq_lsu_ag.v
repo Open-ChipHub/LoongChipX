@@ -1582,6 +1582,20 @@ assign ag_dbginfo[7:0] = {ag_req_buffer_src2_depd,ag_pipe_func[3:0],vsplit_no_op
 
 
 // &ModuleEnd; @1246
+
+`ifdef CHECK_DIFFTEST
+  DifftestTLBEvent DifftestTLBEvent(
+    .clock(forever_cpuclk),
+    .coreid('0),
+    .index(8'b1),
+    .valid(mmu_lsu_pa_vld),
+    .source(ag_pipe_inst_st),
+    .vpn(ag_pipe_addr[63:0]),
+    .ppn({24'b0, ag_pipe_pa[39:0]}),
+    .exception({17'b0, ag_pipe_expt_vec[14:0]})
+  );
+`endif
+
 endmodule
 
 

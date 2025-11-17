@@ -320,6 +320,17 @@
         DPIC_ARG_LONG_OUT pc                     \
     )
 
+#define INTERFACE_TLB_EVENT \
+    DIFFTEST_DPIC_FUNC_DECL(TLBEvent) (    \
+        DPIC_ARG_BIT     valid,                  \
+        DPIC_ARG_BYTE    index,                  \
+        DPIC_ARG_BYTE    coreid,                 \
+        DPIC_ARG_BYTE    source,                 \
+        DPIC_ARG_LONG    vpn,                    \
+        DPIC_ARG_LONG    ppn,                    \
+        DPIC_ARG_INT     exception               \
+    )
+
 INTERFACE_INSTR_COMMIT;
 INTERFACE_EXCP_EVENT;
 INTERFACE_TRAP_EVENT;
@@ -332,5 +343,6 @@ INTERFACE_GREG_RESTORE;
 INTERFACE_FPREG_RESTORE;
 INTERFACE_CSRREG_RESTORE;
 INTERFACE_PC_RESTORE;
+INTERFACE_TLB_EVENT;
 
 #endif //CHIPLAB_INTERFACE_H

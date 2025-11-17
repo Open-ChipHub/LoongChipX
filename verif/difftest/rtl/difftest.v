@@ -688,3 +688,27 @@ endmodule
         ) `DIFFTEST_MOD_DPIC_CALL_END(PCRestore)
 endmodule
 
+`DIFFTEST_DPIC_FUNC_DECL(TLBEvent) (
+    `DPIC_ARG_BIT       valid,
+    `DPIC_ARG_BYTE      index,
+    `DPIC_ARG_BYTE      coreid,
+    `DPIC_ARG_BYTE      source, // 0: load, 1: store, 2: ifetch
+    `DPIC_ARG_LONG      vpn,
+    `DPIC_ARG_LONG      ppn,
+    `DPIC_ARG_INT       exception
+);
+`DIFFTEST_MOD_DECL(TLBEvent)(
+    input           clock,
+    input           valid,
+    input [7 :0]    index,
+    input [7 :0]    coreid,
+    input [7 :0]    source,
+    input [63:0]    vpn,
+    input [63:0]    ppn,
+    input [31:0]    exception
+);
+    `DIFFTEST_MOD_DPIC_CALL_BEGIN(TLBEvent)(
+        valid, index, coreid, source, vpn, ppn, exception
+    ) `DIFFTEST_MOD_DPIC_CALL_END(TLBEvent)
+endmodule
+

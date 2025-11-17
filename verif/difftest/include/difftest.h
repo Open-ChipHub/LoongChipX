@@ -125,6 +125,14 @@ typedef struct {
 } load_event_t;
 
 typedef struct {
+    uint8_t valid = 0;
+    uint8_t source;
+    uint64_t vpn;
+    uint64_t ppn;
+    uint32_t exception;
+} tlb_event_t;
+
+typedef struct {
     trap_event_t trap;
     excp_event_t excp;
     instr_commit_t commit[DIFFTEST_COMMIT_WIDTH];
@@ -132,6 +140,7 @@ typedef struct {
     arch_csr_state_t csr;
     store_event_t store[DIFFTEST_COMMIT_WIDTH];
     load_event_t load[DIFFTEST_COMMIT_WIDTH];
+    tlb_event_t tlb[2];
 } difftest_core_state_t;
 
 class DiffState {
@@ -248,6 +257,10 @@ public:
     inline load_event_t *get_load_event(uint8_t index) {
         return &(dut.load[index]);
     }
+    inline tlb_event_t *get_tlb_event(int index) {
+        return &(dut.tlb[index]);
+    }
+
     inline arch_greg_state_t* get_ref_greg_state() {
         return &(ref.regs);
     }

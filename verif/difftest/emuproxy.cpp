@@ -84,6 +84,9 @@ EmuProxy::EmuProxy(int coreid) {
 
     restore_checkpoint = (void (*)(const char*))dlsym(handle, "loong64_difftest_restore_checkpoint");
     check_and_assert(restore_checkpoint);
+
+    check_paddr = (void (*)(uint64_t, uint32_t, uint64_t*, uint32_t*))dlsym(handle, "loong64_difftest_check_paddr");
+    check_and_assert(check_paddr);
 #else
     printf("The current platform is not supported.\n");
     exit(1);

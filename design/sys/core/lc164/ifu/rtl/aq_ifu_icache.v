@@ -1274,6 +1274,19 @@ assign ifu_yy_xx_no_op        = ref_fsm_idle && pf_fsm_idle;
 // &Force("nonport", "icache_wfpa"); @918
 
 // &ModuleEnd; @996
+
+`ifdef CHECK_DIFFTEST
+  DifftestTLBEvent DifftestTLBEvent(
+    .clock(forever_cpuclk),
+    .coreid('0),
+    .index(8'b0),
+    .valid(mmu_ifu_pa_vld && icache_rd_vld),
+    .source(8'b10),
+    .vpn(icache_rd_addr[63:0]),
+    .ppn({24'b0, icache_pa[39:0]}),
+    .exception((mmu_ifu_access_fault ? 32'd3 : 32'd0))
+  );
+`endif
 endmodule
 
 

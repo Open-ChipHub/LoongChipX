@@ -328,3 +328,15 @@ INTERFACE_PC_RESTORE {
     }
     *pc = difftest[coreid]->_fastforward_pc;
 }
+
+INTERFACE_TLB_EVENT {
+    RETURN_NO_NULL
+    auto packet = difftest[coreid]->get_tlb_event(index);
+    packet->valid = valid;
+    if (valid) {
+        packet->source = source;
+        packet->vpn = vpn;
+        packet->ppn = ppn;
+        packet->exception = exception;
+    }
+}

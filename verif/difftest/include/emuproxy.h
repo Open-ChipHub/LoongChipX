@@ -47,6 +47,7 @@ public:
     bool (*get_store)(store_data_t* store_data);
     void (*save_checkpoint)(const char* path);
     void (*restore_checkpoint)(const char* path);
+    void (*check_paddr)(uint64_t vaddr, uint32_t source, uint64_t* paddr, uint32_t* exception);
 };
 
 #define check_and_assert(func)                \
