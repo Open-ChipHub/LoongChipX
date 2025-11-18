@@ -124,7 +124,8 @@ int Difftest::step(vluint64_t &main_time) {
         if (dut.tlb[i].valid) {
             proxy->check_paddr(dut.tlb[i].vpn, dut.tlb[i].source, &ref.tlb[i].ppn, &ref.tlb[i].exception);
             if (ref.tlb[i].exception != 0x8 && // adef
-                (ref.tlb[i].ppn != dut.tlb[i].ppn || ref.tlb[i].exception != dut.tlb[i].exception)) {
+                ((dut.tlb[i].exception == 0) && ref.tlb[i].ppn != dut.tlb[i].ppn ||
+                  ref.tlb[i].exception != dut.tlb[i].exception)) {
                 printf("TLB different:\n");
                 printf("ref_tlb: vpn = 0x%lx, source = 0x%x, ppn = 0x%lx, exception = 0x%x\n", dut.tlb[i].vpn, dut.tlb[i].source, ref.tlb[i].ppn, ref.tlb[i].exception);
                 printf(" dut_tlb: vpn = 0x%lx, source = 0x%x, ppn = 0x%lx, exception = 0x%x\n", dut.tlb[i].vpn, dut.tlb[i].source, dut.tlb[i].ppn, dut.tlb[i].exception);

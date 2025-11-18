@@ -154,6 +154,7 @@ int sigint_triggered = 0;
 bool sim_wave_on = false;
 
 void sigint_handler(int signum){
+    printf("SIGINT handler, inst_num: %lx\n", inst_total);
     if(sigint_triggered > 0){
         log_info("Catched multiple SIGINT (Ctrl-C), exit.");
         exit(1);
