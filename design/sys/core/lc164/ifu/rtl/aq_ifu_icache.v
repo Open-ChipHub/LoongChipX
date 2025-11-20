@@ -44,6 +44,7 @@ module aq_ifu_icache (
   input    wire  [27 :0]  mmu_ifu_pa,
   input    wire           mmu_ifu_pa_vld,
   input    wire  [4  :0]  mmu_ifu_prot,
+  input    wire           mmu_ifu_sh,
   input    wire           pad_yy_icg_scan_en,
   input    wire           pcgen_icache_chgflw_vld,
   input    wire  [33 :0]  pcgen_icache_seq_tag,
@@ -56,6 +57,7 @@ module aq_ifu_icache (
   output   wire           icache_ipack_inst_vld,
   output   wire           icache_ipack_inst_vld_gate,
   output   wire           icache_ipack_pgflt,
+  output   wire           icache_ipack_pnx,
   output   wire           icache_ipack_unalign,
   output   wire  [63 :0]  icache_pcgen_addr,
   output   wire           icache_pcgen_grant,
@@ -1205,6 +1207,7 @@ assign icache_ipack_acc_err       = icache_bypass_vld ? biu_icache_ref_err
 assign icache_ipack_unalign       = icache_bypass_vld ? icache_refill_addr[1]
                                                       : icache_pa[1];
 assign icache_ipack_pgflt         = icache_prot[4];
+assign icache_ipack_pnx           = mmu_ifu_sh;
 
 //================================================
 //               ICache Stage Signals
@@ -1276,6 +1279,20 @@ assign ifu_yy_xx_no_op        = ref_fsm_idle && pf_fsm_idle;
 // &ModuleEnd; @996
 
 `ifdef CHECK_DIFFTEST
+  reg [31:0] exception;
+  always @(*) begin
+    if (mmu_ifu_access_fault || icache_ipack_pgflt)begin
+      if (mmu_ifu_sh) begin
+        exception = 32'd6;
+      end
+      else begin
+        exception = 32'd3;
+      end
+    end
+    else begin
+      exception = 32'd0;
+    end
+  end
   DifftestTLBEvent DifftestTLBEvent(
     .clock(forever_cpuclk),
     .coreid('0),
@@ -1284,7 +1301,7 @@ assign ifu_yy_xx_no_op        = ref_fsm_idle && pf_fsm_idle;
     .source(8'b10),
     .vpn(icache_rd_addr[63:0]),
     .ppn({24'b0, icache_pa[39:0]}),
-    .exception((mmu_ifu_access_fault || icache_ipack_pgflt ? 32'd3 : 32'd0))
+    .exception(exception)
   );
 `endif
 endmodule

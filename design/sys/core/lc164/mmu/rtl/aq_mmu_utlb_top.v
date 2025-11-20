@@ -80,6 +80,7 @@ module aq_mmu_utlb_top (
   output   wire  [27:0]  mmu_ifu_pa,
   output   wire          mmu_ifu_pa_vld,
   output   wire  [4 :0]  mmu_ifu_prot,
+  output   wire          mmu_ifu_sh, // PPI
   output   wire          mmu_lsu_access_fault,
   output   wire          mmu_lsu_buf,
   output   wire          mmu_lsu_ca,
@@ -87,7 +88,7 @@ module aq_mmu_utlb_top (
   output   wire          mmu_lsu_pa_vld,
   output   wire          mmu_lsu_page_fault,
   output   wire          mmu_lsu_sec,
-  output   wire          mmu_lsu_sh,
+  output   wire          mmu_lsu_sh, // PNR, PME
   output   wire          mmu_lsu_so
 ); 
 
@@ -106,7 +107,6 @@ wire            mmu_ifu_buf;
 wire            mmu_ifu_ca;           
 wire            mmu_ifu_page_fault;   
 wire            mmu_ifu_sec;          
-wire            mmu_ifu_sh;           
 wire            mmu_ifu_so;           
 
 

@@ -1488,16 +1488,21 @@ aq_lsu_stb_entry  x_aq_lsu_stb_entry_3 (
     wire diff_store_valid;
     reg [39:0] diff_pa;
     wire [63:0] diff_mask;
+    wire diff_biu_vld;
+    wire [63:0] diff_biu_mask;
     reg [111:0] diff_data_0;
     reg [111:0] diff_data_1;
     reg [111:0] diff_data_2;
     reg [111:0] diff_data_3;
     wire [111:0] diff_data_i;
+    wire [111:0] diff_biu_data_i;
     reg [111:0] diff_data_o;
     reg [3:0] diff_data_valid;
     reg [3:0] diff_ptr_vec;
     wire diff_valid;
     
+    assign diff_store_valid = stb_arb_req & arb_stb_grant;
+    assign diff_biu_vld = biu_req_sel && stb_wbus_cmplt;
     always @(*) begin
         case(dcache_req_sel[DEPTH-1:0])
         4'b0001: diff_pa[39:0] = stb_entry0_pa[39:0];
@@ -1515,13 +1520,25 @@ aq_lsu_stb_entry  x_aq_lsu_stb_entry_3 (
         endcase
     end
 
+    assign diff_mask[63:0] = {{8{stb_arb_wen[7]}}, {8{stb_arb_wen[6]}}, {8{stb_arb_wen[5]}}, {8{stb_arb_wen[4]}},
+                              {8{stb_arb_wen[3]}}, {8{stb_arb_wen[2]}}, {8{stb_arb_wen[1]}}, {8{stb_arb_wen[0]}}};
+    assign diff_biu_mask[63:0] = {{8{stb_wstrb[7]}}, {8{stb_wstrb[6]}}, {8{stb_wstrb[5]}}, {8{stb_wstrb[4]}},
+                                 {8{stb_wstrb[3]}}, {8{stb_wstrb[2]}}, {8{stb_wstrb[1]}}, {8{stb_wstrb[0]}}};
+
     assign diff_data_i = {diff_pa, stb_arb_data & diff_mask, stb_arb_wen};
+    assign diff_biu_data_i = {stb_awaddr & 40'hfffffffff8, stb_wdata & diff_biu_mask, stb_wstrb};
     always @(posedge forever_cpuclk)begin
       if (diff_store_valid)begin
         if (dcache_req_sel[0]) diff_data_0 <= diff_data_i;
         if (dcache_req_sel[1]) diff_data_1 <= diff_data_i;
         if (dcache_req_sel[2]) diff_data_2 <= diff_data_i;
         if (dcache_req_sel[3]) diff_data_3 <= diff_data_i;
+      end
+      if (diff_biu_vld)begin
+        if (biu_req_sel[0]) diff_data_0 <= diff_biu_data_i;
+        if (biu_req_sel[1]) diff_data_1 <= diff_biu_data_i;
+        if (biu_req_sel[2]) diff_data_2 <= diff_biu_data_i;
+        if (biu_req_sel[3]) diff_data_3 <= diff_biu_data_i;
       end
     end
 
@@ -1531,16 +1548,12 @@ aq_lsu_stb_entry  x_aq_lsu_stb_entry_3 (
         diff_ptr_vec <= 4'b1;
       end
       else begin
-        diff_data_valid <= diff_data_valid & ~diff_ptr_vec | dcache_req_sel[3:0] & {4{diff_store_valid}};
+        diff_data_valid <= diff_data_valid & ~diff_ptr_vec | dcache_req_sel[3:0] & {4{diff_store_valid}} | biu_req_sel[3:0] & {4{diff_biu_vld}};
         if (diff_valid) diff_ptr_vec <= {diff_ptr_vec[2:0], diff_ptr_vec[3]};
       end
     end
 
-    assign diff_mask[63:0] = {{8{stb_arb_wen[7]}}, {8{stb_arb_wen[6]}}, {8{stb_arb_wen[5]}}, {8{stb_arb_wen[4]}},
-                              {8{stb_arb_wen[3]}}, {8{stb_arb_wen[2]}}, {8{stb_arb_wen[1]}}, {8{stb_arb_wen[0]}}};
-
-    assign diff_store_valid = stb_arb_req & arb_stb_grant;
-    assign diff_valid = diff_data_valid & diff_ptr_vec;
+    assign diff_valid = |(diff_data_valid & diff_ptr_vec);
     DifftestStoreEvent DifftestStoreEvent(
       .clock        (forever_cpuclk        ),
       .coreid       (8'b0                  ),

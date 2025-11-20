@@ -273,7 +273,8 @@ wire             mmu_hpcp_jtlb_miss;
 wire             mmu_ifu_access_fault;            
 wire    [27 :0]  mmu_ifu_pa;                      
 wire             mmu_ifu_pa_vld;                  
-wire    [4  :0]  mmu_ifu_prot;                    
+wire    [4  :0]  mmu_ifu_prot;                  
+wire             mmu_ifu_sh;  
 wire             mmu_lsu_access_fault;            
 wire             mmu_lsu_buf;                     
 wire             mmu_lsu_ca;                      
@@ -533,6 +534,7 @@ aq_core  x_aq_core (
   .mmu_ifu_pa                    (mmu_ifu_pa                   ),
   .mmu_ifu_pa_vld                (mmu_ifu_pa_vld               ),
   .mmu_ifu_prot                  (mmu_ifu_prot                 ),
+  .mmu_ifu_sh                    (mmu_ifu_sh                   ),
   .mmu_lsu_access_fault          (mmu_lsu_access_fault         ),
   .mmu_lsu_buf                   (mmu_lsu_buf                  ),
   .mmu_lsu_ca                    (mmu_lsu_ca                   ),
@@ -638,6 +640,7 @@ aq_mmu_top  x_aq_mmu_top (
   .mmu_ifu_pa               (mmu_ifu_pa              ),
   .mmu_ifu_pa_vld           (mmu_ifu_pa_vld          ),
   .mmu_ifu_prot             (mmu_ifu_prot            ),
+  .mmu_ifu_sh               (mmu_ifu_sh              ),
   .mmu_lsu_access_fault     (mmu_lsu_access_fault    ),
   .mmu_lsu_buf              (mmu_lsu_buf             ),
   .mmu_lsu_ca               (mmu_lsu_ca              ),

@@ -114,6 +114,7 @@ int Difftest::step(vluint64_t &main_time) {
                 fprintf(trace_out,"ref_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", ref_store_data.paddr, ref_store_data.data, ref_store_data.mask);
                 fprintf(trace_out," dut_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", dut_store_data.paddr, dut_store_data.data, dut_store_data.mask);
 #endif
+                proxy->print_store();
                 return STATE_ABORT;
             }
             if (store_queue.empty()) break;

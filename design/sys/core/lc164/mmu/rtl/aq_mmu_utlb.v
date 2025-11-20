@@ -688,7 +688,7 @@ assign on_utlb_so   = utlb_hit_flg[5:4] == 2'b00;
 assign on_utlb_ca   = utlb_hit_flg[5:4] != 2'b00;
 // assign on_utlb_buf  = on_utlb_so ? 1'b0 : on_utlb_ca ? 1'b1 : 1'b0;
 assign on_utlb_buf  = 1'b0;
-assign on_utlb_sh   = 1'b0;
+assign on_utlb_sh   = xxu_mmu_fetch ? iutlb_sh  : dutlb_sh;
 assign on_utlb_sec  = 1'b1;
 
 //----------------------------------------------------------
@@ -763,9 +763,11 @@ assign utlb_va_illegal = 1'b0;
 
 assign utlb_page_fault = (!utlb_hit_flg[0]
 // page fault when not writeable
-                      || !utlb_hit_flg[8] && !xxu_mmu_read
+                      || (!utlb_hit_flg[8] || !utlb_hit_flg[1]) && !xxu_mmu_read
+// page fault when not readable
+                      || utlb_hit_flg[10] && xxu_mmu_read
 // page fault when not executable
-                      // || !utlb_hit_flg[3] && xxu_mmu_exec
+                      || utlb_hit_flg[11] && xxu_mmu_exec
 // page fault when // User Mode
                       // || (!(utlb_hit_flg[5] && utlb_hit_flg[4]) && cp0_user_mode) 
                       ) && (utlb_hit_vld || utlb_off)
@@ -795,7 +797,7 @@ assign dutlb_so    = dmw_hit ? (dmw_mat[1:0] == 2'b0) : (utlb_hit_flg[5:4] == 2'
 assign dutlb_ca    = dmw_hit ? (dmw_mat[1:0] != 2'b0) : (utlb_hit_flg[5:4] != 2'b00);
 // assign dutlb_buf   = dutlb_so ? 1'b0 : dutlb_ca ? 1'b1 : 1'b0; //when !so, always buf
 assign dutlb_buf   = 1'b0;
-assign dutlb_sh    = 1'b0;
+assign dutlb_sh    = xxu_mmu_read ? utlb_hit_flg[0] && utlb_hit_flg[10] : utlb_hit_flg[0] && !utlb_hit_flg[1];
 assign dutlb_sec   = 1'b0;
 
 
@@ -804,7 +806,7 @@ assign dutlb_sec   = 1'b0;
 assign iutlb_so    = dmw_hit ? (dmw_mat[1:0] == 2'b0) : (utlb_hit_flg[5:4] == 2'b00);
 assign iutlb_ca    = dmw_hit ? (dmw_mat[1:0] != 2'b0) : (utlb_hit_flg[5:4] != 2'b00);
 assign iutlb_buf   = 1'b0;
-assign iutlb_sh    = 1'b0;
+assign iutlb_sh    = utlb_hit_flg[0] && utlb_hit_flg[11] && xxu_mmu_exec;
 assign iutlb_sec   = 1'b1;
 
 // T-Head Extend Flags
@@ -813,7 +815,7 @@ assign iutlb_sec   = 1'b1;
 assign off_utlb_so    = xxu_mmu_fetch ? iutlb_so  : dutlb_so;
 assign off_utlb_ca    = xxu_mmu_fetch ? iutlb_ca  : dutlb_ca;
 assign off_utlb_buf   = xxu_mmu_fetch ? iutlb_buf : dutlb_buf;
-assign off_utlb_sh    = xxu_mmu_fetch ? iutlb_sh  : dutlb_sh;
+assign off_utlb_sh    = 1'b0;
 assign off_utlb_sec   = xxu_mmu_fetch ? iutlb_sec : dutlb_sec;
 
 // access deny when pmp check fail

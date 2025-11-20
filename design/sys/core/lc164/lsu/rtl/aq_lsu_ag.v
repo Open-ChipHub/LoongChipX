@@ -1175,6 +1175,10 @@ if(ag_pipe_misalign_no_page && (ag_pipe_atomic || ag_pipe_inst_st))
   ag_pipe_expt_vec[14:0]   = 15'd9;
 else if(ag_pipe_misalign_no_page)
   ag_pipe_expt_vec[14:0]   = 15'd9;
+else if(ag_pipe_page_fault && (ag_pipe_inst_st || ag_pipe_atomic) && mmu_sh)
+  ag_pipe_expt_vec[14:0]   = 15'd4;
+else if(ag_pipe_page_fault && mmu_sh)
+  ag_pipe_expt_vec[14:0]   = 15'd5;
 else if(ag_pipe_page_fault && (ag_pipe_inst_st || ag_pipe_atomic))
   ag_pipe_expt_vec[14:0]   = 15'd2;
 else if(ag_pipe_page_fault)

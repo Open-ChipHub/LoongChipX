@@ -87,6 +87,9 @@ EmuProxy::EmuProxy(int coreid) {
 
     check_paddr = (void (*)(uint64_t, uint32_t, uint64_t*, uint32_t*))dlsym(handle, "loong64_difftest_check_paddr");
     check_and_assert(check_paddr);
+
+    print_store = (void (*)(void))dlsym(handle, "loong64_difftest_print_store");
+    check_and_assert(print_store);
 #else
     printf("The current platform is not supported.\n");
     exit(1);

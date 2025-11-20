@@ -541,8 +541,12 @@ always @( iui_accflt_expt
        or idu_cp0_ex1_expt_illegal
        or idu_cp0_ex1_expt_illegal_fp)
 begin
-  if (iui_pageflt_expt)
-    iui_expt_vec[3:0] = 4'd3;
+  if (iui_pageflt_expt) begin
+    if (idu_cp0_ex1_expt_high)
+      iui_expt_vec[3:0] = 4'd6;
+    else
+      iui_expt_vec[3:0] = 4'd3;
+  end
   else if (iui_accflt_expt)
     iui_expt_vec[3:0] = 4'd8;
   else if(iui_idu_expt_vld)begin
@@ -563,7 +567,7 @@ begin
 end
 
 assign iui_ex1_pc[63:0]      = {64{idu_cp0_ex1_gateclk_sel}} & iu_cp0_ex1_cur_pc[63:0];
-assign iui_ex1_expt_pc[63:0] = iui_ex1_pc[63:0] + {{62{1'b0}}, idu_cp0_ex1_expt_high, 1'b0};
+assign iui_ex1_expt_pc[63:0] = iui_ex1_pc[63:0] + {{62{1'b0}}, 1'b0, 1'b0};
 
 // &CombBeg; @301
 always @( iui_accflt_expt

@@ -73,6 +73,7 @@ module aq_ifu_top (
   input    wire  [27 :0]  mmu_ifu_pa,
   input    wire           mmu_ifu_pa_vld,
   input    wire  [4  :0]  mmu_ifu_prot,
+  input    wire           mmu_ifu_sh,
   input    wire           pad_yy_icg_scan_en,
   input    wire  [63 :0]  rtu_ifu_chgflw_pc,
   input    wire           rtu_ifu_chgflw_vld,
@@ -160,7 +161,8 @@ wire             icache_ipack_acc_err;
 wire    [31 :0]  icache_ipack_inst;           
 wire             icache_ipack_inst_vld;       
 wire             icache_ipack_inst_vld_gate;  
-wire             icache_ipack_pgflt;          
+wire             icache_ipack_pgflt;   
+wire             icache_ipack_pnx;       
 wire             icache_ipack_unalign;        
 wire    [63 :0]  icache_pcgen_addr;           
 wire             icache_pcgen_grant;          
@@ -182,6 +184,7 @@ wire             ipack_ibuf_inst_two;
 wire             ipack_ibuf_inst_vld;         
 wire             ipack_ibuf_inst_vld_raw;     
 wire             ipack_ibuf_pgflt;            
+wire             ipack_ibuf_pnx;
 wire             ipack_pcgen_reissue;         
 wire             ipack_pred_h0_create;        
 wire             ipack_pred_h0_vld;           
@@ -345,6 +348,7 @@ aq_ifu_icache  x_aq_ifu_icache (
   .icache_ipack_inst_vld        (icache_ipack_inst_vld       ),
   .icache_ipack_inst_vld_gate   (icache_ipack_inst_vld_gate  ),
   .icache_ipack_pgflt           (icache_ipack_pgflt          ),
+  .icache_ipack_pnx             (icache_ipack_pnx            ),
   .icache_ipack_unalign         (icache_ipack_unalign        ),
   .icache_pcgen_addr            (icache_pcgen_addr           ),
   .icache_pcgen_grant           (icache_pcgen_grant          ),
@@ -378,6 +382,7 @@ aq_ifu_icache  x_aq_ifu_icache (
   .mmu_ifu_pa                   (mmu_ifu_pa                  ),
   .mmu_ifu_pa_vld               (mmu_ifu_pa_vld              ),
   .mmu_ifu_prot                 (mmu_ifu_prot                ),
+  .mmu_ifu_sh                   (mmu_ifu_sh                  ),
   .pad_yy_icg_scan_en           (pad_yy_icg_scan_en          ),
   .pcgen_icache_chgflw_vld      (pcgen_icache_chgflw_vld     ),
   .pcgen_icache_seq_tag         (pcgen_icache_seq_tag        ),
@@ -440,12 +445,14 @@ aq_ifu_ipack  x_aq_ifu_ipack (
   .icache_ipack_inst_vld      (icache_ipack_inst_vld     ),
   .icache_ipack_inst_vld_gate (icache_ipack_inst_vld_gate),
   .icache_ipack_pgflt         (icache_ipack_pgflt        ),
+  .icache_ipack_pnx           (icache_ipack_pnx          ),
   .icache_ipack_unalign       (icache_ipack_unalign      ),
   .ipack_ibuf_acc_err         (ipack_ibuf_acc_err        ),
   .ipack_ibuf_inst            (ipack_ibuf_inst           ),
   .ipack_ibuf_inst_vld        (ipack_ibuf_inst_vld       ),
   .ipack_ibuf_inst_vld_raw    (ipack_ibuf_inst_vld_raw   ),
   .ipack_ibuf_pgflt           (ipack_ibuf_pgflt          ),
+  .ipack_ibuf_pnx             (ipack_ibuf_pnx            ),
   .ipack_pcgen_reissue        (ipack_pcgen_reissue       ),
   .ipack_pred_inst0           (ipack_pred_inst0          ),
   .ipack_pred_inst0_expt      (ipack_pred_inst0_expt     ),
@@ -487,6 +494,7 @@ aq_ifu_ibuf  x_aq_ifu_ibuf (
   .ipack_ibuf_inst_vld        (ipack_ibuf_inst_vld       ),
   .ipack_ibuf_inst_vld_raw    (ipack_ibuf_inst_vld_raw   ),
   .ipack_ibuf_pgflt           (ipack_ibuf_pgflt          ),
+  .ipack_ibuf_pnx             (ipack_ibuf_pnx            ),
   .pad_yy_icg_scan_en         (pad_yy_icg_scan_en        ),
   .pcgen_ibuf_chgflw_vld      (pcgen_ibuf_chgflw_vld     ),
   .pred_ibuf_br_taken0        (pred_ibuf_br_taken0       ),
