@@ -3416,7 +3416,7 @@ DifftestCSRRegRestore DifftestCSRRegRestore(
     .asid               (diff_csrasid_value[63:0]    ),
     .pgdl               (diff_csrpgdl_value[63:0]    ),
     .pgdh               (diff_csrpgdh_value[63:0]    ),
-    .pwcl               (diff_csrpwch_value[63:0]    ),
+    .pwcl               (diff_csrpwcl_value[63:0]    ),
     .pwch               (diff_csrpwch_value[63:0]    ),
     .stlbps             (diff_csrstlbps_value[63:0]  ),
     .rvacfg             (diff_csrrvacfg_value[63:0]  ),

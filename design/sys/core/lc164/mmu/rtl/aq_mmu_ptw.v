@@ -622,10 +622,10 @@ assign ptw_pmp_cross = ptw_pmp_chk1 && pmp_mmu_napot_cross
 
 // judge if page fault
 assign ptw_page_flt = (   !ptw_flg[0] 
-                       // ||  ptw_flg[11] && ptw_load_type     // match R 
-                       || !ptw_flg[8] && ptw_store_type     // match W
-                       ||  ptw_flg[12] && ptw_fetch_type    // match X
-                       // ||  (!(ptw_flg[5] && ptw_flg[4]) && cp0_user_mode)      // U->S
+                       ||  ptw_flg[10] && ptw_load_type     // match R 
+                       || (!ptw_flg[8] || !ptw_flg[1]) && ptw_store_type     // match W
+                       ||  ptw_flg[11] && ptw_fetch_type    // match X
+                      //  ||  (!(ptw_flg[5] && ptw_flg[4]) && cp0_user_mode)      // U->S
                        ||  ptw_hit_1g && (|lsu_data_flop[29:13])  // 1g align
                        ||  ptw_hit_2m && (|lsu_data_flop[20:13])  // 2m align
                        ) && ptw_leaf_vld;

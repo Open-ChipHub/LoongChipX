@@ -194,7 +194,7 @@ begin
   if(!cpurst_b)
     entry_pnx <= 1'b0;
   else if(entry_data_create)
-    entry_pnx <= entry_pgflt_upd;
+    entry_pnx <= entry_pnx_upd;
   else
     entry_pnx <= entry_pnx;
 end

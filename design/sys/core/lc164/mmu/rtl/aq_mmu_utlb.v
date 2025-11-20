@@ -173,6 +173,7 @@ wire            utlb_clk_en;
 wire            utlb_deny;             
 wire    [27:0]  utlb_entry_pa;         
 wire    [14:0]  utlb_hit_flg;          
+wire    [14:0]  utlb_sel_flg;
 wire    [27:0]  utlb_hit_pa;           
 wire    [2 :0]  utlb_hit_pgs;          
 wire            utlb_hit_vld;          
@@ -793,11 +794,12 @@ assign utlb_pavld = xxu_mmu_va_vld && utlb_hit_vld
 
 
 // so: strong order, device = 1, other = 0(mem)
+assign utlb_sel_flg = utlb_ref_pgflt ? jtlb_xx_ref_flg : utlb_hit_flg;
 assign dutlb_so    = dmw_hit ? (dmw_mat[1:0] == 2'b0) : (utlb_hit_flg[5:4] == 2'b00);
 assign dutlb_ca    = dmw_hit ? (dmw_mat[1:0] != 2'b0) : (utlb_hit_flg[5:4] != 2'b00);
 // assign dutlb_buf   = dutlb_so ? 1'b0 : dutlb_ca ? 1'b1 : 1'b0; //when !so, always buf
 assign dutlb_buf   = 1'b0;
-assign dutlb_sh    = xxu_mmu_read ? utlb_hit_flg[0] && utlb_hit_flg[10] : utlb_hit_flg[0] && !utlb_hit_flg[1];
+assign dutlb_sh    = xxu_mmu_read ? utlb_sel_flg[0] && utlb_sel_flg[10] : utlb_sel_flg[0] && !utlb_sel_flg[1];
 assign dutlb_sec   = 1'b0;
 
 
@@ -806,7 +808,7 @@ assign dutlb_sec   = 1'b0;
 assign iutlb_so    = dmw_hit ? (dmw_mat[1:0] == 2'b0) : (utlb_hit_flg[5:4] == 2'b00);
 assign iutlb_ca    = dmw_hit ? (dmw_mat[1:0] != 2'b0) : (utlb_hit_flg[5:4] != 2'b00);
 assign iutlb_buf   = 1'b0;
-assign iutlb_sh    = utlb_hit_flg[0] && utlb_hit_flg[11] && xxu_mmu_exec;
+assign iutlb_sh    = utlb_sel_flg[0] && utlb_sel_flg[11] && xxu_mmu_exec;
 assign iutlb_sec   = 1'b1;
 
 // T-Head Extend Flags

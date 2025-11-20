@@ -590,7 +590,7 @@ endmodule
 endmodule
 
 `DIFFTEST_DPIC_FUNC_DECL(CSRRegRestore) (
-    `DPIC_ARG_BYTE_OUT valid,
+    `DPIC_ARG_BIT_OUT  valid,
     `DPIC_ARG_BYTE     coreid,
     `DPIC_ARG_LONG_OUT crmd,
     `DPIC_ARG_LONG_OUT prmd,
