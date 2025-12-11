@@ -1427,6 +1427,7 @@ module soc_top_xlnx (
 `else
     assign DMA_reset = 0;
     assign dma_axi_aclk = clk_100M;
+    assign dma_stall = 0;
     assign dma_axi_aresetn = 1;
     assign dma_axi_araddr = 0;
     assign dma_axi_arburst = 0;
