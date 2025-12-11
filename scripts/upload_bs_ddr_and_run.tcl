@@ -24,20 +24,20 @@ connect_hw_server -url localhost:3121
 current_hw_target [get_hw_targets */xilinx_tcf/Digilent/*]
 set_property PARAM.FREQUENCY 15000000 [get_hw_targets */xilinx_tcf/Digilent/*]
 open_hw_target
-# current_hw_device [lindex [get_hw_devices xcvu9p_0] 0]
-# refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcvu9p_0] 0]
-set_property PROBES.FILE $ltx_path [get_hw_devices xcvu9p_0]
-set_property FULL_PROBES.FILE $ltx_path [get_hw_devices xcvu9p_0]
-set_property PROGRAM.FILE $bit_path [get_hw_devices xcvu9p_0]
-program_hw_devices [get_hw_devices xcvu9p_0]
-refresh_hw_device [lindex [get_hw_devices xcvu9p_0] 0]
+# current_hw_device [lindex [get_hw_devices xcvu13p_0] 0]
+# refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcvu13p_0] 0]
+set_property PROBES.FILE $ltx_path [get_hw_devices xcvu13p_0]
+set_property FULL_PROBES.FILE $ltx_path [get_hw_devices xcvu13p_0]
+set_property PROGRAM.FILE $bit_path [get_hw_devices xcvu13p_0]
+program_hw_devices [get_hw_devices xcvu13p_0]
+refresh_hw_device [lindex [get_hw_devices xcvu13p_0] 0]
 
 # set_param messaging.defaultLimit 100000
 set_param messaging.defaultLimit 2
 
 startgroup
-set_property OUTPUT_VALUE 0 [get_hw_probes vio_cpu_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu9p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
-commit_hw_vio [get_hw_probes {vio_cpu_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu9p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
+set_property OUTPUT_VALUE 0 [get_hw_probes vio_cpu_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu13p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
+commit_hw_vio [get_hw_probes {vio_cpu_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu13p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
 endgroup
 after 500
 
@@ -100,15 +100,15 @@ proc Tread_from_ddr {addr} {
 
 
 startgroup
-set_property OUTPUT_VALUE 1 [get_hw_probes vio_cpu_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu9p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
-commit_hw_vio [get_hw_probes {vio_cpu_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu9p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
+set_property OUTPUT_VALUE 1 [get_hw_probes vio_cpu_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu13p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
+commit_hw_vio [get_hw_probes {vio_cpu_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu13p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
 endgroup
 after 500
 
 
 startgroup
-set_property OUTPUT_VALUE 0 [get_hw_probes vio_cpu_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu9p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
-commit_hw_vio [get_hw_probes {vio_cpu_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu9p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
+set_property OUTPUT_VALUE 0 [get_hw_probes vio_cpu_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu13p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
+commit_hw_vio [get_hw_probes {vio_cpu_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcvu13p_0] -filter {CELL_NAME=~"xlnx_vio"}]]
 endgroup
 after 500
 

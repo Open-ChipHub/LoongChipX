@@ -28,6 +28,7 @@ module aq_ifu_ibuf_pop_entry (
   input    wire  [21:0]  ibuf_entry_create_halt_info,
   input    wire  [31:0]  ibuf_entry_create_inst,
   input    wire          ibuf_entry_create_pgflt,
+  input    wire          ibuf_entry_create_pnx,
   input    wire  [1 :0]  ibuf_entry_create_pred_taken,
   input    wire          ibuf_entry_retire_en,
   input    wire          ibuf_flush_en,
@@ -37,6 +38,7 @@ module aq_ifu_ibuf_pop_entry (
   output   wire  [21:0]  ibuf_entry_halt_info,
   output   wire  [31:0]  ibuf_entry_inst,
   output   wire          ibuf_entry_pgflt,
+  output   wire          ibuf_entry_pnx,
   output   wire  [1 :0]  ibuf_entry_pred_taken,
   output   wire          ibuf_entry_vld
 ); 
@@ -47,7 +49,8 @@ module aq_ifu_ibuf_pop_entry (
 reg             entry_acc_err;               
 reg     [21:0]  entry_halt_info;             
 reg     [31:0]  entry_inst;                  
-reg             entry_pgflt;                 
+reg             entry_pgflt;          
+reg             entry_pnx;       
 reg     [1 :0]  entry_pred_taken;            
 reg             entry_vld;                   
 
@@ -59,7 +62,8 @@ wire            entry_data_create;
 wire    [21:0]  entry_halt_info_upd;         
 wire            entry_icg_en;                
 wire    [31:0]  entry_inst_upd;              
-wire            entry_pgflt_upd;             
+wire            entry_pgflt_upd;   
+wire            entry_pnx_upd;          
 wire    [1 :0]  entry_pred_taken_upd;        
 wire            entry_retire;                
 
@@ -183,6 +187,18 @@ begin
     entry_pgflt <= entry_pgflt;
 end
 
+assign entry_pnx_upd = ibuf_entry_create_pnx;
+
+always @(posedge entry_cpuclk or negedge cpurst_b)
+begin
+  if(!cpurst_b)
+    entry_pnx <= 1'b0;
+  else if(entry_data_create)
+    entry_pnx <= entry_pnx_upd;
+  else
+    entry_pnx <= entry_pnx;
+end
+
 //==========================================================
 // Rename for Output
 //==========================================================
@@ -193,6 +209,7 @@ assign ibuf_entry_pred_taken[1:0] = entry_pred_taken[1:0];
 assign ibuf_entry_halt_info[`TDT_HINFO_WIDTH-1:0]  = entry_halt_info[`TDT_HINFO_WIDTH-1:0];
 assign ibuf_entry_acc_err         = entry_acc_err;
 assign ibuf_entry_pgflt           = entry_pgflt;
+assign ibuf_entry_pnx             = entry_pnx;
 
 
 // &ModuleEnd; @150

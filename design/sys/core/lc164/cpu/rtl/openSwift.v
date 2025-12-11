@@ -43,6 +43,16 @@ module openSwift (
   input    wire           sys_apb_clk,
   input    wire           sys_apb_rst_b,
   input    wire  [7  :0]  ext_interrupt,
+  input    wire           xdma_stall,
+  `CSRRegState_out
+  `GRegState_out
+  `TLBEvent_out(0)
+  `TLBEvent_out(1)
+  `LoadEvent_out(0)
+  `StoreEvent_out(0)
+  `InstrCommit_out(0)
+  `ExcpEvent_out
+  `FPRegState_out
   output   wire  [39 :0]  biu_pad_araddr,
   output   wire  [1  :0]  biu_pad_arburst,
   output   wire  [3  :0]  biu_pad_arcache,
@@ -218,6 +228,16 @@ aq_top  x_aq_top_0 (
   .biu_lsu_vb_wready                (biu_lsu_vb_wready               ),
   .clint_cpuio_time                 (clint_core0_time                ),
   .ext_interrupt                    (ext_interrupt                   ),
+  .xdma_stall                       (xdma_stall                      ),
+  `CSRRegState_connect
+  `GRegState_connect
+  `TLBEvent_connect(0)
+  `TLBEvent_connect(1)
+  `LoadEvent_connect(0)
+  `StoreEvent_connect(0)
+  `InstrCommit_connect(0)
+  `ExcpEvent_connect
+  `FPRegState_connect
   .cp0_biu_icg_en                   (cp0_biu_icg_en                  ),
   .cpuio_sysio_lpmd_b               (core0_sysio_lpmd_b              ),
   .cpurst_b                         (core0_rst_b                     ),

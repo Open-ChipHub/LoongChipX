@@ -28,10 +28,12 @@ module aq_ifu_ipack_entry (
   input    wire          ipack_entry_upd_acc_err,
   input    wire  [31:0]  ipack_entry_upd_inst,
   input    wire          ipack_entry_upd_pgflt,
+  input    wire          ipack_entry_upd_pnx,
   input    wire          pad_yy_icg_scan_en,
   output   wire          ipack_entry_acc_err,
   output   wire  [31:0]  ipack_entry_inst,
   output   wire          ipack_entry_pgflt,
+  output   wire          ipack_entry_pnx,
   output   wire          ipack_entry_vld
 ); 
 
@@ -40,7 +42,8 @@ module aq_ifu_ipack_entry (
 // &Regs; @25
 reg             entry_acc_err;            
 reg     [31:0]  entry_inst;               
-reg             entry_pgflt;              
+reg             entry_pgflt;       
+reg             entry_pnx;       
 reg             entry_vld;                
 
 // &Wires; @26
@@ -104,18 +107,21 @@ begin
     entry_inst[31:0] <= 32'b0;
     entry_acc_err    <= 1'b0;
     entry_pgflt      <= 1'b0;
+    entry_pnx        <= 1'b0;
   end
   else if(ipack_entry_create_en)
   begin
     entry_inst[31:0] <= ipack_entry_upd_inst[31:0];
     entry_acc_err    <= ipack_entry_upd_acc_err;
     entry_pgflt      <= ipack_entry_upd_pgflt;
+    entry_pnx        <= ipack_entry_upd_pnx;
   end
   else
   begin
     entry_inst[31:0] <= entry_inst[31:0];
     entry_acc_err    <= entry_acc_err;
     entry_pgflt      <= entry_pgflt;
+    entry_pnx        <= entry_pnx;
   end
 end
 
@@ -127,6 +133,7 @@ assign ipack_entry_vld        = entry_vld;
 assign ipack_entry_inst[31:0] = entry_inst[31:0];
 assign ipack_entry_acc_err    = entry_acc_err;
 assign ipack_entry_pgflt      = entry_pgflt;
+assign ipack_entry_pnx        = entry_pnx;
 
 // &ModuleEnd; @98
 endmodule

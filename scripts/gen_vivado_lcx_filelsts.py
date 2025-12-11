@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import sys, os
+import argparse
            
 scriptpath = os.path.dirname(sys.argv[0])        
 project_home = os.path.abspath(os.path.join(scriptpath, os.pardir))
@@ -25,8 +26,15 @@ def read_filelist(filename):
     return read_verilog_files
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--xdma', type=int, help='Add XDMA files')
+    args = parser.parse_args()
+
     newline = "read_verilog -sv { \\\n"
-    verilog_file_list = read_filelist("{}/design/filelists/impl_fpga_files.lst".format(project_home))
+    if args.xdma:
+        verilog_file_list = read_filelist("{}/design/filelists/impl_fpag_files_xdma.lst".format(project_home))
+    else:
+        verilog_file_list = read_filelist("{}/design/filelists/impl_fpga_files.lst".format(project_home))
     newline += verilog_file_list
     newline += "  }"
 

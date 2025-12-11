@@ -60,7 +60,9 @@ double sc_time_stamp() { return 0; }
 
 #ifdef CONFIG_DIFFTEST
 Emulator *emulator;
+extern char* difftest_ref_so;
 #endif
+extern long long inst_total;
 
 void cpu_irq_handler(void *opaque, int n, int level) {
     VTop *Top = (VTop *)opaque;
@@ -152,6 +154,7 @@ int sigint_triggered = 0;
 bool sim_wave_on = false;
 
 void sigint_handler(int signum){
+    printf("SIGINT handler, inst_num: %lx\n", inst_total);
     if(sigint_triggered > 0){
         log_info("Catched multiple SIGINT (Ctrl-C), exit.");
         exit(1);
@@ -262,10 +265,10 @@ int main(int argc, char** argv, char** env) {
     uint64_t random_test_mat  = config.get_value_or_else("random_test_mat", 0x1);
     uint64_t random_fill_type = config.get_value_or_else("random_fill_type", 1);
 
-    if (sim_cfg.wave_begin_cycles >= sim_cfg.wave_end_cycles) {
-        fprintf(stderr, "error, wave_begin:%ld, wave_end:%ld\n", sim_cfg.wave_begin_cycles, sim_cfg.wave_end_cycles);
-        return 0;
-    }
+    // if (sim_cfg.wave_begin_cycles >= sim_cfg.wave_end_cycles) {
+    //     fprintf(stderr, "error, wave_begin:%ld, wave_end:%ld\n", sim_cfg.wave_begin_cycles, sim_cfg.wave_end_cycles);
+    //     return 0;
+    // }
 
 
 #ifdef WITH_PMSLICE
@@ -351,14 +354,20 @@ int main(int argc, char** argv, char** env) {
         ram.ram_load_serial(irq, (image_dir + "/checkpoint_serial.bin").c_str());
     }
 
+    auto now = std::chrono::system_clock::now();
 
 #ifdef CONFIG_DIFFTEST
-    const char simu_trace_file[] = "./simu_trace.txt";
-    const char uart_output_file[] = "./uart_output.txt";
+    const char simu_trace_file[] = "/simu_trace.txt";
+    const char uart_output_file[] = "/uart_output.txt";
     const char ram_file[] = "ram.dat";
     const char data_vlog_file[] = "data.vlog";
 
-    emulator = new Emulator(Top, "./", simu_trace_file, uart_output_file, ram_file, data_vlog_file);
+    const char* diff_so = config.get_value_or_cstr("diff_so_path", NULL);
+    if (diff_so != NULL) {
+        difftest_ref_so = const_cast<char*>(diff_so);
+    }
+
+    emulator = new Emulator(Top, sim_cfg.real_log_dir.c_str(), simu_trace_file, uart_output_file, ram_file, data_vlog_file);
     emulator->init_emu(&sim_cycles);
 
     uint8_t* emulator_ram = (uint8_t*)mmap(nullptr, (2ull << 32), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
@@ -369,9 +378,12 @@ int main(int argc, char** argv, char** env) {
     
     /// emulator->init_ram(ram.get_ram_base());
     /// copy memory to emulator ram by 4GB.
-    /// FIXME: size is 4GB
-    memcpy(emulator_ram, ram.base, (1ull << 32));
-    emulator->init_ram(emulator_ram);
+    if (!sim_cfg.restore_checkpoint) {
+        for (auto& map : ram.addr_maps) {
+            memcpy(emulator_ram + map.start, ram.base + map.start, map.size);
+        }
+    }
+    emulator->init_ram(emulator_ram, (2ull << 32));
 #endif
 
     // Set VTop's input signals
@@ -406,22 +418,37 @@ int main(int argc, char** argv, char** env) {
 #else
     AXISim::AXI_wrapper axi_wrapper(Top,&ram);
 #endif
+#ifdef CONFIG_DIFFTEST
+    if (sim_cfg.restore_checkpoint) {
+        emulator->restore_checkpoint(sim_cfg.checkpoint_path.c_str());
+    }
+    if (sim_cfg.fastforward_cycles != 0 || sim_cfg.restore_checkpoint) {
+        emulator->fastforward(sim_cfg.fastforward_cycles);
+        contextp->time(sim_cycles);
+        sim_cycles *= 2;
+        ram.memcpy_ram(emulator_ram, 1ull << 32);
+    }
+#endif
 
     uint64_t dram_cnt = 0;//Dram用的计数器，用来分半频
 
     dbg_sim_cycles = 0;
 
     sim_wave_on = false;
-    sim_wave_on = true;
+    // sim_wave_on = true;
 
     // Simulate until $finish
     while (!contextp->gotFinish() && !sim_finish && sim_cycles < sim_cycles_limit) {
-        if (sim_cycles / 2 == sim_cfg.wave_begin_cycles) {
-            //snapshot->wave = sim_cfg.runtime_wave;
-        }
-        if (sim_cycles / 2 == sim_cfg.wave_end_cycles) {
-            //snapshot->wave = 0;
-            sim_finish = true;
+        if (!sim_cfg.snapshot_on_failure) {
+            if (sim_cycles / 2 == sim_cfg.wave_begin_cycles && sim_cfg.wave_end_cycles != 0) {
+                //snapshot->wave = sim_cfg.runtime_wave;
+                sim_wave_on = true;
+            }
+            if (sim_cycles / 2 == sim_cfg.wave_end_cycles) {
+                //snapshot->wave = 0;
+                // sim_finish = true;
+                sim_wave_on = false;
+            }
         }
 
         ++ sim_cycles;
@@ -485,7 +512,10 @@ int main(int argc, char** argv, char** env) {
         }
 
 #ifdef CONFIG_DIFFTEST
-        emulator->process();
+        if(emulator->process()) {
+            sim_finish = true;
+            break;
+        }
 #endif
 
         if (sim_cycles/10 % 10000 == 1000) {
@@ -499,10 +529,12 @@ int main(int argc, char** argv, char** env) {
         ++ sim_cycles;
         contextp->timeInc(1);
         Top->clk = !Top->clk;
-        if (contextp->time() > 1 && contextp->time() < 10) {
-            Top->reset = !0;  // Assert reset
-        } else {
-            Top->reset = !1;  // Deassert reset
+        if (sim_cfg.fastforward_cycles == 0) {
+            if (contextp->time() > 1 && contextp->time() < 10) {
+                Top->reset = !0;  // Assert reset
+            } else {
+                Top->reset = !1;  // Deassert reset
+            }
         }
         Top->eval();
         
@@ -513,24 +545,28 @@ int main(int argc, char** argv, char** env) {
         }
 #endif
 
-#ifdef GEN_SNAPSHOT
-        if(snapshot->snapshot_isparent()){
+        if(sim_cfg.snapshot_on_failure && snapshot->snapshot_isparent()){
             int cycle = sim_cycles/2;
-            if(cycle % snapshot_dist == 11){
+            if(cycle % snapshot_dist == 11 || !snapshot->snap_init){
                 // snapshot->snapshot_stats();
-                log_info("snapshot gen at cycle %d",cycle);
                 snapshot->snapshot_gen();
             }
         }
-#endif
+
+        if (sim_cfg.checkpoint_on_failure && !snapshot->snapshot_isparent() && !snapshot->save_checkpoint ||
+            sim_cfg.checkpoint_cycles != 0 && sim_cfg.checkpoint_cycles == inst_total && snapshot->snapshot_isparent()) {
+            emulator->save_checkpoint(sim_cfg.real_log_dir.c_str());
+            snapshot->save_checkpoint = true;
+        }
 
         if(snapshot->trace_reopen){
             if(!snapshot->trace_opened){
-                if (sim_wave_on) {
+                if (sim_wave_on || !snapshot->snapshot_isparent()) {
 #ifndef WAVE_NONE
                     Top->trace(trace, 99, 0);
                     trace->open(trace_name.c_str());
 #endif
+                    sim_wave_on = !sim_cfg.snapshot_on_failure || !snapshot->snapshot_isparent();
                     snapshot->trace_reopen = false;
                     snapshot->trace_opened = true;
 #if VERILATOR_THREAD_NUM > 1
@@ -545,7 +581,7 @@ int main(int argc, char** argv, char** env) {
         }
     }
 
-    if(snapshot->snapshot_isparent()){
+    if(sim_cfg.snapshot_on_failure && snapshot->snapshot_isparent()){
         if(snapshot->error) {
             if(snapshot->trace_opened){
                 log_info("Find error, and waveform is already opened. (Do not wake up snapshot)");
@@ -556,7 +592,7 @@ int main(int argc, char** argv, char** env) {
                 snapshot->snapshot_wakeup();
             }
         }
-        else if(sim_cfg.snapshot_on_failure && contextp->gotFinish() && !snapshot->trace_opened){
+        else if((contextp->gotFinish() || sim_finish) && !snapshot->trace_opened){
             log_info("Find error, try to wake up snapshot");
             snapshot->snapshot_wakeup();
         }
@@ -595,6 +631,11 @@ int main(int argc, char** argv, char** env) {
             contextp->coveragep()->write("logs/coverage.dat");
         #endif
         delete contextp;
+        auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-now);
+        printf("Guest cycle spent: %ld (this will be different from cycleCnt if emu loads a snapshot)\n",
+            sim_cycles);
+        printf("Host time spent: %'ldms\n" , elapsed_time.count());
+        printf("total inst: %ld\n", inst_total);
     }
     return ret;
 }

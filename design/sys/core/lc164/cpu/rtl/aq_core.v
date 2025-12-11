@@ -14,7 +14,6 @@ limitations under the License.
 */
 
 // &Depend("cpu_cfig.h"); @23
-
 // &ModuleBeg; @25
 module aq_core (
   // &Ports, @26
@@ -27,6 +26,7 @@ module aq_core (
   input    wire           biu_cp0_ss_int,
   input    wire           biu_cp0_st_int,
   input    wire  [7  :0]  ext_interrupt,
+  input    wire           xdma_stall,
   input    wire           biu_ifu_arready,
   input    wire  [127:0]  biu_ifu_rdata,
   input    wire           biu_ifu_rid,
@@ -84,6 +84,7 @@ module aq_core (
   input    wire  [27 :0]  mmu_ifu_pa,
   input    wire           mmu_ifu_pa_vld,
   input    wire  [4  :0]  mmu_ifu_prot,
+  input    wire           mmu_ifu_sh,
   input    wire           mmu_lsu_access_fault,
   input    wire           mmu_lsu_buf,
   input    wire           mmu_lsu_ca,
@@ -264,6 +265,15 @@ module aq_core (
   output   wire           rtu_pad_halted,
   output   wire           rtu_pad_retire,
   output   wire  [63 :0]  rtu_pad_retire_pc,
+  `CSRRegState_out
+  `GRegState_out
+  `TLBEvent_out(0)
+  `TLBEvent_out(1)
+  `LoadEvent_out(0)
+  `StoreEvent_out(0)
+  `InstrCommit_out(0)
+  `ExcpEvent_out
+  `FPRegState_out
   output   wire           rtu_yy_xx_dbgon,
   output   wire           rtu_yy_xx_expt_int,
   output   wire  [14 :0]  rtu_yy_xx_expt_vec,
@@ -364,6 +374,7 @@ wire             cp0_vpu_xx_bf16;
 wire             cp0_vpu_xx_dqnan;                
 wire    [2  :0]  cp0_vpu_xx_rm;             
 wire    [4  :0]  cp0_vpu_fflags_enable;      
+wire    [63 :0]  cp0_vidu_fcsr;
 wire    [63 :0]  cp0_xx_mrvbr;                    
 wire    [63 :0]  da_xx_fwd_data;                  
 wire    [5  :0]  da_xx_fwd_dst_reg;               
@@ -438,7 +449,8 @@ wire             idu_vidu_ex1_fp_sel;
 wire    [184:0]  idu_vidu_ex1_inst_data;          
 wire             idu_vidu_ex1_vec_dp_sel;         
 wire             idu_vidu_ex1_vec_gateclk_sel;    
-wire             idu_vidu_ex1_vec_sel;            
+wire             idu_vidu_ex1_vec_sel;        
+wire    [7  :0]  idu_vidu_fcc;    
 wire             ifu_cp0_bht_inv_done;            
 wire             ifu_cp0_icache_inv_done;         
 wire    [127:0]  ifu_cp0_icache_read_data;        
@@ -585,7 +597,9 @@ wire    [3  :0]  lsu_vlsu_st_offset;
 wire    [1  :0]  lsu_vlsu_st_sew;                 
 wire    [1  :0]  lsu_vlsu_st_size;                
 wire             lsu_vlsu_vl_update;              
-wire    [6  :0]  lsu_vlsu_vl_upval;               
+wire    [6  :0]  lsu_vlsu_vl_upval;          
+wire    [63 :0]  csrtimer_value;     
+wire    [63 :0]  csrestat_value;
 wire    [63 :0]  rtu_cp0_epc;                     
 wire             rtu_cp0_exit_debug;              
 wire    [4  :0]  rtu_cp0_fflags;                  
@@ -718,6 +732,8 @@ wire    [4  :0]  vpu_vidu_wbt_fp_wb0_reg;
 wire             vpu_vidu_wbt_fp_wb0_vld;         
 wire    [4  :0]  vpu_vidu_wbt_fp_wb1_reg;         
 wire             vpu_vidu_wbt_fp_wb1_vld;         
+wire             diff_pc_valid;
+wire    [63 :0]  diff_pc;
 
 
 // &Force("input", "pad_yy_scan_mode"); @30
@@ -739,6 +755,7 @@ aq_ifu_top  x_aq_ifu_top (
   .biu_ifu_rlast                (biu_ifu_rlast               ),
   .biu_ifu_rresp                (biu_ifu_rresp               ),
   .biu_ifu_rvalid               (biu_ifu_rvalid              ),
+  `TLBEvent_connect(0)
   .cp0_ifu_bht_en               (cp0_ifu_bht_en              ),
   .cp0_ifu_bht_inv              (cp0_ifu_bht_inv             ),
   .cp0_ifu_btb_clr              (cp0_ifu_btb_clr             ),
@@ -837,12 +854,15 @@ aq_ifu_top  x_aq_ifu_top (
   .mmu_ifu_pa                   (mmu_ifu_pa                  ),
   .mmu_ifu_pa_vld               (mmu_ifu_pa_vld              ),
   .mmu_ifu_prot                 (mmu_ifu_prot                ),
+  .mmu_ifu_sh                   (mmu_ifu_sh                  ),
   .pad_yy_icg_scan_en           (pad_yy_icg_scan_en          ),
   .rtu_ifu_chgflw_pc            (rtu_ifu_chgflw_pc           ),
   .rtu_ifu_chgflw_vld           (rtu_ifu_chgflw_vld          ),
   .rtu_ifu_dbg_mask             (rtu_ifu_dbg_mask            ),
   .rtu_ifu_flush_fe             (rtu_ifu_flush_fe            ),
-  .rtu_yy_xx_dbgon              (rtu_yy_xx_dbgon             )
+  .rtu_yy_xx_dbgon              (rtu_yy_xx_dbgon             ),
+  .diff_pc_valid                (diff_pc_valid               ),
+  .diff_pc                      (diff_pc                     )
 );
 
 
@@ -857,6 +877,8 @@ aq_idu_top  x_aq_idu_top (
   .cp0_idu_fs                   (cp0_idu_fs                  ),
   .cp0_idu_icg_en               (cp0_idu_icg_en              ),
   .cp0_idu_issue_stall          (cp0_idu_issue_stall         ),
+  .xdma_stall                   (xdma_stall                  ),
+  `GRegState_connect
   .cp0_idu_ucme                 (cp0_idu_ucme                ),
   .cp0_idu_vill                 (cp0_idu_vill                ),
   .cp0_idu_vl_zero              (cp0_idu_vl_zero             ),
@@ -945,6 +967,7 @@ aq_idu_top  x_aq_idu_top (
   .idu_vidu_ex1_vec_dp_sel      (idu_vidu_ex1_vec_dp_sel     ),
   .idu_vidu_ex1_vec_gateclk_sel (idu_vidu_ex1_vec_gateclk_sel),
   .idu_vidu_ex1_vec_sel         (idu_vidu_ex1_vec_sel        ),
+  .idu_vidu_fcc                 (idu_vidu_fcc                ),
   .ifu_idu_id_bht_pred          (ifu_idu_id_bht_pred         ),
   .ifu_idu_id_expt_acc_error    (ifu_idu_id_expt_acc_error   ),
   .ifu_idu_id_expt_high         (ifu_idu_id_expt_high        ),
@@ -1004,6 +1027,7 @@ aq_vidu_top  x_aq_vidu_top (
   .cp0_yy_clk_en                    (cp0_yy_clk_en                   ),
   .cpurst_b                         (cpurst_b                        ),
   .forever_cpuclk                   (forever_cpuclk                  ),
+  `FPRegState_connect
   .idu_vidu_ex1_fp_dp_sel           (idu_vidu_ex1_fp_dp_sel          ),
   .idu_vidu_ex1_fp_gateclk_sel      (idu_vidu_ex1_fp_gateclk_sel     ),
   .idu_vidu_ex1_fp_sel              (idu_vidu_ex1_fp_sel             ),
@@ -1011,6 +1035,7 @@ aq_vidu_top  x_aq_vidu_top (
   .idu_vidu_ex1_vec_dp_sel          (idu_vidu_ex1_vec_dp_sel         ),
   .idu_vidu_ex1_vec_gateclk_sel     (idu_vidu_ex1_vec_gateclk_sel    ),
   .idu_vidu_ex1_vec_sel             (idu_vidu_ex1_vec_sel            ),
+  .idu_vidu_fcc                     (idu_vidu_fcc                    ),
   .ifu_vidu_warm_up                 (ifu_vidu_warm_up                ),
   .pad_yy_icg_scan_en               (pad_yy_icg_scan_en              ),
   .rtu_vidu_flush_wbt               (rtu_vidu_flush_wbt              ),
@@ -1055,7 +1080,8 @@ aq_vidu_top  x_aq_vidu_top (
   .vpu_vidu_wbt_fp_wb0_reg          (vpu_vidu_wbt_fp_wb0_reg         ),
   .vpu_vidu_wbt_fp_wb0_vld          (vpu_vidu_wbt_fp_wb0_vld         ),
   .vpu_vidu_wbt_fp_wb1_reg          (vpu_vidu_wbt_fp_wb1_reg         ),
-  .vpu_vidu_wbt_fp_wb1_vld          (vpu_vidu_wbt_fp_wb1_vld         )
+  .vpu_vidu_wbt_fp_wb1_vld          (vpu_vidu_wbt_fp_wb1_vld         ),
+  .cp0_vidu_fcsr                    (cp0_vidu_fcsr                   )
 );
 
 
@@ -1108,6 +1134,8 @@ aq_iu_top  x_aq_iu_top (
   .ifu_iu_ex1_pc_pred           (ifu_iu_ex1_pc_pred          ),
   .ifu_iu_reset_vld             (ifu_iu_reset_vld            ),
   .ifu_iu_warm_up               (ifu_iu_warm_up              ),
+  .diff_pc_valid                (diff_pc_valid               ),
+  .diff_pc                      (diff_pc                     ),
   .iu_cp0_ex1_cur_pc            (iu_cp0_ex1_cur_pc           ),
   .iu_dtu_debug_info            (iu_dtu_debug_info           ),
   .iu_hpcp_inst_bht_mispred     (iu_hpcp_inst_bht_mispred    ),
@@ -1307,6 +1335,9 @@ aq_lsu_top  x_aq_lsu_top (
   .biu_lsu_stb_wready           (biu_lsu_stb_wready          ),
   .biu_lsu_vb_awready           (biu_lsu_vb_awready          ),
   .biu_lsu_vb_wready            (biu_lsu_vb_wready           ),
+  `TLBEvent_connect(1)
+  `LoadEvent_connect(0)
+  `StoreEvent_connect(0)
   .cp0_lsu_amr                  (cp0_lsu_amr                 ),
   .cp0_lsu_dcache_en            (cp0_lsu_dcache_en           ),
   .cp0_lsu_dcache_pref_dist     (cp0_lsu_dcache_pref_dist    ),
@@ -1566,6 +1597,9 @@ aq_cp0_top  x_aq_cp0_top (
   .cp0_idu_vsetvl_dis_stall     (cp0_idu_vsetvl_dis_stall    ),
   .cp0_idu_vsew                 (cp0_idu_vsew                ),
   .cp0_idu_vstart               (cp0_idu_vstart              ),
+  `CSRRegState_connect
+  .csrtimer_value               (csrtimer_value              ),
+  .csrestat_value               (csrestat_value              ),
   .cp0_ifu_bht_en               (cp0_ifu_bht_en              ),
   .cp0_ifu_bht_inv              (cp0_ifu_bht_inv             ),
   .cp0_ifu_btb_clr              (cp0_ifu_btb_clr             ),
@@ -1671,6 +1705,7 @@ aq_cp0_top  x_aq_cp0_top (
   .cp0_vpu_xx_dqnan             (cp0_vpu_xx_dqnan            ),
   .cp0_vpu_xx_rm                (cp0_vpu_xx_rm               ),
   .cp0_vpu_fflags_enable        (cp0_vpu_fflags_enable       ),
+  .cp0_vidu_fcsr                (cp0_vidu_fcsr               ),
   .cp0_xx_mrvbr                 (cp0_xx_mrvbr                ),
   .cp0_yy_clk_en                (cp0_yy_clk_en               ),
   .cp0_yy_priv_mode             (cp0_yy_priv_mode            ),
@@ -1771,6 +1806,10 @@ aq_rtu_top  x_aq_rtu_top (
   .cp0_rtu_ex1_wb_dp             (cp0_rtu_ex1_wb_dp            ),
   .cp0_rtu_ex1_wb_preg           (cp0_rtu_ex1_wb_preg          ),
   .cp0_rtu_ex1_wb_vld            (cp0_rtu_ex1_wb_vld           ),
+  `InstrCommit_connect(0)
+  `ExcpEvent_connect
+  .csrtimer_value                (csrtimer_value               ),
+  .csrestat_value                (csrestat_value               ),
   .cp0_rtu_fence_idle            (cp0_rtu_fence_idle           ),
   .cp0_rtu_icg_en                (cp0_rtu_icg_en               ),
   .cp0_rtu_in_lpmd               (cp0_rtu_in_lpmd              ),

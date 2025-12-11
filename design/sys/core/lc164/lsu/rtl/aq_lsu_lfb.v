@@ -110,6 +110,9 @@ module aq_lsu_lfb (
   output   wire           lfb_dc_bus_err,
   output   wire  [7  :0]  lfb_dc_bytes_vld,
   output   wire  [63 :0]  lfb_dc_data,
+`ifdef CHECK_DIFFTEST
+  output   wire  [39 :0]  lfb_dc_paddr,
+`endif
   output   wire  [3  :0]  lfb_dc_data_shift,
   output   wire           lfb_dc_data_vld,
   output   wire  [5  :0]  lfb_dc_dest_reg,
@@ -177,7 +180,8 @@ module aq_lsu_lfb (
 
 // &Regs; @22
 reg     [54 :0]  arbus;                 
-reg     [37 :0]  ldbus;                 
+reg     [37 :0]  ldbus;        
+reg     [54 :0]  wbbus;         
 reg     [3  :0]  lfb_bus_ptr;           
 reg     [3  :0]  lfb_create_ptr;        
 reg     [3  :0]  lfb_pop_ptr;           
@@ -195,7 +199,8 @@ reg     [1  :0]  rresp;
 reg              rvalid;                
 reg     [2  :0]  so_rid;                
 reg     [6  :0]  stbus;                 
-reg     [20 :0]  vldbus;                
+reg     [20 :0]  vldbus;        
+reg     [2  :0]  rid_sel_n;        
 
 // &Wires; @23
 wire             ar_ld;                 
@@ -655,6 +660,7 @@ always@(posedge lfb_rclk)
 begin
   if (arb_rvalid | ifu_lsu_warm_up) begin
     rid_final[7:0] <= 8'b1 << rid_sel[2:0];
+    rid_sel_n[2:0] <= rid_sel[2:0];
     rdata[127:0]   <= arb_rdata[127:0];
     rresp[1:0]     <= arb_rresp[1:0];
     rdirty         <= arb_rdirty;
@@ -910,6 +916,32 @@ assign lfb_dc_bus_err              = rresp[1] & ldbus[`LSU_LD_WB_EN] & !lfb_fof_
 assign lfb_dc_data[`LSU_DATAW-1:0] = rresp[1] 
                                    ? {`LSU_DATAW{1'b1}} 
                                    : (ldbus[`LSU_LD_ADDR_3] ? rdata[127:64] : rdata[63:0]);
+`ifdef CHECK_DIFFTEST
+always @( rid_sel_n[2:0]
+       or lfb_entry5_arbus[54:0]
+       or lfb_entry7_arbus[54:0]
+       or lfb_entry2_arbus[54:0]
+       or lfb_entry3_arbus[54:0]
+       or lfb_entry4_arbus[54:0]
+       or lfb_entry0_arbus[54:0]
+       or lfb_entry6_arbus[54:0]
+       or lfb_entry1_arbus[54:0])
+begin
+  case(rid_sel_n[2:0])
+  3'b000 : wbbus[BUS_WIDTH-1:0] = lfb_entry0_arbus[BUS_WIDTH-1:0];
+  3'b001 : wbbus[BUS_WIDTH-1:0] = lfb_entry1_arbus[BUS_WIDTH-1:0];
+  3'b010 : wbbus[BUS_WIDTH-1:0] = lfb_entry2_arbus[BUS_WIDTH-1:0];
+  3'b011 : wbbus[BUS_WIDTH-1:0] = lfb_entry3_arbus[BUS_WIDTH-1:0];
+  3'b100 : wbbus[BUS_WIDTH-1:0] = lfb_entry4_arbus[BUS_WIDTH-1:0];
+  3'b101 : wbbus[BUS_WIDTH-1:0] = lfb_entry5_arbus[BUS_WIDTH-1:0];
+  3'b110 : wbbus[BUS_WIDTH-1:0] = lfb_entry6_arbus[BUS_WIDTH-1:0];
+  3'b111 : wbbus[BUS_WIDTH-1:0] = lfb_entry7_arbus[BUS_WIDTH-1:0];
+  default: wbbus[BUS_WIDTH-1:0] = {BUS_WIDTH{1'b0}};
+  endcase
+// &CombEnd; @242
+end
+assign lfb_dc_paddr[39:0]          = wbbus[BUS_ADDR_39:BUS_ADDR_0];
+`endif
 assign lfb_dc_sign_ext             = ldbus[`LSU_LD_SEXT];
 assign lfb_dc_size[1:0]            = ldbus[`LSU_LD_SIZE_1:`LSU_LD_SIZE_0];
 assign lfb_dc_bytes_vld[7:0]       = ldbus[`LSU_LD_BYTE_7:`LSU_LD_BYTE_0];

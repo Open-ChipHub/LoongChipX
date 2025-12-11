@@ -53,8 +53,10 @@ CXXFLAGS      ?=
 LDFLAGS       ?=
 OBJCACHE	  ?= $(shell command -v ccache >/dev/null 2>&1; if [ $$? -eq 0 ]; then echo "ccache"; fi)
 
-WAVE          ?= VCD
+WAVE          ?= FST
 CONFIG        ?= $(VERIF_DIR)/config/config.hello
+PROFILE       ?= 0
+HARDWARE 	  ?= 0
 
 # Generate makefile dependencies (not shown as complicates the Makefile)
 #VERILATOR_FLAGS += -MMD
@@ -73,7 +75,7 @@ CXXFLAGS += -stdlib=libstdc++
 LDFLAGS += -stdlib=libstdc++
 endif
 
-CXXFLAGS_OPTIMIZE += -O3 -g  
+CXXFLAGS_OPTIMIZE += -O3
 CXXFLAGS += $(CXXFLAGS_OPTIMIZE)
 
 ifeq ("$(RANDOM_INIT)", "1")
@@ -95,6 +97,7 @@ CXXFLAGS+=-I$(COMMON_DIR)/memory/
 LDFLAGS +=-L$(COMMON_DIR)/memory/DRAMsim3/
 LDFLAGS +=-L$(COMMON_DIR)/softfpu
 LIBS    += -ldramsim3
+LIBS    += -lz
 
 ifeq ("$(WAVE)", "FST")
     WAVE_FLAGS=--trace-fst
@@ -113,6 +116,10 @@ VERILATOR_FLAGS += --threads $(VERILATOR_THREAD_NUM)
 # this just slightly increase the speed of wave dump
 VERILATOR_FLAGS += --trace-threads 2
 CXXFLAGS += -DVERILATOR_THREAD_NUM=$(VERILATOR_THREAD_NUM)
+endif
+
+ifneq ($(PROFILE),0)
+VERILATOR_FLAGS += --prof-c
 endif
 
 
@@ -163,8 +170,15 @@ CXX_SRC :=  $(COMMON_DIR)/memory/memorysim_check.cpp   \
 			$(COMMON_DIR)/vcsrc/ram.cpp                \
 			$(COMMON_DIR)/vcsrc/rand64.cpp             \
 			$(COMMON_DIR)/vcsrc/axi.cpp                \
-			$(COMMON_DIR)/vcsrc/sim_config.cpp         \
-			$(COMMON_DIR)/sim_main.cpp
+			$(COMMON_DIR)/vcsrc/sim_config.cpp         
+			
+
+ifeq ("$(HARDWARE)", "1")
+	CXXFLAGS += -DDIFF_HARDWARE
+	CXX_SRC += $(DIFFTEST_DIR)/hard_main.cpp
+else
+	CXX_SRC += $(COMMON_DIR)/sim_main.cpp
+endif
 
 CXXFLAGS += -I$(COMMON_DIR)/memory -I$(COMMON_DIR)/vcsrc/include -I$(COMMON_DIR)/softfpu
 
@@ -256,6 +270,9 @@ clean:
 	 files.verdi.lst
 
 clean_all: mostlyclean
+
+clean_obj:
+	-rm -rf obj_dir
 
 distclean: clean
 	-rm -rf logs find_out_*

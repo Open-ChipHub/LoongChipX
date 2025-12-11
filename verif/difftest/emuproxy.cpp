@@ -40,7 +40,7 @@ EmuProxy::EmuProxy(int coreid) {
     csrcpy = (void (*)(void*, bool))dlsym(handle, "loong64_difftest_csrcpy");
     check_and_assert(csrcpy);
 
-    exec = (void (*)(uint64_t))dlsym(handle, "loong64_difftest_exec");
+    exec = (void (*)(uint64_t, bool))dlsym(handle, "loong64_difftest_exec");
     check_and_assert(exec);
 
     check_end = (int(*)(void))dlsym(handle, "loong64_difftest_cosim_end");
@@ -55,7 +55,7 @@ EmuProxy::EmuProxy(int coreid) {
     isa_reg_display = (void (*)(void))dlsym(handle, "loong64_isa_reg_display");
     check_and_assert(isa_reg_display);
 
-    timercpy = (void (*)(void*))dlsym(handle, "loong64_difftest_timercpy");
+    timercpy = (void (*)(void*, bool))dlsym(handle, "loong64_difftest_timercpy");
     check_and_assert(timercpy);
 
     estat_sync = (void (*)(uint64_t, uint64_t))dlsym(handle, "loong64_difftest_estat_sync");
@@ -73,7 +73,23 @@ EmuProxy::EmuProxy(int coreid) {
     get_prev_pc = (uint64_t (*)(void))dlsym(handle, "loong64_difftest_get_prev_pc");
     check_and_assert(get_prev_pc);
 
+    csrcpy_idx = (void (*)(int, uint64_t*, uint64_t, bool))dlsym(handle, "loong64_difftest_csrcpy_idx");
+    check_and_assert(csrcpy_idx);
 
+    get_store = (bool (*)(store_data_t*))dlsym(handle, "loong64_difftest_get_store");
+    check_and_assert(get_store);
+
+    save_checkpoint = (void (*)(const char*, uint64_t*, bool))dlsym(handle, "loong64_difftest_save_checkpoint");
+    check_and_assert(save_checkpoint);
+
+    restore_checkpoint = (void (*)(const char*, uint64_t*, bool))dlsym(handle, "loong64_difftest_restore_checkpoint");
+    check_and_assert(restore_checkpoint);
+
+    check_paddr = (void (*)(uint64_t, uint32_t, uint64_t*, uint32_t*))dlsym(handle, "loong64_difftest_check_paddr");
+    check_and_assert(check_paddr);
+
+    print_store = (void (*)(void))dlsym(handle, "loong64_difftest_print_store");
+    check_and_assert(print_store);
 #else
     printf("The current platform is not supported.\n");
     exit(1);

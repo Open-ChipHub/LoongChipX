@@ -41,7 +41,13 @@ public:
     uint64_t rollback_dist   ;
     uint64_t pmcfg_plv ;
     bool snapshot_on_failure ;
+    bool checkpoint_on_failure;
+    bool restore_checkpoint;
     std::string action_on_sigint ;
+    uint64_t fastforward_cycles;
+    std::string checkpoint_path;
+    uint64_t checkpoint_cycles;
+    std::string image_path;
 
     void setup(Config& config);
     void setup_dir(Config& config);

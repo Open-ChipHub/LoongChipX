@@ -22,6 +22,8 @@ module aq_vidu_vid_gpr_reg_fp (
   input    wire          pad_yy_icg_scan_en,
   input    wire  [63:0]  vpu_vidu_fp_wb_data,
   input    wire          wb_vld_x,
+  input    wire          dbg_wvld,
+  input    wire  [63:0]  dbg_wdata,
   output   wire  [63:0]  read_data_y
 ); 
 
@@ -63,9 +65,9 @@ gated_clk_cell  x_reg_gated_clk (
 //==========================================================
 //                     Write Port
 //==========================================================
-assign write_en = wb_vld_x;
+assign write_en = wb_vld_x | dbg_wvld;
 
-assign write_data[63:0] = wb_vld_x ? vpu_vidu_fp_wb_data[63:0] : reg_dout[63:0];
+assign write_data[63:0] = dbg_wvld ? dbg_wdata : wb_vld_x ? vpu_vidu_fp_wb_data[63:0] : reg_dout[63:0];
 
 //==========================================================
 //                     Preg Register

@@ -163,12 +163,16 @@ module aq_cp0_regs (
   output   wire           cp0_vpu_xx_dqnan,
   output   wire  [2  :0]  cp0_vpu_xx_rm,
   output   wire  [4  :0]  cp0_vpu_fflags_enable,
+  output   wire  [63 :0]  cp0_vidu_fcsr,
   output   wire  [63 :0]  cp0_xx_mrvbr,
   output   wire  [1  :0]  cp0_yy_priv_mode,
   output   wire           regs_clk,
   output   wire           regs_iui_csr_inv,
   output   wire           regs_iui_mcins_stall,
   output   wire           regs_iui_mcor_stall,
+  `CSRRegState_out
+  output   wire  [63 :0]  csrtimer_value,
+  output   wire  [63 :0]  csrestat_value,
   output   wire  [63 :0]  regs_iui_era,
   output   wire  [63 :0]  regs_iui_mepc,
   output   wire  [1  :0]  regs_iui_pm,
@@ -331,7 +335,8 @@ wire             vs_dirty_upd_gate;
 wire    [63 :0]  vstart_value;                 
 wire    [63 :0]  vtype_value;                  
 wire    [63 :0]  vxrm_value;                   
-wire    [63 :0]  vxsat_value;                  
+wire    [63 :0]  vxsat_value;     
+wire             diff_data_valid;             
 
 wire             crmd_local_en;
 wire             prmd_local_en;
@@ -396,7 +401,6 @@ wire    [63 :0]  csrprmd_value;
 wire    [63 :0]  csreuen_value;
 wire    [63 :0]  csrmisc_value;
 wire    [63 :0]  csrecfg_value;
-wire    [63 :0]  csrestat_value;
 wire    [63 :0]  csrera_value;
 wire    [63 :0]  csrbadv_value;
 wire    [63 :0]  csrbadi_value;
@@ -1344,6 +1348,8 @@ always @( scer2_value[63:0]
        or csrtlbrentry_value[63:0]
        or csrmerrentry_value[63:0]
        or csrtlbidx_value[63:0]
+       or csrpgdl_value[63:0]
+       or csrpgdh_value[63:0]
        or csrpwcl_value[63:0]
        or csrpwch_value[63:0]
        or csrstlbps_value[63:0]
@@ -1399,6 +1405,8 @@ begin
     TLBRENTRY : regs_csr_rdata[63:0] = csrtlbrentry_value[63:0];
     MERRENTRY : regs_csr_rdata[63:0] = csrmerrentry_value[63:0];
     TLBIDX    : regs_csr_rdata[63:0] = csrtlbidx_value[63:0];
+    PGDL      : regs_csr_rdata[63:0] = csrpgdl_value[63:0];
+    PGDH      : regs_csr_rdata[63:0] = csrpgdh_value[63:0];
     PWCL      : regs_csr_rdata[63:0] = csrpwcl_value[63:0];
     PWCH      : regs_csr_rdata[63:0] = csrpwch_value[63:0];
     STLBPS    : regs_csr_rdata[63:0] = csrstlbps_value[63:0];
@@ -1604,6 +1612,7 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .biu_cp0_se_int           (biu_cp0_se_int          ),
   .biu_cp0_ss_int           (biu_cp0_ss_int          ),
   .biu_cp0_st_int           (biu_cp0_st_int          ),
+  .forever_cpuclk           (forever_cpuclk          ),
   .cp0_dtu_mexpt_vld        (cp0_dtu_mexpt_vld       ),
   .cp0_hpcp_int_off_vld     (cp0_hpcp_int_off_vld    ),
   .cp0_idu_fs               (cp0_idu_fs              ),
@@ -1651,6 +1660,7 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .mtval_value              (mtval_value             ),
   .mtvec_local_en           (mtvec_local_en          ),
   
+  `CSRRegState_connect
   .ext_interrupt            (ext_interrupt           ),
   .arch_ctrl_local_en       (arch_ctrl_local_en      ),
   .crmd_local_en            (crmd_local_en           ),
@@ -1711,6 +1721,7 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .fcsr3_local_en           (fcsr3_local_en          ),
   .iui_regs_csr_cpucfg_op   (iui_regs_csr_cpucfg_op  ),
 
+  .csrtimer_value           (csrtimer_value[63:0]    ),
   .csrarch_value            (csrarch_value[63:0]     ),
   .csrcrmd_value            (csrcrmd_value[63:0]     ),
   .csrprmd_value            (csrprmd_value[63:0]     ),
@@ -1818,7 +1829,8 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .stval_value              (stval_value             ),
   .stvec_local_en           (stvec_local_en          ),
   .stvec_value              (stvec_value             ),
-  .vs_dirty_upd_gate        (vs_dirty_upd_gate       )
+  .vs_dirty_upd_gate        (vs_dirty_upd_gate       ),
+  .diff_data_valid          (diff_data_valid         )
 );
 
 
@@ -2065,7 +2077,8 @@ assign regs_flush_clk_en = rtu_cp0_exit_debug
                         || iui_regs_inst_sret
                         || rtu_yy_xx_expt_vld
                         || regs_mcor_busy
-                        || regs_mcins_busy;
+                        || regs_mcins_busy
+                        || diff_data_valid;
 // &Instance("gated_clk_cell", "x_regs_flush_clk"); @1230
 gated_clk_cell  x_regs_flush_clk (
   .clk_in             (forever_cpuclk    ),
@@ -2097,6 +2110,8 @@ assign regs_iui_rdata_for_w[63:0] = regs_csr_rdata_for_w[63:0];
 assign cp0_mmu_cur_asid[15:0]     = csrasid_value[15:0];
 assign cp0_mmu_ptw_pgdh[63:0]     = csrpgdh_value[63:0];
 assign cp0_mmu_ptw_pgdl[63:0]     = csrpgdl_value[63:0];
+
+assign cp0_vidu_fcsr[63:0]        =  fcsr0_value[63:0];
 
 // &Force("output", "regs_xx_icg_en"); @1248
 // &Force("output", "regs_clk"); @1249

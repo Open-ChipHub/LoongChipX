@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <sys/mman.h>
 #include <string>
+#include <vector>
 
 #include "lsassert.h"
 # define ELF_CLASS  ELFCLASS64
@@ -26,6 +27,11 @@ class RAM {
 public:
     uint8_t* base;
     uint64_t size;
+    struct addr_map_t {
+        uint64_t start;
+        uint64_t size;
+    };
+    std::vector<addr_map_t> addr_maps;
 
 RAM(uint64_t size, string log_dir = ".");
 ~RAM();
@@ -70,6 +76,7 @@ int ram_load_random_test(const char *dir);
 void ram_set_cpu_irq(qemu_irq_handler handler);
 
 void ram_update_io(void);
+void memcpy_ram(void* src, uint64_t size);
 
 };
 

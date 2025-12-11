@@ -4,6 +4,8 @@
 #include "emu.h"
 #include "lightsss.h"
 #include "build_config.h"
+#include <zlib.h>
+#include "compress.h"
 
 int enable_fork = 0;
 
@@ -11,6 +13,7 @@ static VTop *top = nullptr;
 
 FILE* trace_out;
 FILE* uart_out;
+FILE* diff_out;
 
 /* ram to emu */
 static uint8_t *ram;
@@ -42,6 +45,9 @@ Emulator::Emulator(VTop *topp, const char *path, const char *file_out, const cha
           trapCode(STATE_RUNNING)
 {
     dm = new DiffManage();
+#ifdef DIFF_HARDWARE
+    xdma = new XDMA();
+#endif
     top = topp;
 
     sprintf(simu_out_path, "./%s%s", path, file_out);
@@ -78,6 +84,16 @@ Emulator::Emulator(VTop *topp, const char *path, const char *file_out, const cha
         exit(1);
     }
 
+    char diff_out_path[128];
+    const char uart_output_file[] = "/diff.bin";
+    sprintf(diff_out_path, "./%s%s", path, uart_output_file);
+    if ((diff_out = fopen(diff_out_path, "wb")) == NULL) {
+        printf("diff.bin open error!!!!\n");
+        fprintf(diff_out, "diff.bin open error!!!!\n");
+        if (diff_out) fclose(diff_out);
+        exit(1);
+    }
+
     // init_ram(path, file_in);
     #ifdef RAND_TEST
     init_random_vlog(path, data_vlog);
@@ -88,14 +104,17 @@ Emulator::Emulator(VTop *topp, const char *path, const char *file_out, const cha
     }
 }
 
-void Emulator::init_emu(vluint64_t* main_time) {
+void Emulator::init_emu(vluint64_t* main_time, uint64_t snapshot_dist, bool proxy_snapshot) {
     this->main_time = main_time;
     dm->init_difftest();
+    dm->snapshot_dist = snapshot_dist;
+    dm->proxy_snapshot = proxy_snapshot;
 }
 
-void Emulator::init_ram(uint8_t* ram) {
+void Emulator::init_ram(uint8_t* ram, uint64_t size) {
     assert(ram != NULL);
     this->ram = ram;
+    this->ram_size = size;
     dm->init_ram(ram);
 }
 
@@ -211,7 +230,20 @@ void Emulator::close() {
     for (i = prefix_end; i < 128; i++) {
         simu_out_path[i] = 0;
     }
+#ifdef DIFF_HARDWARE
+    xdma->stop();
+#endif
 }
+
+#ifdef DIFF_HARDWARE
+int Emulator::hard_process(std::vector<addr_map_t> addr_maps) {
+    dm->write_csr_ref2dut();
+    for (auto& map : addr_maps) {
+        xdma->dev_write(map.start, ram + map.start, map.size);
+    }
+    return xdma->start();
+}
+#endif
 
 int Emulator::process() {
     if (enable_fork && is_fork_child() && main_time != 0) {
@@ -225,10 +257,10 @@ int Emulator::process() {
     }
 
     trapCode = dm->difftest_state();
-    if (trapCode != STATE_RUNNING) {
-        printf("trapeCode = %d\n", trapCode);
-        return 0;
-    }
+    // if (trapCode != STATE_RUNNING) {
+    //     printf("trapeCode = %d\n", trapCode);
+    //     return 0;
+    // }
     auto start = std::chrono::steady_clock::now();
     trapCode = dm->do_step(*main_time);
     auto end = std::chrono::steady_clock::now();
@@ -256,8 +288,43 @@ int Emulator::process() {
         case STATE_TIME_LIMIT:
             return status_time_limit;
         default:
+            dm->display();
             return status_trace_err;
     }
+}
+
+// BUG: restore to keeptiming_advance() may fall into infinite loop
+void Emulator::fastforward(uint64_t cycles) {
+    for (int i = 0; i < 10; i++) {
+        top->clk = !top->clk;
+        top->eval();
+        top->clk = !top->clk;
+        top->eval();
+    }
+    dm->fastforward(cycles);
+    top->reset = !1;
+    for (int i = 0; i < 2; i++) {
+        top->clk = !top->clk;
+        top->eval();
+        top->clk = !top->clk;
+        top->eval();
+    }
+    dm->fastforward_end();
+    *main_time = dm->get_fastforward_cycle();
+}
+
+void Emulator::save_checkpoint(const char* path) {
+    dm->save_checkpoint(path);
+    char buf[1024];
+    sprintf(buf, "%s/ram.gz", path);
+    MMapCompressor::compressAndSave(this->ram, this->ram_size, buf);
+}
+
+void Emulator::restore_checkpoint(const char* path) {
+    dm->restore_checkpoint(path);
+    char buf[1024];
+    sprintf(buf, "%s/ram.gz", path);
+    MMapCompressor::loadAndDecompress(buf, this->ram);
 }
 
 void Emulator::fork_child_init() {
@@ -284,6 +351,7 @@ void Emulator::fork_child_init() {
 Emulator::~Emulator() {
     fclose(trace_out);
     fclose(uart_out);
+    fclose(diff_out);
     if (enable_fork && !is_fork_child()) {
         if (need_wakeup) {
             lightsss->wakeup_child(*main_time);
@@ -295,4 +363,8 @@ Emulator::~Emulator() {
 
     delete dm;
     dm = NULL;
+#ifdef DIFF_HARDWARE
+    delete xdma;
+    xdma = NULL;
+#endif
 }

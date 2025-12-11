@@ -26,6 +26,9 @@ module aq_vidu_vid_gpr_fp (
   input    wire  [63:0]  vpu_vidu_fp_wb_data,
   input    wire  [4 :0]  vpu_vidu_fp_wb_reg,
   input    wire          vpu_vidu_fp_wb_vld,
+  input    wire  [63:0]  cp0_vidu_fcsr,
+  input    wire  [7 :0]  idu_vidu_fcc,
+  `FPRegState_out
   output   reg   [63:0]  gpr_fp_dp_src0_data,
   output   reg   [63:0]  gpr_fp_dp_src1_data,
   output   reg   [63:0]  gpr_fp_dp_src2_data
@@ -69,7 +72,41 @@ wire    [63:0]  read_data_7;
 wire    [63:0]  read_data_8;              
 wire    [63:0]  read_data_9;              
 wire    [31:0]  vpu_vidu_fp_wb_reg_expand; 
-wire    [31:0]  wb_vld;                   
+wire    [31:0]  wb_vld;              
+
+wire            diff_data_vld;
+wire    [63:0]  diff_data_0;
+wire    [63:0]  diff_data_1;       
+wire    [63:0]  diff_data_10;      
+wire    [63:0]  diff_data_11;      
+wire    [63:0]  diff_data_12;      
+wire    [63:0]  diff_data_13;      
+wire    [63:0]  diff_data_14;      
+wire    [63:0]  diff_data_15;      
+wire    [63:0]  diff_data_16;      
+wire    [63:0]  diff_data_17;      
+wire    [63:0]  diff_data_18;      
+wire    [63:0]  diff_data_19;      
+wire    [63:0]  diff_data_2;       
+wire    [63:0]  diff_data_20;      
+wire    [63:0]  diff_data_21;      
+wire    [63:0]  diff_data_22;      
+wire    [63:0]  diff_data_23;      
+wire    [63:0]  diff_data_24;      
+wire    [63:0]  diff_data_25;      
+wire    [63:0]  diff_data_26;      
+wire    [63:0]  diff_data_27;      
+wire    [63:0]  diff_data_28;      
+wire    [63:0]  diff_data_29;      
+wire    [63:0]  diff_data_3;       
+wire    [63:0]  diff_data_30;      
+wire    [63:0]  diff_data_31;      
+wire    [63:0]  diff_data_4;       
+wire    [63:0]  diff_data_5;       
+wire    [63:0]  diff_data_6;       
+wire    [63:0]  diff_data_7;       
+wire    [63:0]  diff_data_8;       
+wire    [63:0]  diff_data_9; 
 
 
 
@@ -89,7 +126,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_0 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_0        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[0]          )
+  .wb_vld_x            (wb_vld[0]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_0        )
 );
 
 // &ConnRule(s/_x$/[1]/); @38
@@ -102,7 +141,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_1 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_1        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[1]          )
+  .wb_vld_x            (wb_vld[1]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_1        )
 );
 
 // &ConnRule(s/_x$/[2]/); @41
@@ -115,7 +156,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_2 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_2        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[2]          )
+  .wb_vld_x            (wb_vld[2]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_2        )
 );
 
 // &ConnRule(s/_x$/[3]/); @44
@@ -128,7 +171,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_3 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_3        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[3]          )
+  .wb_vld_x            (wb_vld[3]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_3        )
 );
 
 // &ConnRule(s/_x$/[4]/); @47
@@ -141,7 +186,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_4 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_4        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[4]          )
+  .wb_vld_x            (wb_vld[4]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_4        )
 );
 
 // &ConnRule(s/_x$/[5]/); @50
@@ -154,7 +201,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_5 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_5        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[5]          )
+  .wb_vld_x            (wb_vld[5]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_5        )
 );
 
 // &ConnRule(s/_x$/[6]/); @53
@@ -167,7 +216,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_6 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_6        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[6]          )
+  .wb_vld_x            (wb_vld[6]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_6        )
 );
 
 // &ConnRule(s/_x$/[7]/); @56
@@ -180,7 +231,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_7 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_7        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[7]          )
+  .wb_vld_x            (wb_vld[7]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_7        )
 );
 
 // &ConnRule(s/_x$/[8]/); @59
@@ -193,7 +246,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_8 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_8        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[8]          )
+  .wb_vld_x            (wb_vld[8]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_8        )
 );
 
 // &ConnRule(s/_x$/[9]/); @62
@@ -206,7 +261,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_9 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_9        ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[9]          )
+  .wb_vld_x            (wb_vld[9]          ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_9        )
 );
 
 // &ConnRule(s/_x$/[10]/); @65
@@ -219,7 +276,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_10 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_10       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[10]         )
+  .wb_vld_x            (wb_vld[10]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_10       )
 );
 
 // &ConnRule(s/_x$/[11]/); @68
@@ -232,7 +291,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_11 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_11       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[11]         )
+  .wb_vld_x            (wb_vld[11]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_11       )
 );
 
 // &ConnRule(s/_x$/[12]/); @71
@@ -245,7 +306,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_12 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_12       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[12]         )
+  .wb_vld_x            (wb_vld[12]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_12       )
 );
 
 // &ConnRule(s/_x$/[13]/); @74
@@ -258,7 +321,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_13 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_13       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[13]         )
+  .wb_vld_x            (wb_vld[13]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_13       )
 );
 
 // &ConnRule(s/_x$/[14]/); @77
@@ -271,7 +336,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_14 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_14       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[14]         )
+  .wb_vld_x            (wb_vld[14]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_14       )
 );
 
 // &ConnRule(s/_x$/[15]/); @80
@@ -284,7 +351,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_15 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_15       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[15]         )
+  .wb_vld_x            (wb_vld[15]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_15       )
 );
 
 // &ConnRule(s/_x$/[16]/); @83
@@ -297,7 +366,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_16 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_16       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[16]         )
+  .wb_vld_x            (wb_vld[16]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_16       )
 );
 
 // &ConnRule(s/_x$/[17]/); @86
@@ -310,7 +381,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_17 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_17       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[17]         )
+  .wb_vld_x            (wb_vld[17]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_17       )
 );
 
 // &ConnRule(s/_x$/[18]/); @89
@@ -323,7 +396,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_18 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_18       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[18]         )
+  .wb_vld_x            (wb_vld[18]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_18       )
 );
 
 // &ConnRule(s/_x$/[19]/); @92
@@ -336,7 +411,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_19 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_19       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[19]         )
+  .wb_vld_x            (wb_vld[19]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_19       )
 );
 
 // &ConnRule(s/_x$/[20]/); @95
@@ -349,7 +426,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_20 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_20       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[20]         )
+  .wb_vld_x            (wb_vld[20]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_20       )
 );
 
 // &ConnRule(s/_x$/[21]/); @98
@@ -362,7 +441,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_21 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_21       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[21]         )
+  .wb_vld_x            (wb_vld[21]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_21       )
 );
 
 // &ConnRule(s/_x$/[22]/); @101
@@ -375,7 +456,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_22 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_22       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[22]         )
+  .wb_vld_x            (wb_vld[22]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_22       )
 );
 
 // &ConnRule(s/_x$/[23]/); @104
@@ -388,7 +471,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_23 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_23       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[23]         )
+  .wb_vld_x            (wb_vld[23]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_23       )
 );
 
 // &ConnRule(s/_x$/[24]/); @107
@@ -401,7 +486,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_24 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_24       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[24]         )
+  .wb_vld_x            (wb_vld[24]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_24       )
 );
 
 // &ConnRule(s/_x$/[25]/); @110
@@ -414,7 +501,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_25 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_25       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[25]         )
+  .wb_vld_x            (wb_vld[25]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_25       )
 );
 
 // &ConnRule(s/_x$/[26]/); @113
@@ -427,7 +516,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_26 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_26       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[26]         )
+  .wb_vld_x            (wb_vld[26]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_26       )
 );
 
 // &ConnRule(s/_x$/[27]/); @116
@@ -440,7 +531,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_27 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_27       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[27]         )
+  .wb_vld_x            (wb_vld[27]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_27       )
 );
 
 // &ConnRule(s/_x$/[28]/); @119
@@ -453,7 +546,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_28 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_28       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[28]         )
+  .wb_vld_x            (wb_vld[28]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_28       )
 );
 
 // &ConnRule(s/_x$/[29]/); @122
@@ -466,7 +561,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_29 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_29       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[29]         )
+  .wb_vld_x            (wb_vld[29]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_29       )
 );
 
 // &ConnRule(s/_x$/[30]/); @125
@@ -479,7 +576,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_30 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_30       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[30]         )
+  .wb_vld_x            (wb_vld[30]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_30       )
 );
 
 // &ConnRule(s/_x$/[31]/); @128
@@ -492,7 +591,9 @@ aq_vidu_vid_gpr_reg_fp  x_aq_vidu_vid_gpr_reg_fp_31 (
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .read_data_y         (read_data_31       ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
-  .wb_vld_x            (wb_vld[31]         )
+  .wb_vld_x            (wb_vld[31]         ),
+  .dbg_wvld            (diff_data_vld      ),
+  .dbg_wdata           (diff_data_31       )
 );
 
 
@@ -745,11 +846,47 @@ end
 //                   Check DiffTest
 //==========================================================
 `ifdef CHECK_DIFFTEST
+`ifdef DIFF_HARDWARE
+  assign dma_FPRegState_fpr_0 = read_data_0[63:0];
+  assign dma_FPRegState_fpr_1 = read_data_1[63:0];
+  assign dma_FPRegState_fpr_2 = read_data_2[63:0];
+  assign dma_FPRegState_fpr_3 = read_data_3[63:0];
+  assign dma_FPRegState_fpr_4 = read_data_4[63:0];
+  assign dma_FPRegState_fpr_5 = read_data_5[63:0];
+  assign dma_FPRegState_fpr_6 = read_data_6[63:0];
+  assign dma_FPRegState_fpr_7 = read_data_7[63:0];
+  assign dma_FPRegState_fpr_8 = read_data_8[63:0];
+  assign dma_FPRegState_fpr_9 = read_data_9[63:0];
+  assign dma_FPRegState_fpr_10 = read_data_10[63:0];
+  assign dma_FPRegState_fpr_11 = read_data_11[63:0];
+  assign dma_FPRegState_fpr_12 = read_data_12[63:0];
+  assign dma_FPRegState_fpr_13 = read_data_13[63:0];
+  assign dma_FPRegState_fpr_14 = read_data_14[63:0];
+  assign dma_FPRegState_fpr_15 = read_data_15[63:0];
+  assign dma_FPRegState_fpr_16 = read_data_16[63:0];
+  assign dma_FPRegState_fpr_17 = read_data_17[63:0];
+  assign dma_FPRegState_fpr_18 = read_data_18[63:0];
+  assign dma_FPRegState_fpr_19 = read_data_19[63:0];
+  assign dma_FPRegState_fpr_20 = read_data_20[63:0];
+  assign dma_FPRegState_fpr_21 = read_data_21[63:0];
+  assign dma_FPRegState_fpr_22 = read_data_22[63:0];
+  assign dma_FPRegState_fpr_23 = read_data_23[63:0];
+  assign dma_FPRegState_fpr_24 = read_data_24[63:0];
+  assign dma_FPRegState_fpr_25 = read_data_25[63:0];
+  assign dma_FPRegState_fpr_26 = read_data_26[63:0];
+  assign dma_FPRegState_fpr_27 = read_data_27[63:0];
+  assign dma_FPRegState_fpr_28 = read_data_28[63:0];
+  assign dma_FPRegState_fpr_29 = read_data_29[63:0];
+  assign dma_FPRegState_fpr_30 = read_data_30[63:0];
+  assign dma_FPRegState_fpr_31 = read_data_31[63:0];
+  assign dma_FPRegState_fccr = idu_vidu_fcc[7:0];
+  assign dma_FPRegState_fcsr0 = cp0_vidu_fcsr[31:0];
+`else
 DifftestFPRegState DifftestFPRegState (
     .clock              (forever_cpuclk     ),
     .coreid             ('0                 ),
-    .fccr               (8'b0               ),
-    .fcsr0              (32'b0              ),
+    .fccr               (idu_vidu_fcc[7:0]  ),
+    .fcsr0              (cp0_vidu_fcsr[31:0]),
     .fpr_0              (read_data_0[63:0]  ),
     .fpr_1              (read_data_1[63:0]  ),
     .fpr_2              (read_data_2[63:0]  ),
@@ -783,6 +920,49 @@ DifftestFPRegState DifftestFPRegState (
     .fpr_30             (read_data_30[63:0] ),
     .fpr_31             (read_data_31[63:0] )
 );
+`endif
+`endif
+
+`ifdef DIFF_FASTFORWARD
+DifftestFPRegRestore DifftestFPRegRestore (
+    .valid              (diff_data_vld      ),
+    .clock              (forever_cpuclk     ),
+    .coreid             (8'd0               ),
+    .fpr_0              (diff_data_0[63:0]  ),
+    .fpr_1              (diff_data_1[63:0]  ),
+    .fpr_2              (diff_data_2[63:0]  ),
+    .fpr_3              (diff_data_3[63:0]  ),
+    .fpr_4              (diff_data_4[63:0]  ),
+    .fpr_5              (diff_data_5[63:0]  ),
+    .fpr_6              (diff_data_6[63:0]  ),
+    .fpr_7              (diff_data_7[63:0]  ),
+    .fpr_8              (diff_data_8[63:0]  ),
+    .fpr_9              (diff_data_9[63:0]  ),
+    .fpr_10             (diff_data_10[63:0] ),
+    .fpr_11             (diff_data_11[63:0] ),
+    .fpr_12             (diff_data_12[63:0] ),
+    .fpr_13             (diff_data_13[63:0] ),
+    .fpr_14             (diff_data_14[63:0] ),
+    .fpr_15             (diff_data_15[63:0] ),
+    .fpr_16             (diff_data_16[63:0] ),
+    .fpr_17             (diff_data_17[63:0] ),
+    .fpr_18             (diff_data_18[63:0] ),
+    .fpr_19             (diff_data_19[63:0] ),
+    .fpr_20             (diff_data_20[63:0] ),
+    .fpr_21             (diff_data_21[63:0] ),
+    .fpr_22             (diff_data_22[63:0] ),
+    .fpr_23             (diff_data_23[63:0] ),
+    .fpr_24             (diff_data_24[63:0] ),
+    .fpr_25             (diff_data_25[63:0] ),
+    .fpr_26             (diff_data_26[63:0] ),
+    .fpr_27             (diff_data_27[63:0] ),
+    .fpr_28             (diff_data_28[63:0] ),
+    .fpr_29             (diff_data_29[63:0] ),
+    .fpr_30             (diff_data_30[63:0] ),
+    .fpr_31             (diff_data_31[63:0] )
+);
+`else
+    assign diff_data_vld = 1'b0;
 `endif
 
 

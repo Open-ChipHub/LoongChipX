@@ -23,6 +23,7 @@ module aq_idu_top (
   input    wire  [1  :0]  cp0_idu_fs,
   input    wire           cp0_idu_icg_en,
   input    wire           cp0_idu_issue_stall,
+  input    wire           xdma_stall,
   input    wire           cp0_idu_ucme,
   input    wire           cp0_idu_vill,
   input    wire           cp0_idu_vl_zero,
@@ -83,6 +84,7 @@ module aq_idu_top (
   input    wire           rtu_yy_xx_dbgon,
   input    wire           vidu_idu_fp_full,
   input    wire           vidu_idu_vec_full,
+  `GRegState_out
   output   wire           idu_alu_ex1_gateclk_sel,
   output   wire           idu_bju_ex1_gateclk_sel,
   output   wire           idu_cp0_ex1_dp_sel,
@@ -157,7 +159,8 @@ module aq_idu_top (
   output   wire  [184:0]  idu_vidu_ex1_inst_data,
   output   wire           idu_vidu_ex1_vec_dp_sel,
   output   wire           idu_vidu_ex1_vec_gateclk_sel,
-  output   wire           idu_vidu_ex1_vec_sel
+  output   wire           idu_vidu_ex1_vec_sel,
+  output   wire  [7  :0]  idu_vidu_fcc
 ); 
 
 
@@ -304,7 +307,9 @@ aq_idu_id_gpr  x_aq_idu_id_gpr (
   .pad_yy_icg_scan_en (pad_yy_icg_scan_en),
   .rtu_idu_wb0_data   (rtu_idu_wb0_data  ),
   .rtu_idu_wb1_data   (rtu_idu_wb1_data  ),
-  .rtu_idu_wbc_data   (rtu_idu_wbc_data  )
+  .rtu_idu_wbc_data   (rtu_idu_wbc_data  ),
+  `GRegState_connect
+  .idu_vidu_fcc       (idu_vidu_fcc      )
 );
 
 // &Instance("aq_idu_id_wbt",   "x_aq_idu_id_wbt"); @35
@@ -499,6 +504,7 @@ aq_idu_id_ctrl  x_aq_idu_id_ctrl (
   .cp0_idu_dis_fence_in_dbg         (cp0_idu_dis_fence_in_dbg        ),
   .cp0_idu_icg_en                   (cp0_idu_icg_en                  ),
   .cp0_idu_issue_stall              (cp0_idu_issue_stall             ),
+  .xdma_stall                       (xdma_stall                      ),
   .cp0_idu_vsetvl_dis_stall         (cp0_idu_vsetvl_dis_stall        ),
   .cp0_yy_clk_en                    (cp0_yy_clk_en                   ),
   .cpurst_b                         (cpurst_b                        ),

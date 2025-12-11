@@ -5,11 +5,12 @@ std::chrono::nanoseconds emu_nano_seconds = std::chrono::nanoseconds(0);
 
 extern FILE* trace_out;
 extern FILE* uart_out;
+extern FILE* diff_out;
 
 // not compare estat
 static const int DIFFTEST_NR_GREG   = 32;
 static const int DIFFTEST_NR_CSRREG = 12;
-static const int DIFFTEST_NR_FPREG  = 32;
+static const int DIFFTEST_NR_FPREG  = 34;
 static const int DIFFTEST_NR_REG = DIFFTEST_NR_GREG + DIFFTEST_NR_CSRREG;
 
 static const char* reg_name[] = {
@@ -46,8 +47,6 @@ static int dead_clock = 0;
 #endif
 extern long long inst_total;
 
-uint32_t split_num = 0;
-
 int debug = 0;
 int debug_hit_num = 0;
 
@@ -66,6 +65,13 @@ int Difftest::step(vluint64_t &main_time) {
 #endif
         return STATE_END;
     }
+
+#ifdef LOG_DIFF
+    if(dut.commit[0].valid || dut.excp.excp_valid || dut.load[0].valid || 
+        dut.store[0].valid) {
+        fwrite(&dut, sizeof(difftest_core_state_t), 1, diff_out);
+    }
+#endif
 
     while (idx_commit < DIFFTEST_COMMIT_WIDTH && dut.commit[idx_commit].valid) {
         inst_total += 1;
@@ -90,6 +96,56 @@ int Difftest::step(vluint64_t &main_time) {
 
 #endif
         idx_commit++;
+    }
+
+    /* store difftest. valid = {4'b0, sc(llbit=1), stw, sth, stb} */
+    for (int index = 0; index < DIFFTEST_COMMIT_WIDTH; index++) {
+        if (dut.store[index].valid) {
+            store_queue.push({dut.store[index].paddr, dut.store[index].data, dut.store[index].mask});
+        }
+    }
+
+    if (!store_queue.empty()) {
+        store_data_t ref_store_data;
+        while (proxy->get_store(&ref_store_data)) {
+            
+            store_data_t dut_store_data = store_queue.front();
+            store_queue.pop();
+            if (ref_store_data.paddr != dut_store_data.paddr ||
+                ref_store_data.data != dut_store_data.data ||
+                ref_store_data.mask != dut_store_data.mask) {
+                printf("store different:\n");
+                printf("ref_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", ref_store_data.paddr, ref_store_data.data, ref_store_data.mask);
+                printf(" dut_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", dut_store_data.paddr, dut_store_data.data, dut_store_data.mask);
+#ifdef SIMU_TRACE
+                fprintf(trace_out,"store different:\n");
+                fprintf(trace_out,"ref_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", ref_store_data.paddr, ref_store_data.data, ref_store_data.mask);
+                fprintf(trace_out," dut_store_data: paddr = 0x%lx, data = 0x%lx, mask = 0x%x\n", dut_store_data.paddr, dut_store_data.data, dut_store_data.mask);
+#endif
+                proxy->print_store();
+                return STATE_ABORT;
+            }
+            if (store_queue.empty()) break;
+        }
+    }
+
+    for (int i = 0; i < 2; i++) {
+        if (dut.tlb[i].valid) {
+            proxy->check_paddr(dut.tlb[i].vpn, dut.tlb[i].source, &ref.tlb[i].ppn, &ref.tlb[i].exception);
+            if (ref.tlb[i].exception != 0x8 && // adef
+                ((dut.tlb[i].exception == 0) && ref.tlb[i].ppn != dut.tlb[i].ppn ||
+                  ref.tlb[i].exception != dut.tlb[i].exception)) {
+                printf("TLB different:\n");
+                printf("ref_tlb: vpn = 0x%lx, source = 0x%x, ppn = 0x%lx, exception = 0x%x\n", dut.tlb[i].vpn, dut.tlb[i].source, ref.tlb[i].ppn, ref.tlb[i].exception);
+                printf(" dut_tlb: vpn = 0x%lx, source = 0x%x, ppn = 0x%lx, exception = 0x%x\n", dut.tlb[i].vpn, dut.tlb[i].source, dut.tlb[i].ppn, dut.tlb[i].exception);
+    #ifdef SIMU_TRACE
+                fprintf(trace_out,"TLB different:\n");
+                fprintf(trace_out,"ref_tlb: vpn = 0x%lx, source = 0x%x, ppn = 0x%lx, exception = 0x%x\n", dut.tlb[i].vpn, dut.tlb[i].source, ref.tlb[i].ppn, ref.tlb[i].exception);
+                fprintf(trace_out," dut_tlb: vpn = 0x%lx, source = 0x%x, ppn = 0x%lx, exception = 0x%x\n", dut.tlb[i].vpn, dut.tlb[i].source, dut.tlb[i].ppn, dut.tlb[i].exception);
+    #endif
+                return STATE_ABORT;
+            }
+        }
     }
 
     if(idx_commit == 0 && !dut.excp.excp_valid){
@@ -131,12 +187,6 @@ int Difftest::step(vluint64_t &main_time) {
 
     if(idx_commit > 0) dut.csr.cur_pc = dut.commit[idx_commit - 1].pc;
 
-    /// only for debug print
-    if (dut.commit[0].valid && (dut.commit[0].pc == 0x90000000015d0200)) {
-        printf("Exception 0\n");
-        debug = 1;
-    }
-
     // uint64_t cur_pc = proxy->get_cur_pc();
     // if (dut.commit[0].pc != cur_pc){
     //     printf("MisMatch PC: 0x%08lx-> 0x%08lx\n", dut.commit[0].pc, cur_pc);
@@ -145,14 +195,14 @@ int Difftest::step(vluint64_t &main_time) {
     //     #endif
     // }
 
-    /* check if instruction is split */
-    if (do_check_instruction_split(insn, &split_num)) {
-        dut.commit[0].valid = 0;
-        return STATE_RUNNING;
-    }
+    // /* check if instruction is split */
+    // if (do_check_instruction_split(insn, &split_num)) {
+    //     dut.commit[0].valid = 0;
+    //     return STATE_RUNNING;
+    // }
 
-    /* clear split info */
-    split_num = 0;
+    // /* clear split info */
+    // split_num = 0;
 
     /* exec the first instruction */
     do_first_instr_commit();
@@ -197,19 +247,6 @@ int Difftest::step(vluint64_t &main_time) {
         return STATE_RUNNING;
     }
 
-    /* store difftest. valid = {4'b0, sc(llbit=1), stw, sth, stb} */
-    for (index = 0; index < idx_commit; index++) {
-        if (dut.store[index].valid) {
-            if (proxy->store_commit(dut.store[index].paddr, dut.store[index].data)) {
-                printf("dut different at pc = 0x%08x, paddr = 0x%lx, vaddr = 0x%lx, data = 0x%lx\n", dut.commit[index].pc, dut.store[index].paddr, dut.store[index].vaddr, dut.store[index].data);
-#ifdef SIMU_TRACE
-                fprintf(trace_out,"dut different at pc = 0x%08x, paddr = 0x%lx, vaddr = 0x%lx, data = 0x%lx\n", dut.commit[index].pc, dut.store[index].paddr, dut.store[index].vaddr, dut.store[index].data);
-#endif
-                return STATE_ABORT;
-            }
-        }
-    }
-
     /* load address of peripherals */
     for (index = 0; index < idx_commit; index++) {
 #ifdef RAND_TEST
@@ -245,6 +282,13 @@ int Difftest::step(vluint64_t &main_time) {
     proxy->regcpy(ref_regs_ptr, REF_TO_DUT, DIFF_TO_REF_ALL);
 
     proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
+    proxy->csrcpy_idx(0x41, &dut.csr.tcfg, 0xffffffffffffffff,  DUT_TO_REF);
+
+    proxy->csrcpy_idx(0x19, &ref.csr.pgdl, 0xffffffffffffffff,  REF_TO_DUT);
+    if (ref.csr.pgdl != dut.csr.pgdl) {
+        printf("warning: pgdl error, dut = %x, ref = %x\n", dut.csr.pgdl, ref.csr.pgdl);
+        return STATE_ABORT;
+    }   
 
     ref.csr.tval = dut.csr.tval;
     if(dut.excp.excp_valid){
@@ -270,15 +314,18 @@ int Difftest::step(vluint64_t &main_time) {
         printf("[ERROR]: Ecode Error!\n");
     }
 
+    bool pc_unmatch = false;
+
     if (idx_commit > 0)
         if (dut.commit[0].pc != ref.csr.cur_pc) {
             printf("MisMatch PC: 0x%08lx-> 0x%08lx\n", dut.commit[0].pc, ref.csr.cur_pc);
         #ifdef SIMU_TRACE
             fprintf(trace_out, "MisMatch PC: 0x%08lx-> 0x%08lx\n", dut.commit[0].pc, ref.csr.cur_pc);
         #endif
+            pc_unmatch = true;
         }
 
-    if (memcmp(dut_regs_ptr, ref_regs_ptr, DIFFTEST_NR_GREG * sizeof(uint64_t)) && 0){
+    if (memcmp(dut_regs_ptr, ref_regs_ptr, DIFFTEST_NR_GREG * sizeof(uint64_t))){
         for (int i = 0; i < DIFFTEST_NR_GREG; i ++) {
             if (dut_regs_ptr[i] != ref_regs_ptr[i]) {
                 printf("%2s(r%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n", reg_name[i], i,
@@ -297,7 +344,7 @@ int Difftest::step(vluint64_t &main_time) {
     if (memcmp(&dut.regs.fpr[0], &ref.regs.fpr[0], DIFFTEST_NR_FPREG * sizeof(uint64_t))){
         for (int i = 0; i < DIFFTEST_NR_GREG; i ++) {
             if (dut.regs.fpr[i] != ref.regs.fpr[i]) {
-                if ((dut.regs.fpr[i] & 0xffffffff) == (ref.regs.fpr[i] & 0xffffffff))
+                if ((dut.regs.fpr[i]) == (ref.regs.fpr[i]))
                     continue;
                 printf("%2s(f%2d) different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
                        reg_name[i], i, ref.csr.cur_pc, ref.regs.fpr[i], dut.regs.fpr[i]);
@@ -307,8 +354,25 @@ int Difftest::step(vluint64_t &main_time) {
 #endif
             }
         }
+        if (dut.regs.fccr != ref.regs.fccr) {
+            printf("fccr different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fccr, dut.regs.fccr);
+#ifdef SIMU_TRACE
+            fprintf(trace_out, "fccr different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fccr, dut.regs.fccr);
+#endif
+        }
+        if (dut.regs.fcsr0 != ref.regs.fcsr0) {
+            printf("fcsr0 different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fcsr0, dut.regs.fcsr0);
+#ifdef SIMU_TRACE
+            fprintf(trace_out, "fcsr0 different at pc = 0x%08lx, right= 0x%08lx, wrong = 0x%08lx\n",
+                    ref.csr.cur_pc, ref.regs.fcsr0, dut.regs.fcsr0);
+#endif
+        }
         return STATE_ABORT;
     } else {
+        if (pc_unmatch) return STATE_ABORT;
         return STATE_RUNNING;
     }
 #endif
@@ -318,7 +382,7 @@ extern void *get_img_start();
 void Difftest::do_first_instr_commit() {
     if (dut.commit[0].valid && dut.commit[0].pc == FIRST_INST_ADDRESS) {
         printf("The first instruction of core %d has commited. Difftest enabled.\n", coreid);
-
+        first_commit = true;
 #if 0
         assert(!get_img_start());
         proxy->memcpy(0x0, get_img_start(), EMU_RAM_SIZE, DIFFTEST_TO_REF);
@@ -334,15 +398,17 @@ void Difftest::do_instr_commit(int i) {
     if (do_check_inst_rdtime(dut.commit[i].inst)) {
         struct la64_timer timer;
         timer.counter_id = dut.csr.tid;
-        timer.stable_timer = dut.commit[i].timer_64_value;
+        timer.stable_timer = dut.commit[i].timer_64_value - 1;
         timer.time_val = dut.csr.tval;
         // printf("timer64: 0x%lx, low: 0x%x, high: 0x%x\n",dut.commit[i].timer_64_value,timer_low,timer_high);
-        proxy->timercpy(&timer);
+        proxy->timercpy(&timer, DUT_TO_REF);
     }
+
+    state->record_inst(dut.commit[i].pc, dut.commit[i].inst, dut.commit[i].wen, dut.commit[i].wdest, dut.commit[i].wdata, dut.commit[i].skip);
 
     /* single step exec */
     auto start = std::chrono::steady_clock::now();
-    proxy->exec(1);
+    proxy->exec(1, false);
     auto end = std::chrono::steady_clock::now();
     emu_nano_seconds += std::chrono::nanoseconds(end-start);
 
@@ -350,18 +416,19 @@ void Difftest::do_instr_commit(int i) {
 
 void Difftest::display() {
     fflush(NULL);
+    state->display();
     printf("\n==============  DUT Regs  ==============\n");
     for (int i = 0; i < 32; i ++) {
-        printf("%s(r%2d): 0x%08x ", reg_name[i], i, dut_regs_ptr[i]);
+        printf("%s(r%2d): 0x%016lx ", reg_name[i], i, dut_regs_ptr[i]);
         if (i % 4 == 3) printf("\n");
     }
-    printf("pc: 0x%08lx\n", dut.csr.cur_pc);
-    printf("CRMD: 0x%08lx,    PRMD: 0x%08lx,   EUEN: 0x%08lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
-    printf("ECFG: 0x%08lx,   ESTAT: 0x%08lx,    ERA: 0x%08lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
-    printf("BADV: 0x%08lx,  EENTRY: 0x%08lx, LLBCTL: 0x%08lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
+    printf("pc: 0x%016lx\n", dut.csr.cur_pc);
+    printf("CRMD: 0x%016lx,    PRMD: 0x%016lx,   EUEN: 0x%016lx\n", dut.csr.crmd, dut.csr.prmd, dut.csr.euen);
+    printf("ECFG: 0x%016lx,   ESTAT: 0x%016lx,    ERA: 0x%016lx\n", dut.csr.ecfg, dut.csr.estat, dut.csr.era);
+    printf("BADV: 0x%016lx,  EENTRY: 0x%016lx, LLBCTL: 0x%016lx\n", dut.csr.badv, dut.csr.eentry, dut.csr.llbctl);
     printf("cpu.ll_bit: %lu\n", dut.csr.llbctl & 0x1);
-    printf("INDEX: 0x%08lx, TLBEHI: 0x%08lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
-    printf("ASID: 0x%08lx, TLBRENTRY: 0x%08lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
+    printf("INDEX: 0x%016lx, TLBEHI: 0x%016lx, TLBELO0: 0x%08x, TLBELO1: 0x%08x\n", dut.csr.tlbidx, dut.csr.tlbehi, dut.csr.tlbelo0, dut.csr.tlbelo1);
+    printf("ASID: 0x%016lx, TLBRENTRY: 0x%016lx, DMW0: 0x%08x, DMW1: 0x%08x\n", dut.csr.asid, dut.csr.tlbrentry, dut.csr.dmw0, dut.csr.dmw1);
     printf("*******************************************************************************\n");
 #ifdef SIMU_TRACE
     fprintf(trace_out,"\n==============  DUT Regs  ==============\n");
@@ -385,235 +452,31 @@ void Difftest::display() {
     fflush(NULL);
 }
 
-bool Difftest::do_check_instruction_split(uint32_t inst, uint32_t *split_num) {
-    /// in soclab164 Core, the following instruction is split
-    
-    /// invtlb: 00000110010010011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0xc93) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
+void Difftest::fastforward(uint64_t cycles) {
+    for (int i = 0; i < cycles; i++) {
+        proxy->exec(1, true);
     }
+    proxy->regcpy(ref_regs_ptr, REF_TO_DUT, DIFF_TO_REF_ALL);
+    proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
+    struct la64_timer timer;
+    proxy->timercpy(&timer, REF_TO_DUT);
+    _fastforward_timer = timer.stable_timer;
+    ref_ext.misc = get_ref_csr(0x3);
+    ref_ext.badi = get_ref_csr(0x8);
+    ref_ext.pwcl = get_ref_csr(0x1c);
+    ref_ext.pwch = get_ref_csr(0x1d);
+    ref_ext.stlbps = get_ref_csr(0x1e);
+    ref_ext.rvacfg = get_ref_csr(0x1f);
+    ref_ext.cntc = get_ref_csr(0x43);
+    ref_ext.ticlr = get_ref_csr(0x44);
+    ref_ext.tlbrehi = get_ref_csr(0x8e);
+    store_data_t store_data;
+    while (proxy->get_store(&store_data));
 
-#if 0
-    /// amswap.w: 00111000011000000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c0) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amswap.d: 00111000011000001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c1) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd.w: 00111000011000010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c2) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd.d: 00111000011000011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c3) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand.w: 00111000011000100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c4) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand.d: 00111000011000101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c5) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor.w: 00111000011000110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c6) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor.d: 00111000011000111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c7) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor.w: 00111000011001000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c8) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor.d: 00111000011001001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70c9) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.w: 00111000011001010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70ca) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.d: 00111000011001011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cb) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.w: 00111000011001100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cc) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.d: 00111000011001101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cd) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.wu: 00111000011001110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70ce) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax.du: 00111000011001111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70cf) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.wu: 00111000011010000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d0) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin.du: 00111000011010001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d1) && (*split_num < 1)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-#endif
-
-    /// barrier
-    /// amswap_db.w: 00111000011010010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d2) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amswap_db.d: 00111000011010011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d3) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd_db.w: 00111000011010100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d4) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amadd_db.d: 00111000011010101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d5) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand_db.w: 00111000011010110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d6) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amand_db.d: 00111000011010111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d7) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor_db.w: 00111000011011000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d8) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amor_db.d: 00111000011011001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70d9) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor_db.w: 00111000011011010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70da) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// amxor_db.d: 00111000011011011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70db) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.w: 00111000011011100
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70dc) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.d: 00111000011011101
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70dd) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.w: 00111000011011110
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70de) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.d: 00111000011011111
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70df) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.wu: 00111000011100000
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e0) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammax_db.du: 00111000011100001
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e1) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.wu: 00111000011100010
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e2) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    /// ammin_db.du: 00111000011100011
-    if ((((inst >> 15) & (0xFFFFFFFF >> 15)) == 0x70e3) && (*split_num < 2)) {
-        *split_num = *split_num + 1;
-        return true;
-    }
-
-    return false;
+    _fastforward_cycles = timer.stable_timer;
+    _fastforward_pc = proxy->get_cur_pc();
+    inst_total = timer.stable_timer;
+    printf("fastforward pc: %lx\n", _fastforward_pc);
 }
 
 bool Difftest::do_check_instruction_skip(uint32_t inst, bool &is_copy) {
@@ -755,6 +618,11 @@ bool Difftest::do_check_instruction_skip(uint32_t inst, bool &is_copy) {
     if (((inst >> 15) == 0x7068)) {
         return true;
     }
+
+    /// iocsr: 0000011001001000000
+    if ((inst >> 13) == 0x3240) {
+        return true;
+    }
 #endif
 
     return false;
@@ -780,10 +648,14 @@ bool do_check_inst_rdtime(uint32_t inst) {
 }
 
 Difftest::Difftest(int coreid): coreid(coreid) {
+    memset(&dut, 0, sizeof(difftest_core_state_t));
     proxy = new DIFF_PROXY(coreid);
+    state = new DiffState;
 }
 
 Difftest::~Difftest() {
     delete proxy;
     proxy = NULL;
+    delete state;
+    state = NULL;
 }

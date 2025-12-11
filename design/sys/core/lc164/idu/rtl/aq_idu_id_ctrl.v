@@ -20,6 +20,7 @@ module aq_idu_id_ctrl (
   input    wire          cp0_idu_dis_fence_in_dbg,
   input    wire          cp0_idu_icg_en,
   input    wire          cp0_idu_issue_stall,
+  input    wire          xdma_stall,
   input    wire          cp0_idu_vsetvl_dis_stall,
   input    wire          cp0_yy_clk_en,
   input    wire          cpurst_b,
@@ -188,7 +189,7 @@ assign ctrl_pipedown_inst_vld = ctrl_dis_inst_vld && !ctrl_dis_stall;
 //----------------------------------------------------------
 assign ctrl_split_stall       = ifu_idu_id_inst_vld && split_dp_inst_sel && split_ctrl_id_stall;
 //idu stall include dispatch stall and split stall
-assign idu_ifu_id_stall       = ctrl_dis_stall || ctrl_split_stall;
+assign idu_ifu_id_stall       = ctrl_dis_stall || ctrl_split_stall || xdma_stall;
 
 //----------------------------------------------------------
 //                   Dispatch signals

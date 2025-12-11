@@ -18,6 +18,10 @@
 #define DPIC_ARG_BYTE char
 #define DPIC_ARG_INT  int
 #define DPIC_ARG_LONG long long
+#define DPIC_ARG_BIT_OUT  uint8_t*
+#define DPIC_ARG_BYTE_OUT char*
+#define DPIC_ARG_INT_OUT  int*
+#define DPIC_ARG_LONG_OUT uint64_t*
 
 // v_difftest_InstrCommit
 #define INTERFACE_INSTR_COMMIT           \
@@ -69,8 +73,8 @@
     DPIC_ARG_BYTE index,                 \
     DPIC_ARG_BIT  valid,                 \
     DPIC_ARG_LONG storePAddr,            \
-    DPIC_ARG_LONG storeVAddr,            \
-    DPIC_ARG_LONG storeData              \
+    DPIC_ARG_LONG storeData,             \
+    DPIC_ARG_BYTE storeMask              \
   )
 
 // v_difftest_LoadEvent
@@ -193,7 +197,139 @@
         DPIC_ARG_BYTE fccr,                  \
         DPIC_ARG_INT  fcsr0                  \
     )
+#define INTERFACE_GREG_RESTORE \
+    DIFFTEST_DPIC_FUNC_DECL(GRegRestore) (     \
+        DPIC_ARG_BIT_OUT valid,                  \
+        DPIC_ARG_BYTE    coreid,                 \
+        DPIC_ARG_LONG_OUT gpr_0,                 \
+        DPIC_ARG_LONG_OUT gpr_1,                 \
+        DPIC_ARG_LONG_OUT gpr_2,                 \
+        DPIC_ARG_LONG_OUT gpr_3,                 \
+        DPIC_ARG_LONG_OUT gpr_4,                 \
+        DPIC_ARG_LONG_OUT gpr_5,                 \
+        DPIC_ARG_LONG_OUT gpr_6,                 \
+        DPIC_ARG_LONG_OUT gpr_7,                 \
+        DPIC_ARG_LONG_OUT gpr_8,                 \
+        DPIC_ARG_LONG_OUT gpr_9,                 \
+        DPIC_ARG_LONG_OUT gpr_10,                \
+        DPIC_ARG_LONG_OUT gpr_11,                \
+        DPIC_ARG_LONG_OUT gpr_12,                \
+        DPIC_ARG_LONG_OUT gpr_13,                \
+        DPIC_ARG_LONG_OUT gpr_14,                \
+        DPIC_ARG_LONG_OUT gpr_15,                \
+        DPIC_ARG_LONG_OUT gpr_16,                \
+        DPIC_ARG_LONG_OUT gpr_17,                \
+        DPIC_ARG_LONG_OUT gpr_18,                \
+        DPIC_ARG_LONG_OUT gpr_19,                \
+        DPIC_ARG_LONG_OUT gpr_20,                \
+        DPIC_ARG_LONG_OUT gpr_21,                \
+        DPIC_ARG_LONG_OUT gpr_22,                \
+        DPIC_ARG_LONG_OUT gpr_23,                \
+        DPIC_ARG_LONG_OUT gpr_24,                \
+        DPIC_ARG_LONG_OUT gpr_25,                \
+        DPIC_ARG_LONG_OUT gpr_26,                \
+        DPIC_ARG_LONG_OUT gpr_27,                \
+        DPIC_ARG_LONG_OUT gpr_28,                \
+        DPIC_ARG_LONG_OUT gpr_29,                \
+        DPIC_ARG_LONG_OUT gpr_30,                \
+        DPIC_ARG_LONG_OUT gpr_31,                \
+        DPIC_ARG_BYTE_OUT fcc                    \
+    )
 
+#define INTERFACE_FPREG_RESTORE \
+    DIFFTEST_DPIC_FUNC_DECL(FPRegRestore) (     \
+        DPIC_ARG_BIT_OUT valid,                  \
+        DPIC_ARG_BYTE    coreid,                 \
+        DPIC_ARG_LONG_OUT fpr_0,                 \
+        DPIC_ARG_LONG_OUT fpr_1,                 \
+        DPIC_ARG_LONG_OUT fpr_2,                 \
+        DPIC_ARG_LONG_OUT fpr_3,                 \
+        DPIC_ARG_LONG_OUT fpr_4,                 \
+        DPIC_ARG_LONG_OUT fpr_5,                 \
+        DPIC_ARG_LONG_OUT fpr_6,                 \
+        DPIC_ARG_LONG_OUT fpr_7,                 \
+        DPIC_ARG_LONG_OUT fpr_8,                 \
+        DPIC_ARG_LONG_OUT fpr_9,                 \
+        DPIC_ARG_LONG_OUT fpr_10,                \
+        DPIC_ARG_LONG_OUT fpr_11,                \
+        DPIC_ARG_LONG_OUT fpr_12,                \
+        DPIC_ARG_LONG_OUT fpr_13,                \
+        DPIC_ARG_LONG_OUT fpr_14,                \
+        DPIC_ARG_LONG_OUT fpr_15,                \
+        DPIC_ARG_LONG_OUT fpr_16,                \
+        DPIC_ARG_LONG_OUT fpr_17,                \
+        DPIC_ARG_LONG_OUT fpr_18,                \
+        DPIC_ARG_LONG_OUT fpr_19,                \
+        DPIC_ARG_LONG_OUT fpr_20,                \
+        DPIC_ARG_LONG_OUT fpr_21,                \
+        DPIC_ARG_LONG_OUT fpr_22,                \
+        DPIC_ARG_LONG_OUT fpr_23,                \
+        DPIC_ARG_LONG_OUT fpr_24,                \
+        DPIC_ARG_LONG_OUT fpr_25,                \
+        DPIC_ARG_LONG_OUT fpr_26,                \
+        DPIC_ARG_LONG_OUT fpr_27,                \
+        DPIC_ARG_LONG_OUT fpr_28,                \
+        DPIC_ARG_LONG_OUT fpr_29,                \
+        DPIC_ARG_LONG_OUT fpr_30,                \
+        DPIC_ARG_LONG_OUT fpr_31                 \
+    )
+
+#define INTERFACE_CSRREG_RESTORE \
+    DIFFTEST_DPIC_FUNC_DECL(CSRRegRestore) (    \
+        DPIC_ARG_BIT_OUT  valid,                 \
+        DPIC_ARG_BYTE     coreid,                \
+        DPIC_ARG_LONG_OUT crmd,                  \
+        DPIC_ARG_LONG_OUT prmd,                  \
+        DPIC_ARG_LONG_OUT euen,                  \
+        DPIC_ARG_LONG_OUT misc,                  \
+        DPIC_ARG_LONG_OUT ecfg,                  \
+        DPIC_ARG_LONG_OUT estat,                 \
+        DPIC_ARG_LONG_OUT era,                   \
+        DPIC_ARG_LONG_OUT badv,                  \
+        DPIC_ARG_LONG_OUT badi,                  \
+        DPIC_ARG_LONG_OUT eentry,                \
+        DPIC_ARG_LONG_OUT tlbidx,                \
+        DPIC_ARG_LONG_OUT asid,                  \
+        DPIC_ARG_LONG_OUT pgdl,                  \
+        DPIC_ARG_LONG_OUT pgdh,                  \
+        DPIC_ARG_LONG_OUT pwcl,                  \
+        DPIC_ARG_LONG_OUT pwch,                  \
+        DPIC_ARG_LONG_OUT stlbps,                \
+        DPIC_ARG_LONG_OUT rvacfg,                \
+        DPIC_ARG_LONG_OUT save0,                 \
+        DPIC_ARG_LONG_OUT save1,                 \
+        DPIC_ARG_LONG_OUT save2,                 \
+        DPIC_ARG_LONG_OUT save3,                 \
+        DPIC_ARG_LONG_OUT tid,                   \
+        DPIC_ARG_LONG_OUT tcfg,                  \
+        DPIC_ARG_LONG_OUT tval,                  \
+        DPIC_ARG_LONG_OUT ticlr,                 \
+        DPIC_ARG_LONG_OUT cntc,                  \
+        DPIC_ARG_LONG_OUT timer,                 \
+        DPIC_ARG_LONG_OUT tlbrentry,             \
+        DPIC_ARG_LONG_OUT tlbrehi,               \
+        DPIC_ARG_LONG_OUT dmw0,                  \
+        DPIC_ARG_LONG_OUT dmw1,                  \
+        DPIC_ARG_LONG_OUT fcsr                   \
+    )
+
+#define INTERFACE_PC_RESTORE \
+    DIFFTEST_DPIC_FUNC_DECL(PCRestore) (    \
+        DPIC_ARG_BIT_OUT valid,                  \
+        DPIC_ARG_BYTE    coreid,                 \
+        DPIC_ARG_LONG_OUT pc                     \
+    )
+
+#define INTERFACE_TLB_EVENT \
+    DIFFTEST_DPIC_FUNC_DECL(TLBEvent) (    \
+        DPIC_ARG_BIT     valid,                  \
+        DPIC_ARG_BYTE    index,                  \
+        DPIC_ARG_BYTE    coreid,                 \
+        DPIC_ARG_BYTE    source,                 \
+        DPIC_ARG_LONG    vpn,                    \
+        DPIC_ARG_LONG    ppn,                    \
+        DPIC_ARG_INT     exception               \
+    )
 
 INTERFACE_INSTR_COMMIT;
 INTERFACE_EXCP_EVENT;
@@ -203,5 +339,10 @@ INTERFACE_LOAD_EVENT;
 INTERFACE_CSRREG_STATE;
 INTERFACE_GREG_STATE;
 INTERFACE_FPREG_STATE;
+INTERFACE_GREG_RESTORE;
+INTERFACE_FPREG_RESTORE;
+INTERFACE_CSRREG_RESTORE;
+INTERFACE_PC_RESTORE;
+INTERFACE_TLB_EVENT;
 
 #endif //CHIPLAB_INTERFACE_H

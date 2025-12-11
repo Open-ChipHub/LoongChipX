@@ -44,10 +44,12 @@ module aq_ifu_icache (
   input    wire  [27 :0]  mmu_ifu_pa,
   input    wire           mmu_ifu_pa_vld,
   input    wire  [4  :0]  mmu_ifu_prot,
+  input    wire           mmu_ifu_sh,
   input    wire           pad_yy_icg_scan_en,
   input    wire           pcgen_icache_chgflw_vld,
   input    wire  [33 :0]  pcgen_icache_seq_tag,
   input    wire  [63 :0]  pcgen_icache_va,
+  `TLBEvent_out(0)
   output   wire           icache_btb_grant,
   output   wire           icache_ctrl_stall,
   output   wire           icache_ctrl_inv_fsm_idle,
@@ -56,6 +58,7 @@ module aq_ifu_icache (
   output   wire           icache_ipack_inst_vld,
   output   wire           icache_ipack_inst_vld_gate,
   output   wire           icache_ipack_pgflt,
+  output   wire           icache_ipack_pnx,
   output   wire           icache_ipack_unalign,
   output   wire  [63 :0]  icache_pcgen_addr,
   output   wire           icache_pcgen_grant,
@@ -1205,6 +1208,7 @@ assign icache_ipack_acc_err       = icache_bypass_vld ? biu_icache_ref_err
 assign icache_ipack_unalign       = icache_bypass_vld ? icache_refill_addr[1]
                                                       : icache_pa[1];
 assign icache_ipack_pgflt         = icache_prot[4];
+assign icache_ipack_pnx           = mmu_ifu_sh;
 
 //================================================
 //               ICache Stage Signals
@@ -1274,6 +1278,42 @@ assign ifu_yy_xx_no_op        = ref_fsm_idle && pf_fsm_idle;
 // &Force("nonport", "icache_wfpa"); @918
 
 // &ModuleEnd; @996
+
+`ifdef CHECK_DIFFTEST
+  reg [31:0] exception;
+  always @(*) begin
+    if (mmu_ifu_access_fault || icache_ipack_pgflt)begin
+      if (mmu_ifu_sh) begin
+        exception = 32'd6;
+      end
+      else begin
+        exception = 32'd3;
+      end
+    end
+    else begin
+      exception = 32'd0;
+    end
+  end
+`ifdef DIFF_HARDWARE
+    assign dma_TLBEvent_valid_0 = mmu_ifu_pa_vld && icache_rd_vld;
+    assign dma_TLBEvent_source_0 = 8'b10;
+    assign dma_TLBEvent_index_0 = 8'b0;
+    assign dma_TLBEvent_vpn_0 = icache_rd_addr[63:0];
+    assign dma_TLBEvent_ppn_0 = {24'b0, icache_pa[39:0]};
+    assign dma_TLBEvent_exception_0 = exception;
+`else
+  DifftestTLBEvent DifftestTLBEvent(
+    .clock(forever_cpuclk),
+    .coreid('0),
+    .index(8'b0),
+    .valid(mmu_ifu_pa_vld && icache_rd_vld),
+    .source(8'b10),
+    .vpn(icache_rd_addr[63:0]),
+    .ppn({24'b0, icache_pa[39:0]}),
+    .exception(exception)
+  );
+`endif
+`endif
 endmodule
 
 

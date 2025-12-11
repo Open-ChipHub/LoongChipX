@@ -31,6 +31,7 @@ module aq_ifu_ibuf (
   input    wire          ipack_ibuf_inst_vld,
   input    wire          ipack_ibuf_inst_vld_raw,
   input    wire          ipack_ibuf_pgflt,
+  input    wire          ipack_ibuf_pnx,
   input    wire          pad_yy_icg_scan_en,
   input    wire          pcgen_ibuf_chgflw_vld,
   input    wire  [1 :0]  pred_ibuf_br_taken0,
@@ -63,7 +64,8 @@ reg     [5 :0]  pop0;
 reg             pop0_acc_err;                
 reg     [21:0]  pop0_halt_info;              
 reg     [31:0]  pop0_inst;                   
-reg             pop0_pgflt;                  
+reg             pop0_pgflt;                 
+reg             pop0_pnx; 
 reg     [1 :0]  pop0_pred_taken;             
 reg             pop0_vld;                    
 reg             pop1_acc_err;                
@@ -87,7 +89,8 @@ wire            entry0_create2_data_en;
 wire            entry0_create2_en;           
 wire    [21:0]  entry0_halt_info;            
 wire    [31:0]  entry0_inst;                 
-wire            entry0_pgflt;                
+wire            entry0_pgflt;          
+wire            entry0_pnx;      
 wire    [1 :0]  entry0_pred_taken;           
 wire            entry0_retire0_en;           
 wire            entry0_retire1_en;           
@@ -101,7 +104,8 @@ wire            entry1_create2_data_en;
 wire            entry1_create2_en;           
 wire    [21:0]  entry1_halt_info;            
 wire    [31:0]  entry1_inst;                 
-wire            entry1_pgflt;                
+wire            entry1_pgflt;         
+wire            entry1_pnx;       
 wire    [1 :0]  entry1_pred_taken;           
 wire            entry1_retire0_en;           
 wire            entry1_retire1_en;           
@@ -115,7 +119,8 @@ wire            entry2_create2_data_en;
 wire            entry2_create2_en;           
 wire    [21:0]  entry2_halt_info;            
 wire    [31:0]  entry2_inst;                 
-wire            entry2_pgflt;                
+wire            entry2_pgflt;      
+wire            entry2_pnx;          
 wire    [1 :0]  entry2_pred_taken;           
 wire            entry2_retire0_en;           
 wire            entry2_retire1_en;           
@@ -129,7 +134,8 @@ wire            entry3_create2_data_en;
 wire            entry3_create2_en;           
 wire    [21:0]  entry3_halt_info;            
 wire    [31:0]  entry3_inst;                 
-wire            entry3_pgflt;                
+wire            entry3_pgflt;         
+wire            entry3_pnx;       
 wire    [1 :0]  entry3_pred_taken;           
 wire            entry3_retire0_en;           
 wire            entry3_retire1_en;           
@@ -143,7 +149,8 @@ wire            entry4_create2_data_en;
 wire            entry4_create2_en;           
 wire    [21:0]  entry4_halt_info;            
 wire    [31:0]  entry4_inst;                 
-wire            entry4_pgflt;                
+wire            entry4_pgflt;          
+wire            entry4_pnx;      
 wire    [1 :0]  entry4_pred_taken;           
 wire            entry4_retire0_en;           
 wire            entry4_retire1_en;           
@@ -157,7 +164,8 @@ wire            entry5_create2_data_en;
 wire            entry5_create2_en;           
 wire    [21:0]  entry5_halt_info;            
 wire    [31:0]  entry5_inst;                 
-wire            entry5_pgflt;                
+wire            entry5_pgflt;           
+wire            entry5_pnx;     
 wire    [1 :0]  entry5_pred_taken;           
 wire            entry5_retire0_en;           
 wire            entry5_retire1_en;           
@@ -168,7 +176,8 @@ wire            ibuf_create0_data_en;
 wire            ibuf_create0_en;             
 wire    [21:0]  ibuf_create0_halt_info;      
 wire    [31:0]  ibuf_create0_inst;           
-wire            ibuf_create0_pgflt;          
+wire            ibuf_create0_pgflt;   
+wire            ibuf_create0_pnx;       
 wire    [1 :0]  ibuf_create0_pred_taken;     
 wire            ibuf_empty;                  
 wire            ibuf_entry_stall;            
@@ -207,6 +216,7 @@ wire    [1 :0]  pop_entry0_create_pred_taken;
 wire    [21:0]  pop_entry0_halt_info;        
 wire    [31:0]  pop_entry0_inst;             
 wire            pop_entry0_pgflt;            
+wire            pop_entry0_pnx;
 wire    [1 :0]  pop_entry0_pred_taken;       
 wire            pop_entry0_retire_en;        
 wire            pop_entry0_vld;              
@@ -276,6 +286,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry0 (
   .ibuf_create0_halt_info     (ibuf_create0_halt_info    ),
   .ibuf_create0_inst          (ibuf_create0_inst         ),
   .ibuf_create0_pgflt         (ibuf_create0_pgflt        ),
+  .ibuf_create0_pnx           (ibuf_create0_pnx          ),
   .ibuf_create0_pred_taken    (ibuf_create0_pred_taken   ),
   .ibuf_entry_acc_err         (entry0_acc_err            ),
   .ibuf_entry_create0_data_en (entry0_create0_data_en    ),
@@ -283,6 +294,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry0 (
   .ibuf_entry_halt_info       (entry0_halt_info          ),
   .ibuf_entry_inst            (entry0_inst               ),
   .ibuf_entry_pgflt           (entry0_pgflt              ),
+  .ibuf_entry_pnx             (entry0_pnx                ),
   .ibuf_entry_pred_taken      (entry0_pred_taken         ),
   .ibuf_entry_retire0_en      (entry0_retire0_en         ),
   .ibuf_entry_vld             (entry0_vld                ),
@@ -304,6 +316,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry1 (
   .ibuf_create0_halt_info     (ibuf_create0_halt_info    ),
   .ibuf_create0_inst          (ibuf_create0_inst         ),
   .ibuf_create0_pgflt         (ibuf_create0_pgflt        ),
+  .ibuf_create0_pnx           (ibuf_create0_pnx          ),
   .ibuf_create0_pred_taken    (ibuf_create0_pred_taken   ),
   .ibuf_entry_acc_err         (entry1_acc_err            ),
   .ibuf_entry_create0_data_en (entry1_create0_data_en    ),
@@ -311,6 +324,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry1 (
   .ibuf_entry_halt_info       (entry1_halt_info          ),
   .ibuf_entry_inst            (entry1_inst               ),
   .ibuf_entry_pgflt           (entry1_pgflt              ),
+  .ibuf_entry_pnx             (entry1_pnx                ),
   .ibuf_entry_pred_taken      (entry1_pred_taken         ),
   .ibuf_entry_retire0_en      (entry1_retire0_en         ),
   .ibuf_entry_vld             (entry1_vld                ),
@@ -332,6 +346,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry2 (
   .ibuf_create0_halt_info     (ibuf_create0_halt_info    ),
   .ibuf_create0_inst          (ibuf_create0_inst         ),
   .ibuf_create0_pgflt         (ibuf_create0_pgflt        ),
+  .ibuf_create0_pnx           (ibuf_create0_pnx          ),
   .ibuf_create0_pred_taken    (ibuf_create0_pred_taken   ),
   .ibuf_entry_acc_err         (entry2_acc_err            ),
   .ibuf_entry_create0_data_en (entry2_create0_data_en    ),
@@ -339,6 +354,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry2 (
   .ibuf_entry_halt_info       (entry2_halt_info          ),
   .ibuf_entry_inst            (entry2_inst               ),
   .ibuf_entry_pgflt           (entry2_pgflt              ),
+  .ibuf_entry_pnx             (entry2_pnx                ),
   .ibuf_entry_pred_taken      (entry2_pred_taken         ),
   .ibuf_entry_retire0_en      (entry2_retire0_en         ),
   .ibuf_entry_vld             (entry2_vld                ),
@@ -360,6 +376,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry3 (
   .ibuf_create0_halt_info     (ibuf_create0_halt_info    ),
   .ibuf_create0_inst          (ibuf_create0_inst         ),
   .ibuf_create0_pgflt         (ibuf_create0_pgflt        ),
+  .ibuf_create0_pnx           (ibuf_create0_pnx          ),
   .ibuf_create0_pred_taken    (ibuf_create0_pred_taken   ),
   .ibuf_entry_acc_err         (entry3_acc_err            ),
   .ibuf_entry_create0_data_en (entry3_create0_data_en    ),
@@ -367,6 +384,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry3 (
   .ibuf_entry_halt_info       (entry3_halt_info          ),
   .ibuf_entry_inst            (entry3_inst               ),
   .ibuf_entry_pgflt           (entry3_pgflt              ),
+  .ibuf_entry_pnx             (entry3_pnx                ),
   .ibuf_entry_pred_taken      (entry3_pred_taken         ),
   .ibuf_entry_retire0_en      (entry3_retire0_en         ),
   .ibuf_entry_vld             (entry3_vld                ),
@@ -395,6 +413,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry4 (
   .ibuf_entry_halt_info       (entry4_halt_info          ),
   .ibuf_entry_inst            (entry4_inst               ),
   .ibuf_entry_pgflt           (entry4_pgflt              ),
+  .ibuf_entry_pnx             (entry_pnx                 ),
   .ibuf_entry_pred_taken      (entry4_pred_taken         ),
   .ibuf_entry_retire0_en      (entry4_retire0_en         ),
   .ibuf_entry_vld             (entry4_vld                ),
@@ -423,6 +442,7 @@ aq_ifu_ibuf_entry  x_aq_ifu_ibuf_entry5 (
   .ibuf_entry_halt_info       (entry5_halt_info          ),
   .ibuf_entry_inst            (entry5_inst               ),
   .ibuf_entry_pgflt           (entry5_pgflt              ),
+  .ibuf_entry_pnx             (entry5_pnx                ),
   .ibuf_entry_pred_taken      (entry5_pred_taken         ),
   .ibuf_entry_retire0_en      (entry5_retire0_en         ),
   .ibuf_entry_vld             (entry5_vld                ),
@@ -474,13 +494,17 @@ assign {entry5_retire0_en,
 always @( entry1_acc_err
        or entry2_inst[31:0]
        or entry1_pgflt
+       or entry1_pnx
        or entry5_inst[31:0]
        or entry4_halt_info[21:0]
        or entry0_acc_err
        or entry2_pgflt
+       or entry2_pnx
        or entry0_pgflt
+       or entry0_pnx
        or entry5_vld
        or entry5_pgflt
+       or entry5_pnx
        or entry0_vld
        or entry1_inst[31:0]
        or entry2_acc_err
@@ -489,8 +513,10 @@ always @( entry1_acc_err
        or entry3_pred_taken[1:0]
        or entry3_acc_err
        or entry3_pgflt
+       or entry3_pnx
        or entry1_vld
        or entry4_pgflt
+       or entry4_pnx
        or entry0_halt_info[21:0]
        or entry3_halt_info[21:0]
        or entry4_acc_err
@@ -518,6 +544,7 @@ begin
     pop0_halt_info[`TDT_HINFO_WIDTH-1:0]  = entry0_halt_info[`TDT_HINFO_WIDTH-1:0];
     pop0_acc_err      = entry0_acc_err;
     pop0_pgflt        = entry0_pgflt;
+    pop0_pnx          = entry0_pnx;
   end
   6'b0010:
   begin
@@ -527,6 +554,7 @@ begin
     pop0_halt_info[`TDT_HINFO_WIDTH-1:0]  = entry1_halt_info[`TDT_HINFO_WIDTH-1:0];
     pop0_acc_err      = entry1_acc_err;
     pop0_pgflt        = entry1_pgflt;
+    pop0_pnx          = entry1_pnx;
   end
   6'b0100:
   begin
@@ -536,6 +564,7 @@ begin
     pop0_halt_info[`TDT_HINFO_WIDTH-1:0]  = entry2_halt_info[`TDT_HINFO_WIDTH-1:0];
     pop0_acc_err      = entry2_acc_err;
     pop0_pgflt        = entry2_pgflt;
+    pop0_pnx          = entry2_pnx;
   end
   6'b1000:
   begin
@@ -545,6 +574,7 @@ begin
     pop0_halt_info[`TDT_HINFO_WIDTH-1:0]  = entry3_halt_info[`TDT_HINFO_WIDTH-1:0];
     pop0_acc_err      = entry3_acc_err;
     pop0_pgflt        = entry3_pgflt;
+    pop0_pnx          = entry3_pnx;
   end
   6'b10000:
   begin
@@ -554,6 +584,7 @@ begin
     pop0_halt_info[`TDT_HINFO_WIDTH-1:0]  = entry4_halt_info[`TDT_HINFO_WIDTH-1:0];
     pop0_acc_err      = entry4_acc_err;
     pop0_pgflt        = entry4_pgflt;
+    pop0_pnx          = entry4_pnx;
   end
   6'b100000:
   begin
@@ -563,6 +594,7 @@ begin
     pop0_halt_info[`TDT_HINFO_WIDTH-1:0]  = entry5_halt_info[`TDT_HINFO_WIDTH-1:0];
     pop0_acc_err      = entry5_acc_err;
     pop0_pgflt        = entry5_pgflt;
+    pop0_pnx          = entry5_pnx;
   end
   default:
   begin
@@ -572,6 +604,7 @@ begin
     pop0_halt_info[`TDT_HINFO_WIDTH-1:0] = {`TDT_HINFO_WIDTH{1'bx}};
     pop0_acc_err      = 1'bx;
     pop0_pgflt        = 1'bx;
+    pop0_pnx          = 1'bx;
   end
   endcase
 // &CombEnd; @212
@@ -644,6 +677,7 @@ assign ibuf_create0_pred_taken[1:0] = pred_ibuf_br_taken0[1:0];
 assign ibuf_create0_halt_info[`TDT_HINFO_WIDTH-1:0]  = pred_ibuf_halt_info0[`TDT_HINFO_WIDTH-1:0];
 assign ibuf_create0_acc_err    = ipack_ibuf_acc_err;
 assign ibuf_create0_pgflt      = ipack_ibuf_pgflt;
+assign ibuf_create0_pnx        = ipack_ibuf_pnx;
 
 //------------------------------------------------
 // 5. Valid Instruction Generation
@@ -691,10 +725,12 @@ aq_ifu_ibuf_pop_entry  x_aq_ifu_ibuf_pop_entry0 (
   .ibuf_entry_create_halt_info  (pop_entry0_create_halt_info ),
   .ibuf_entry_create_inst       (pop_entry0_create_inst      ),
   .ibuf_entry_create_pgflt      (pop_entry0_create_pgflt     ),
+  .ibuf_entry_create_pnx        (ipack_expt_high             ),
   .ibuf_entry_create_pred_taken (pop_entry0_create_pred_taken),
   .ibuf_entry_halt_info         (pop_entry0_halt_info        ),
   .ibuf_entry_inst              (pop_entry0_inst             ),
   .ibuf_entry_pgflt             (pop_entry0_pgflt            ),
+  .ibuf_entry_pnx               (pop_entry0_pnx              ),
   .ibuf_entry_pred_taken        (pop_entry0_pred_taken       ),
   .ibuf_entry_retire_en         (pop_entry0_retire_en        ),
   .ibuf_entry_vld               (pop_entry0_vld              ),
@@ -741,7 +777,9 @@ assign pop_entry0_create_pgflt = pop0_vld ? pop0_pgflt
                                : idu_ifu_id_stall || pop_entry_vld ? ipack_ibuf_pgflt
                                : 1'b0;
 
-assign ipack_expt_high          = 1'b0;
+assign ipack_expt_high         = pop0_vld ? pop0_pnx
+                               : idu_ifu_id_stall || pop_entry_vld ? ipack_ibuf_pnx
+                               : 1'b0;
 
 //------------------------------------------------
 // c. entry retire
@@ -757,7 +795,7 @@ assign pop_entry_pred_taken[1:0] = pop_entry0_pred_taken[1:0];
 assign pop_entry_halt_info[`TDT_HINFO_WIDTH-1:0]  = pop_entry0_halt_info[`TDT_HINFO_WIDTH-1:0]; 
 assign pop_entry_acc_err         = pop_entry0_acc_err;
 assign pop_entry_pgflt           = pop_entry0_pgflt;
-assign pop_entry_expt_high       = 1'b0;
+assign pop_entry_expt_high       = pop_entry0_pnx;
 
 //==========================================================
 // Rename for Output

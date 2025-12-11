@@ -73,6 +73,16 @@ module aq_rtu_retire (
   input    wire          vidu_rtu_no_op,
   input    wire          vpu_rtu_no_op,
   input    wire          wb_retire_wb_no_op,
+  input    wire  [63:0]  rtu_idu_wb0_data,
+  input    wire  [5 :0]  rtu_idu_wb0_reg,
+  input    wire          rtu_idu_wb0_vld,
+  input    wire  [63:0]  rtu_idu_wb1_data,
+  input    wire  [5 :0]  rtu_idu_wb1_reg,
+  input    wire          rtu_idu_wb1_vld,
+  input    wire  [63:0]  csrtimer_value,
+  input    wire  [63:0]  csrestat_value,
+  `InstrCommit_out(0)
+  `ExcpEvent_out
   output   wire          retire_ctrl_commit_clear,
   output   wire          retire_ctrl_commit_clear_for_bju,
   output   wire          retire_rbus_fs_dirty,
@@ -1106,28 +1116,57 @@ wire         rtu_wb0_vld;
 wire [63 :0] rtu_wb1_data;
 wire [5  :0] rtu_wb1_reg;
 wire         rtu_wb1_vld;
+wire         diff_commit_valid;
+reg          diff_split_stall;
 
-assign rtu_wb0_data[63:0] = `RTU.rtu_idu_wb0_data[63:0];
-assign rtu_wb0_reg [5 :0] = `RTU.rtu_idu_wb0_reg[5 :0];
-assign rtu_wb0_vld        = `RTU.rtu_idu_wb0_vld;
+assign rtu_wb0_data[63:0] = rtu_idu_wb0_data[63:0];
+assign rtu_wb0_reg [5 :0] = rtu_idu_wb0_reg[5 :0];
+assign rtu_wb0_vld        = rtu_idu_wb0_vld;
 
-assign rtu_wb1_data[63:0] = `RTU.rtu_idu_wb1_data[63:0];
-assign rtu_wb1_reg [5 :0] = `RTU.rtu_idu_wb1_reg[5 :0];
-assign rtu_wb1_vld        = `RTU.rtu_idu_wb1_vld;
+assign rtu_wb1_data[63:0] = rtu_idu_wb1_data[63:0];
+assign rtu_wb1_reg [5 :0] = rtu_idu_wb1_reg[5 :0];
+assign rtu_wb1_vld        = rtu_idu_wb1_vld;
 
 assign rtu_wb_data[63:0]  = rtu_wb0_vld ? rtu_wb0_data[63:0] : rtu_wb1_data[63:0];
 assign rtu_wb_reg [5 :0]  = rtu_wb0_vld ? rtu_wb0_reg[5 :0] : rtu_wb1_reg[5 :0];
 assign rtu_wb_vld         = rtu_wb0_vld || rtu_wb1_vld;
 
 
-assign timer_64_value[63: 0] = `CP0_TRAP_CSR.csrtimer_value[63:0];
+assign timer_64_value[63: 0] = csrtimer_value[63:0];
 
+always @(posedge forever_cpuclk or negedge cpurst_b)begin
+    if(!cpurst_b)begin
+        diff_split_stall <= 1'b0;
+    end
+    else begin
+        if (retire_ex2_retire_vld)begin
+            diff_split_stall <= dp_retire_ex2_inst_split;
+        end
+    end
+end
 
+assign diff_commit_valid = retire_ex2_retire_vld && !dp_retire_ex2_inst_split;
+
+`ifdef DIFF_HARDWARE
+  assign dma_InstrCommit_valid_0 = diff_commit_valid;
+  assign dma_InstrCommit_pc_0 = dp_retire_ex2_cur_pc[63:0];
+  assign dma_InstrCommit_instr_0 = 32'b0;
+  assign dma_InstrCommit_skip_0 = '0;
+  assign dma_InstrCommit_is_TLBFILL_0 = '0;
+  assign dma_InstrCommit_TLBFILL_index_0 = '0;
+  assign dma_InstrCommit_is_CNTinst_0 = '0;
+  assign dma_InstrCommit_timer_64_value_0 = timer_64_value[63:0];
+  assign dma_InstrCommit_wen_0 = rtu_wb_vld;
+  assign dma_InstrCommit_wdest_0 = {2'b0, rtu_wb_reg[5:0]};
+  assign dma_InstrCommit_wdata_0 = rtu_wb_data[63:0];
+  assign dma_InstrCommit_csr_rstat_0 = '0;
+  assign dma_InstrCommit_csr_data_0 = '0;
+`else
 DifftestInstrCommit DifftestInstrCommit(
     .clock              (forever_cpuclk             ),
     .coreid             ('0                         ),
     .index              ('0                         ),
-    .valid              (retire_ex2_retire_vld      ),
+    .valid              (diff_commit_valid          ),
     .pc                 (dp_retire_ex2_cur_pc[63:0] ),
     .instr              (32'b0                      ),
     .skip               ('0                         ),
@@ -1141,26 +1180,34 @@ DifftestInstrCommit DifftestInstrCommit(
     .csr_rstat          ('0                         ),
     .csr_data           ('0                         )
 );
+`endif
 
 
 
-wire [63:0] csr_estat_value = `CP0_TRAP_CSR.csrestat_value[63:0];
+wire [63:0] csr_estat_value = csrestat_value[63:0];
 
 wire [5 :0] csr_ecode = csr_estat_value[21:16];
 wire [12:0] csr_cause = csr_estat_value[12: 0];
 
-
+`ifdef DIFF_HARDWARE
+  assign dma_ExcpEvent_excp_valid = rtu_yy_xx_expt_vld;
+  assign dma_ExcpEvent_eret = dp_retire_ex2_inst_ertn;
+  assign dma_ExcpEvent_intrNo = {19'b0, csr_cause[12:0]};
+  assign dma_ExcpEvent_cause = {17'b0,rtu_yy_xx_expt_vec[14:0]};
+  assign dma_ExcpEvent_exceptionPC = rtu_cp0_epc[63:0];
+  assign dma_ExcpEvent_exceptionInst = 32'b0;
+`else
 DifftestExcpEvent DifftestExcpEvent(
     .clock              (forever_cpuclk                  ),
     .coreid             ('0                              ),
     .excp_valid         (rtu_yy_xx_expt_vld              ),
     .eret               (dp_retire_ex2_inst_ertn         ),
     .intrNo             ({19'b0, csr_cause[12:0]}        ),
-    .cause              ({26'b0, rtu_yy_xx_expt_vec[5:0]}),
+    .cause              ({17'b0,rtu_yy_xx_expt_vec[14:0]}),
     .exceptionPC        (rtu_cp0_epc[63:0]               ),
     .exceptionInst      (32'b0                           )
 );
-
+`endif
 `endif
 
 // &ModuleEnd; @853

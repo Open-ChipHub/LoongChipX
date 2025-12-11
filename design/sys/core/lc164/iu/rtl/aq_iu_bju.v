@@ -53,6 +53,8 @@ module aq_iu_bju (
   input    wire  [63:0]  ifu_iu_ex1_pc_pred,
   input    wire          ifu_iu_reset_vld,
   input    wire          ifu_iu_warm_up,
+  input    wire          diff_pc_valid,
+  input    wire  [63:0]  diff_pc,
   input    wire  [63:0]  lsu_iu_ex2_data,
   input    wire          lsu_iu_ex2_data_vld,
   input    wire  [4 :0]  lsu_iu_ex2_dest_reg,
@@ -575,10 +577,33 @@ end
 // 2. ifu chgflow
 // 3. bju entry chgflow(depend lsu branch and ras pc mispred)
 // 4. inst cmplt pc(inc pc and ex1 chgflow pc)
+`ifdef DIFF_FASTFORWARD
+reg diff_pc_valid_r;
+reg [63:0] diff_pc_r;
+
+always @(posedge bju_clk or negedge cpurst_b)begin
+  if(!cpurst_b)begin
+    diff_pc_valid_r <= 1'b0;
+    diff_pc_r <= 1'b0;
+  end
+  else begin
+    if(diff_pc_valid)begin
+      diff_pc_valid_r <= 1'b1;
+      diff_pc_r <= diff_pc;
+    end
+  end
+end
+`endif
+
 always @ (posedge bju_clk)
 begin
-  if (ifu_iu_reset_vld)
-    bju_pcgen_pc_39_1[62:0] <= cp0_xx_mrvbr[63:1];
+  if (ifu_iu_reset_vld) begin
+    bju_pcgen_pc_39_1[62:0] <= 
+`ifdef DIFF_FASTFORWARD
+    diff_pc_valid_r ? diff_pc_r[63:1] :
+`endif
+    cp0_xx_mrvbr[63:1];
+  end
   else if (ifu_iu_chgflw_vld)
     bju_pcgen_pc_39_1[62:0] <= ifu_iu_chgflw_pc[63:1];
   else if (bju_not_ex1_chgflw)
@@ -613,7 +638,8 @@ assign bju_clk_en = ifu_iu_chgflw_vld
                  || bju_ras_mispred_vld
                  || bju_entry_pop
                  || bht_mispred
-                 || bju_j_8m_update;
+                 || bju_j_8m_update
+                 || diff_pc_valid;
 
 // &Instance("gated_clk_cell", "x_bju_clk"); @347
 gated_clk_cell  x_bju_clk (

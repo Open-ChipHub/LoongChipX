@@ -383,6 +383,14 @@ aq_dcache_data_array  x_aq_dcache_data_array_bank3 (
 //          .data_gwen               (dcache_data_gwen         ), @292
 //          .data_dout               (dcache_data_dout_bank3   )); @293
 
+// always @(posedge forever_cpuclk)begin
+//   if (dcache_tag_req && !dcache_tag_wen)begin
+//     $display("dcache tag write[%h %h]", dcache_tag_idx, dcache_tag_way);
+//   end
+//   if(!dcache_data_gwen)begin
+//     $display("dcache data write[%h %h %h] %h %h %h %h", dcache_data02_idx, dcache_data13_idx, dcache_data_wen, dcache_data_din_bank0, dcache_data_din_bank1, dcache_data_din_bank2, dcache_data_din_bank3);
+//   end
+// end
 
 // &ModuleEnd; @297
 endmodule

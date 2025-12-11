@@ -148,6 +148,10 @@ module aq_rtu_top (
   input    wire          vpu_rtu_fp_wb_vld,
   input    wire          vpu_rtu_no_op,
   input    wire          vpu_rtu_inst_expt_vld,
+  input    wire  [63:0]  csrtimer_value,
+  input    wire  [63:0]  csrestat_value,
+  `InstrCommit_out(0)
+  `ExcpEvent_out
   output   wire  [63:0]  rtu_cp0_epc,
   output   wire          rtu_cp0_exit_debug,
   output   wire  [4 :0]  rtu_cp0_fflags,
@@ -489,6 +493,16 @@ aq_rtu_retire  x_aq_rtu_retire (
   .cp0_rtu_trap_pc                  (cp0_rtu_trap_pc                 ),
   .cp0_rtu_vstart_eq_0              (cp0_rtu_vstart_eq_0             ),
   .cp0_yy_clk_en                    (cp0_yy_clk_en                   ),
+  .rtu_idu_wb0_data                 (rtu_idu_wb0_data                ),
+  .rtu_idu_wb0_reg                  (rtu_idu_wb0_reg                 ),
+  .rtu_idu_wb0_vld                  (rtu_idu_wb0_vld                 ),
+  .rtu_idu_wb1_data                 (rtu_idu_wb1_data                ),
+  .rtu_idu_wb1_reg                  (rtu_idu_wb1_reg                 ),
+  .rtu_idu_wb1_vld                  (rtu_idu_wb1_vld                 ),
+  `InstrCommit_connect(0)
+  `ExcpEvent_connect
+  .csrtimer_value                   (csrtimer_value                  ),
+  .csrestat_value                   (csrestat_value                  ),
   .cpurst_b                         (cpurst_b                        ),
   .ctrl_retire_ex2_retire_vld       (ctrl_retire_ex2_retire_vld      ),
   .dp_retire_ex2_cur_pc             (dp_retire_ex2_cur_pc            ),

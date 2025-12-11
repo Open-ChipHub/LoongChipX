@@ -59,6 +59,11 @@ export XILINX_BOARD
 $(info project_home: $(PROJECT_HOME))
 
 XILINX_IPS := 	axi_clock_converter.xci
+XILINX_BDS :=
+
+XILINX_XDMA := 1
+
+export XILINX_XDMA
 
 
 ifeq ($(BOARD), vcu129)
@@ -80,11 +85,14 @@ else ifeq ($(BOARD), axvu13p)
 				  xlnx_ddr4_cconvt.xci \
 				  xlnx_ddr4_reset.xci \
 				  xlnx_ddr4.xci \
-				  xlnx_vio.xci 
+				  xlnx_vio.xci \
+				  xlnx_xdma_reset.xci \
+				  xlnx_xdma_fifo.xci
+	XILINX_BDS := xlnx_bd_xdma.bd
 endif
 
 IPS := $(addprefix $(WORKS)/, $(XILINX_IPS))
-
+BDS := $(addprefix $(WORKS)/, $(XILINX_BDS))
 
 all: compile gen_mcs
 
@@ -95,14 +103,20 @@ $(IPS): %.xci :
 	@cd $(XILINX_IPS_DIR)/$(basename $(@F)) && make compile_ip
 	cp $(XILINX_IPS_DIR)/$(basename $(@F))/$(basename $(@F)).srcs/sources_1/ip/$(basename $(@F))/$(@F) $@
 
+$(BDS): %.bd :	
+	mkdir -p $(WORKS)
+	@echo Generating $(@F)
+	@cd $(XILINX_IPS_DIR)/$(basename $(@F)) && make compile_ip
+
+
 
 VIVADO_RUN_TCL := $(LCX_HOME)/scripts/run.tcl
 
 
-compile: $(IPS)
+compile: $(IPS) $(BDS)
 	mkdir -p $(WORKS)
 	rm -rf $(WORKS)/add_loongchipx_filelists.tcl
-	$(LCX_HOME)/scripts/gen_vivado_lcx_filelsts.py
+	$(LCX_HOME)/scripts/gen_vivado_lcx_filelsts.py --xdma=$(XILINX_XDMA)
 	cd $(WORKS) && $(VIVADO_BATCH) -source $(VIVADO_RUN_TCL)
 	cd $(WORKS) && cp $(PROJECT).runs/impl_1/$(SYNTH_TOP_MODULE).* .
 
@@ -126,7 +140,7 @@ LINUX_DIR := /home/airxs/user/cpu/system/linux/linux-6.10-labcore164
 
 
 vmlinux:
-	make -C $(LINUX_DIR) -j10
+	make -C $(LINUX_DIR) ARCH=loongarch CROSS_COMPILE=loongarch64-linux-gnu- -j10
 	make -C $(LOADER_DIR) clean
 	make -C $(LOADER_DIR) KERNEL_DIR=$(LINUX_DIR)
 	cd $(WORKS) && rm -rf $(UP_BIT_FILE) $(LOADER_FILE) $(KERNEL_FILE)
@@ -157,6 +171,11 @@ clean:
 	make -C $(LCX_HOME)/ip/amd/xlnx_ddr4 clean
 	make -C $(LCX_HOME)/ip/amd/xlnx_ddr4_reset clean
 	make -C $(LCX_HOME)/ip/amd/xlnx_vio clean
+	make -C $(LCX_HOME)/ip/amd/xlnx_xdma clean
+	make -C $(LCX_HOME)/ip/amd/xlnx_xdma_cconvt clean
+	make -C $(LCX_HOME)/ip/amd/xlnx_xdma_reset clean
+	make -C $(LCX_HOME)/ip/amd/xlnx_bd_xdma clean
+	make -C $(LCX_HOME)/ip/amd/xlnx_xdma_fifo clean
 
 
 .PHONY: compile clean

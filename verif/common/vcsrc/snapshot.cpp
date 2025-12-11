@@ -184,6 +184,7 @@ int Snapshot::snapshot_gen(){
         //for child  process, fork() returns 0
         DEBUG(DEBUG_SNAPSHOT,PRINT_DEBUG,"PID: %d,gen snapshot: vacant found %d",getpid(),index);
         snapshot_insert(index,pid);
+        this->snap_init = true;
         return 0;
     }
     // child process
@@ -194,6 +195,7 @@ int Snapshot::snapshot_gen(){
     this->error = false;
     this->wave = true;
     this->trace_reopen = true;
+    this->snap_init = true;
     return 0;
 }
 

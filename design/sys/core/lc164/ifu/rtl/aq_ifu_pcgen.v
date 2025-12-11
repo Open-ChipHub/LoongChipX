@@ -53,7 +53,9 @@ module aq_ifu_pcgen (
   output   wire  [63:0]  pcgen_icache_va,
   output   wire          pcgen_pred_flush_vld,
   output   wire  [63:0]  pcgen_pred_ifpc,
-  output   wire          pcgen_top_buf_chgflw
+  output   wire          pcgen_top_buf_chgflw,
+  output   wire          diff_pc_valid,
+  output   wire  [63:0]  diff_pc
 ); 
 
 
@@ -72,6 +74,7 @@ wire            pcgen_cpuclk;
 wire    [63:0]  pcgen_delay_chgflw_pc;      
 wire            pcgen_delay_chgflw_vld;     
 wire            pcgen_delay_chgflw_vld_gate; 
+
 wire    [63:0]  pcgen_fetch_pc;             
 wire            pcgen_icg_en;               
 wire    [63:0]  pcgen_ifpc_inc;             
@@ -93,7 +96,8 @@ assign pcgen_icg_en = pcgen_delay_chgflw_vld_gate
                    || btb_xx_chgflw_vld
                    || icache_pcgen_inst_vld_gate
                    || icache_pcgen_grant_gate
-                   || vec_pcgen_rst_vld;
+                   || vec_pcgen_rst_vld
+                   || diff_pc_valid;
 // &Instance("gated_clk_cell", "x_ifu_pcgen_icg_cell"); @45
 gated_clk_cell  x_ifu_pcgen_icg_cell (
   .clk_in             (forever_cpuclk    ),
@@ -164,6 +168,8 @@ always @ (posedge pcgen_cpuclk)
 begin
   if(vec_pcgen_rst_vld)
     pcgen_ifpc[63:0] <= cp0_xx_mrvbr[63:0];
+  else if(diff_pc_valid)
+    pcgen_ifpc[63:0] <= diff_pc[63:0];
   else if(pcgen_delay_chgflw_vld)
     pcgen_ifpc[63:0] <= pcgen_delay_chgflw_pc[63:0];
   else if(pcgen_chgflw_cur && !icache_pcgen_grant)
@@ -190,6 +196,8 @@ always @ (posedge pcgen_cpuclk)
 begin
   if(vec_pcgen_rst_vld)
     pcgen_pipe_ifpc[63:0] <= cp0_xx_mrvbr[63:0];
+  else if(diff_pc_valid)
+    pcgen_pipe_ifpc[63:0] <= diff_pc[63:0];
   else if(icache_pcgen_grant)
     pcgen_pipe_ifpc[63:0] <= pcgen_fetch_pc[63:0];
   else
@@ -233,6 +241,18 @@ assign ifu_iu_chgflw_pc[63:0] = pcgen_delay_chgflw_pc[63:0];
 // &Force("nonport", "rst_done"); @194
 
 // &ModuleEnd; @224
+
+`ifdef DIFF_FASTFORWARD
+    DifftestPCRestore DifftestPCRestore(
+      .valid(diff_pc_valid),
+      .clock(forever_cpuclk),
+      .coreid(8'd0),
+      .pc(diff_pc)
+    );
+`else
+    assign diff_pc_valid = 1'b0;
+`endif
+
 endmodule
 
 

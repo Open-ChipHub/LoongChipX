@@ -27,6 +27,7 @@ module aq_ifu_ipack (
   input    wire          icache_ipack_inst_vld,
   input    wire          icache_ipack_inst_vld_gate,
   input    wire          icache_ipack_pgflt,
+  input    wire          icache_ipack_pnx,
   input    wire          icache_ipack_unalign,
   input    wire          iu_ifu_tar_pc_vld,
   input    wire          pad_yy_icg_scan_en,
@@ -41,6 +42,7 @@ module aq_ifu_ipack (
   output   wire          ipack_ibuf_inst_vld,
   output   wire          ipack_ibuf_inst_vld_raw,
   output   wire          ipack_ibuf_pgflt,
+  output   wire          ipack_ibuf_pnx,
   output   wire          ipack_pcgen_reissue,
   output   wire  [31:0]  ipack_pred_inst0,
   output   wire          ipack_pred_inst0_expt,
@@ -58,11 +60,13 @@ wire            entry_acc_err;
 wire            entry_create_en;          
 wire            entry_create_icg_en;      
 wire    [31:0]  entry_inst;               
-wire            entry_pgflt;              
+wire            entry_pgflt;       
+wire            entry_pnx;       
 wire            entry_retire_en;          
 wire            entry_upd_acc_err;        
 wire    [31:0]  entry_upd_inst;           
 wire            entry_upd_pgflt;          
+wire            entry_upd_pnx;
 wire            entry_vld;                
 wire            icache_inst_vld;           
 wire            ipack_acc_err;            
@@ -77,6 +81,7 @@ wire            ipack_vld;
 wire            ipack_full;                
 wire            ipack_icg_en;              
 wire            ipack_pgflt;              
+wire            ipack_pnx;
 wire    [31:0]  ipack_retire_inst;         
 wire            ipack_retire_vld;                    
 
@@ -141,6 +146,7 @@ assign entry_upd_acc_err = icache_ipack_acc_err;
 
 // create pgflt
 assign entry_upd_pgflt   = icache_ipack_pgflt;
+assign entry_upd_pnx     = icache_ipack_pnx;
 
 // c. Retire Condition
 assign entry_retire_en = !ipack_buf_stall;
@@ -160,10 +166,12 @@ aq_ifu_ipack_entry  x_aq_ifu_ipack_entry (
   .ipack_entry_create_icg_en (entry_create_icg_en     ),
   .ipack_entry_inst          (entry_inst              ),
   .ipack_entry_pgflt         (entry_pgflt             ),
+  .ipack_entry_pnx           (entry_pnx               ),
   .ipack_entry_retire_en     (entry_retire_en         ),
   .ipack_entry_upd_acc_err   (entry_upd_acc_err       ),
   .ipack_entry_upd_inst      (entry_upd_inst          ),
   .ipack_entry_upd_pgflt     (entry_upd_pgflt         ),
+  .ipack_entry_upd_pnx       (entry_upd_pnx           ),
   .ipack_entry_vld           (entry_vld               ),
   .pad_yy_icg_scan_en        (pad_yy_icg_scan_en       )
 );
@@ -193,6 +201,7 @@ assign ipack_retire_inst[31:0] = ipack_inst[31:0];
 assign ipack_acc_err = entry_vld && entry_acc_err;
 
 assign ipack_pgflt   = entry_vld && entry_pgflt;
+assign ipack_pnx     = entry_vld && entry_pnx;
 
 
 //==========================================================
@@ -212,6 +221,7 @@ assign ipack_ibuf_inst_vld_raw = ipack_retire_vld;
 assign ipack_ibuf_inst[31:0] = ipack_retire_inst[31:0];
 assign ipack_ibuf_acc_err    = ipack_acc_err;
 assign ipack_ibuf_pgflt      = ipack_pgflt;
+assign ipack_ibuf_pnx        = ipack_pnx;
 
 assign ipack_pcgen_reissue   = ibuf_ipack_stall && icache_inst_vld;
 

@@ -12,7 +12,7 @@ create_ip -name axi_clock_converter -vendor xilinx.com -library ip -module_name 
 set_property -dict [list \
   CONFIG.ADDR_WIDTH {64} \
   CONFIG.DATA_WIDTH {512} \
-  CONFIG.ID_WIDTH {1} \
+  CONFIG.ID_WIDTH {6} \
 ] [get_ips $ipName]
 
 generate_target {instantiation_template} [get_files ./$ipName.srcs/sources_1/ip/$ipName/$ipName.xci]

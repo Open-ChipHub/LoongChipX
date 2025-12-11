@@ -7,6 +7,7 @@
 #include "common.h"
 #include "emuproxy.h"
 #include "build_config.h"
+#include <queue>
 
 #define DIFF_PROXY EmuProxy
 
@@ -51,6 +52,8 @@ typedef struct {
     uint64_t instrCnt = 0;
 } trap_event_t;
 
+#define TRAP_EVENT_SIZE 26
+
 typedef struct {
     uint8_t excp_valid = 0;
     uint8_t eret;
@@ -59,6 +62,8 @@ typedef struct {
     uint64_t exceptionPC;
     uint64_t exceptionInst;
 } excp_event_t;
+
+#define EXCP_EVENT_SIZE 34
 
 typedef struct {
     uint8_t valid = 0;
@@ -76,12 +81,18 @@ typedef struct {
     uint64_t csr_data;
 } instr_commit_t;
 
+#define INSTR_COMMIT_SIZE 44
+#define INSTR_COMMIT_OFFSET EXCP_EVENT_SIZE
+
 typedef struct {
     uint64_t gpr[32];
     uint64_t fpr[32];
     uint64_t fccr;
     uint64_t fcsr0;
 } arch_greg_state_t;
+
+#define ARCH_GREG_STATE_SIZE 528
+#define ARCH_GREG_STATE_OFFSET (INSTR_COMMIT_OFFSET + INSTR_COMMIT_SIZE * DIFFTEST_COMMIT_WIDTH)
 
 typedef struct __attribute__((packed)) {
     uint64_t crmd;
@@ -98,18 +109,56 @@ typedef struct __attribute__((packed)) {
     uint64_t cur_pc;
 } arch_csr_state_t;
 
+#define ARCH_CSR_STATE_SIZE 216
+#define ARCH_CSR_STATE_OFFSET (ARCH_GREG_STATE_OFFSET + ARCH_GREG_STATE_SIZE)
+
+
+
+typedef struct __attribute__((packed)) {
+    uint64_t cntc;
+    uint64_t ticlr;
+    uint64_t misc;
+    uint64_t badi;
+    uint64_t pwcl;
+    uint64_t pwch;
+    uint64_t stlbps;
+    uint64_t rvacfg;
+    uint64_t tlbrehi;
+} arch_csr_state_t_ext;
+
 typedef struct {
     uint8_t  valid = 0;
     uint64_t paddr;
-    uint64_t vaddr;
     uint64_t data;
+    uint8_t  mask;
 } store_event_t;
+
+#define STORE_EVENT_SIZE 18
+#define STORE_EVENT_OFFSET (ARCH_CSR_STATE_OFFSET + ARCH_CSR_STATE_SIZE)
+
+
 
 typedef struct {
     uint8_t valid = 0;
     uint64_t paddr;
     uint64_t vaddr;
 } load_event_t;
+
+#define LOAD_EVENT_SIZE 17
+#define LOAD_EVENT_OFFSET (STORE_EVENT_OFFSET + STORE_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH)
+
+
+typedef struct {
+    uint8_t valid = 0;
+    uint8_t source;
+    uint64_t vpn;
+    uint64_t ppn;
+    uint32_t exception;
+} tlb_event_t;
+
+#define TLB_EVENT_SIZE 22
+#define TLB_EVENT_OFFSET (LOAD_EVENT_OFFSET + LOAD_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH)
+
 
 typedef struct {
     trap_event_t trap;
@@ -119,7 +168,10 @@ typedef struct {
     arch_csr_state_t csr;
     store_event_t store[DIFFTEST_COMMIT_WIDTH];
     load_event_t load[DIFFTEST_COMMIT_WIDTH];
+    tlb_event_t tlb[2];
 } difftest_core_state_t;
+
+#define DIFFTEST_CORE_STATE_SIZE (TRAP_EVENT_SIZE + EXCP_EVENT_SIZE + INSTR_COMMIT_SIZE * DIFFTEST_COMMIT_WIDTH + ARCH_GREG_STATE_SIZE + ARCH_CSR_STATE_SIZE + STORE_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH + LOAD_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH + TLB_EVENT_SIZE * 2)
 
 class DiffState {
 public:
@@ -138,6 +190,16 @@ public:
         retire_inst_skip_queue[retire_inst_pointer] = skip;
         retire_inst_type_queue[retire_inst_pointer] = RET_NORMAL;
         retire_inst_pointer = (retire_inst_pointer + 1) % DEBUG_INST_TRACE_SIZE;
+    }
+
+    void display() {
+        int i = DEBUG_INST_TRACE_SIZE;
+        while (i > 0) {
+            i--;
+            printf("pc: 0x%016lx, inst: 0x%08x, wen: %d, wdest: %d, wdata: 0x%016lx\n",
+                retire_inst_pc_queue[retire_inst_pointer], retire_inst_inst_queue[retire_inst_pointer], retire_inst_wen_queue[retire_inst_pointer], retire_inst_wdst_queue[retire_inst_pointer], retire_inst_wdata_queue[retire_inst_pointer]);
+            retire_inst_pointer = (retire_inst_pointer + 1) % DEBUG_INST_TRACE_SIZE;
+        }
     }
 
 private:
@@ -163,6 +225,7 @@ private:
     /* dut/ref core info */
     difftest_core_state_t dut;
     difftest_core_state_t ref;
+    arch_csr_state_t_ext ref_ext;
     uint64_t *dut_regs_ptr = (uint64_t *)&dut.regs;
     uint64_t *ref_regs_ptr = (uint64_t *)&ref.regs;
 
@@ -179,10 +242,10 @@ private:
     /* control whether to compare between duf and ref */
     bool progress = false;
 
+    std::queue<store_data_t> store_queue;
+
     /* copy dut initialized state to ref when instruction is the first instruction */
     void do_first_instr_commit();
-
-    bool do_check_instruction_split(uint32_t inst, uint32_t *split_num);
 
     bool do_check_instruction_skip(uint32_t inst, bool &is_copy);
 
@@ -190,7 +253,11 @@ private:
     void do_instr_commit(int index);
 
 public:
-
+    bool _fastforward = false;
+    uint64_t _fastforward_cycles = 0;
+    uint64_t _fastforward_pc = 0;
+    uint64_t _fastforward_timer = 0;
+    bool first_commit = false;
     /* Trigger a difftest checking produre */
     int step(vluint64_t& main_time);
 
@@ -221,6 +288,19 @@ public:
     inline load_event_t *get_load_event(uint8_t index) {
         return &(dut.load[index]);
     }
+    inline tlb_event_t *get_tlb_event(int index) {
+        return &(dut.tlb[index]);
+    }
+
+    inline arch_greg_state_t* get_ref_greg_state() {
+        return &(ref.regs);
+    }
+    inline arch_csr_state_t* get_ref_csr_state() {
+        return &(ref.csr);
+    }
+    inline arch_csr_state_t_ext* get_ref_csr_state_ext() {
+        return &(ref_ext);
+    }
 
     inline bool get_trap_valid() const {
         return dut.trap.valid;
@@ -231,8 +311,21 @@ public:
     inline int get_proxy_check_end() const {
         return proxy->check_end();
     }
+    void fastforward(uint64_t cycles);
+    inline DIFF_PROXY* get_proxy() {
+        return proxy;
+    }
+    inline uint64_t get_ref_csr(int csr_idx) {
+        uint64_t data;
+        proxy->csrcpy_idx(csr_idx, &data, 0xffffffffffffffffULL, REF_TO_DUT);
+        return data;
+    }
     void init_ram(uint8_t* ram) {
         proxy->init(ram);
+    }
+    inline void write_csr_ref2dut() {
+        proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
+        memcpy(&dut.csr, &ref.csr, sizeof(arch_csr_state_t));
     }
     Difftest(int coreid);
     ~Difftest();

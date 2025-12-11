@@ -38,6 +38,16 @@ module cpu_subsystem   (
   input    wire     [39  :0]    xx_intc_vld,
   input    wire                 i_pad_jtg_tms,
   input    wire     [7   :0]    ext_interrupt,
+  input    wire                 xdma_stall,
+  `CSRRegState_out
+  `GRegState_out
+  `TLBEvent_out(0)
+  `TLBEvent_out(1)
+  `LoadEvent_out(0)
+  `StoreEvent_out(0)
+  `InstrCommit_out(0)
+  `ExcpEvent_out
+  `FPRegState_out
   output   wire     [39  :0]    biu_pad_araddr,
   output   wire     [1   :0]    biu_pad_arburst,
   output   wire     [3   :0]    biu_pad_arcache,
@@ -127,6 +137,16 @@ openSwift  core0_subsystem (
   .core0_pad_retire        (core0_pad_retire       ),
   .core0_pad_retire_pc     (core0_pad_retire_pc    ),
   .ext_interrupt           (ext_interrupt          ),
+  .xdma_stall              (xdma_stall             ),
+  `CSRRegState_connect
+  `GRegState_connect
+  `TLBEvent_connect(0)
+  `TLBEvent_connect(1)
+  `LoadEvent_connect(0)
+  `StoreEvent_connect(0)
+  `InstrCommit_connect(0)
+  `ExcpEvent_connect
+  `FPRegState_connect
   .cpu_debug_port          (cpu_debug_port         ),
   .pad_biu_arready         (pad_biu_arready        ),
   .pad_biu_awready         (pad_biu_awready        ),

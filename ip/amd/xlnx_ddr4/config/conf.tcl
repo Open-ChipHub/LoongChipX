@@ -19,7 +19,7 @@ set_property -dict [list \
   CONFIG.ADDN_UI_CLKOUT1_FREQ_HZ {30} \
   CONFIG.C0.DDR4_AxiAddressWidth {34} \
   CONFIG.C0.DDR4_AxiDataWidth {512} \
-  CONFIG.C0.DDR4_AxiIDWidth {5} \
+  CONFIG.C0.DDR4_AxiIDWidth {6} \
   CONFIG.C0.DDR4_AxiSelection {true} \
   CONFIG.C0.DDR4_CasLatency {17} \
   CONFIG.C0.DDR4_Ecc {true} \
@@ -35,7 +35,7 @@ set_property -dict [list \
 set_property -dict [list \
   CONFIG.C0.DDR4_AxiAddressWidth {31} \
   CONFIG.C0.DDR4_AxiDataWidth {512} \
-  CONFIG.C0.DDR4_AxiIDWidth {5} \
+  CONFIG.C0.DDR4_AxiIDWidth {6} \
   CONFIG.C0.DDR4_AxiSelection {true} \
   CONFIG.C0.DDR4_DataWidth {64} \
   CONFIG.C0.DDR4_InputClockPeriod {4000} \
@@ -53,7 +53,7 @@ set_property -dict [list \
   CONFIG.C0.DDR4_AxiSelection {true} \
   CONFIG.C0.DDR4_AxiAddressWidth {34} \
   CONFIG.C0.DDR4_AxiDataWidth {512} \
-  CONFIG.C0.DDR4_AxiIDWidth {5} \
+  CONFIG.C0.DDR4_AxiIDWidth {6} \
   CONFIG.C0.DDR4_DataWidth {64} \
   CONFIG.ADDN_UI_CLKOUT1_FREQ_HZ {100} \
   CONFIG.ADDN_UI_CLKOUT2_FREQ_HZ {50} \

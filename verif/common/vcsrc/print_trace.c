@@ -427,7 +427,7 @@ int compare_trace(const char* trace_filename, const char* random_test_dir) {
                         error_reason = ERROR_RAISE_EXCEPTION;
                         printf("error, exception_id:%ld\n", t.exception.exception_id);
                         printf("error, this insn should not raise ex\n");
-                        printf("error  trace, epc(line):%lx, real_pc:%lx, badv:%lx, rtl_ecode:%lx(%s), rpg_ecode:%lx(%s)\n",pc_res_line, t.exception.epc, t.exception.badv, t.exception.ecode, rtl_ename[t.exception.ecode], rtlecode2rpgecode(t.exception.ecode), rpg_ename[rtlecode2rpgecode(t.exception.ecode)]);
+                        printf("error  trace, epc(line):%lx, real_pc:%lx, badv:%lx, rtl_ecode:%lx, rpg_ecode:%lx(%s)\n",pc_res_line, t.exception.epc, t.exception.badv, t.exception.ecode, rtlecode2rpgecode(t.exception.ecode), rpg_ename[rtlecode2rpgecode(t.exception.ecode)]);
                         goto end;
                         break;
                     }
@@ -464,7 +464,7 @@ int compare_trace(const char* trace_filename, const char* random_test_dir) {
                             printf("error, exception_id:%ld\n", t.exception.exception_id);
                             printf("exception code mismatch\n");
                             printf("golden trace, rpg_ecode:%lx(%s)\n", next_ecode, rpg_ename[next_ecode]);
-                            printf("error  trace, epc(line):%lx, real_pc:%lx, badv:%lx, rtl_ecode:%lx(%s), rpg_ecode:%lx(%s)\n",pc_res_line, t.exception.epc, t.exception.badv, t.exception.ecode, rtl_ename[t.exception.ecode], rtlecode2rpgecode(t.exception.ecode), rpg_ename[rtlecode2rpgecode(t.exception.ecode)]);
+                            printf("error  trace, epc(line):%lx, real_pc:%lx, badv:%lx, rtl_ecode:%lx, rpg_ecode:%lx(%s)\n",pc_res_line, t.exception.epc, t.exception.badv, t.exception.ecode, rtlecode2rpgecode(t.exception.ecode), rpg_ename[rtlecode2rpgecode(t.exception.ecode)]);
                             goto end;
                         }
                         READ_PC_FILE;
