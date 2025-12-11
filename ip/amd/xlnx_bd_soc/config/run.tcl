@@ -47,11 +47,21 @@ proc create_root_design { parentCell } {
   create_bd_port -dir I -type rst vio_cpu_reset
   set_property CONFIG.POLARITY ACTIVE_HIGH [get_bd_ports vio_cpu_reset]
 
+  create_bd_port -dir I -type rst dma_reset
+  set_property CONFIG.POLARITY ACTIVE_HIGH [get_bd_ports dma_reset]
+
+  # Reset dma
+  set rst_DMA [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_DMA ]
+  set_property CONFIG.C_AUX_RESET_HIGH {1} [get_bd_cells rst_DMA]
+  connect_bd_net [get_bd_pins $rst_DMA/slowest_sync_clk] [get_bd_ports bd_soc_clk]
+  connect_bd_net [get_bd_pins $rst_DMA/ext_reset_in] [get_bd_ports bd_soc_ddr_reset]
+  connect_bd_net [get_bd_pins $rst_DMA/aux_reset_in] [get_bd_ports dma_reset]
+
   # Reset 100M
   set rst_system_100M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_system_100M ]
   set_property CONFIG.C_AUX_RESET_HIGH {1} [get_bd_cells rst_system_100M]
   connect_bd_net [get_bd_pins $rst_system_100M/slowest_sync_clk] [get_bd_ports bd_soc_clk]
-  connect_bd_net [get_bd_pins $rst_system_100M/ext_reset_in] [get_bd_ports bd_soc_ddr_reset]
+  connect_bd_net [get_bd_pins $rst_system_100M/ext_reset_in] [get_bd_pins rst_DMA/mb_reset]
   connect_bd_net [get_bd_pins $rst_system_100M/aux_reset_in] [get_bd_ports vio_cpu_reset]
 
 
@@ -59,7 +69,7 @@ proc create_root_design { parentCell } {
   set axi_interconnect [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect ]
   set_property -dict [ list \
     CONFIG.NUM_MI {2} \
-    CONFIG.NUM_SI {2} \
+    CONFIG.NUM_SI {3} \
   ] $axi_interconnect
 
 
@@ -84,11 +94,13 @@ proc create_root_design { parentCell } {
   connect_bd_net [get_bd_pins axi_interconnect/M00_ARESETN] [get_bd_pins rst_system_100M/peripheral_aresetn]
   connect_bd_net [get_bd_pins axi_interconnect/M01_ARESETN] [get_bd_pins rst_system_100M/peripheral_aresetn]
   connect_bd_net [get_bd_pins axi_interconnect/S01_ARESETN] [get_bd_pins rst_system_100M/peripheral_aresetn]
+  connect_bd_net [get_bd_pins axi_interconnect/S02_ARESETN] [get_bd_pins rst_system_100M/peripheral_aresetn]
 
   connect_bd_net [get_bd_ports bd_soc_clk] [get_bd_pins axi_interconnect/S00_ACLK]
   connect_bd_net [get_bd_ports bd_soc_clk] [get_bd_pins axi_interconnect/M00_ACLK]
   connect_bd_net [get_bd_ports bd_soc_clk] [get_bd_pins axi_interconnect/M01_ACLK]
   connect_bd_net [get_bd_ports bd_soc_clk] [get_bd_pins axi_interconnect/S01_ACLK]
+  connect_bd_net [get_bd_ports bd_soc_clk] [get_bd_pins axi_interconnect/S02_ACLK]
 
   # UART
   set axi_uart [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_uart16550:2.0 axi_uart ]
@@ -132,7 +144,7 @@ proc create_root_design { parentCell } {
   connect_bd_net [get_bd_pins rst_system_100M/peripheral_aresetn] [get_bd_ports peripheral_aresetn]
 
 
-  create_bd_intf_port -mode Master -vlnv xilinx.com:interface:aximm_rtl:1.0 DDR4_AXI
+  set DDR4_AXI [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:aximm_rtl:1.0 DDR4_AXI ]
   set_property -dict [list CONFIG.NUM_READ_OUTSTANDING \
                        [get_property CONFIG.NUM_READ_OUTSTANDING \
                        [get_bd_intf_pins axi_interconnect/xbar/M00_AXI]] \
@@ -143,12 +155,30 @@ proc create_root_design { parentCell } {
   set_property -dict [list \
     CONFIG.ADDR_WIDTH 31 \
     CONFIG.DATA_WIDTH 512 \
-    CONFIG.ID_WIDTH 9 \
+    CONFIG.ID_WIDTH 10 \
     CONFIG.FREQ_HZ 100000000 \
   ] [get_bd_intf_ports DDR4_AXI]
 
   connect_bd_intf_net [get_bd_intf_pins axi_interconnect/M00_AXI] [get_bd_intf_ports DDR4_AXI]
 
+
+  set DMA_AXI [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:aximm_rtl:1.0 DMA_AXI ]
+  set_property -dict [list CONFIG.NUM_READ_OUTSTANDING \
+                       [get_property CONFIG.NUM_READ_OUTSTANDING \
+                       [get_bd_intf_pins axi_interconnect/xbar/S02_AXI]] \
+                       CONFIG.NUM_WRITE_OUTSTANDING [get_property CONFIG.NUM_WRITE_OUTSTANDING \
+                       [get_bd_intf_pins axi_interconnect/xbar/S02_AXI]]] \
+                       [get_bd_intf_ports DMA_AXI]
+
+  set_property -dict [list \
+    CONFIG.ADDR_WIDTH 64 \
+    CONFIG.DATA_WIDTH 512 \
+    CONFIG.ID_WIDTH 4 \
+    CONFIG.HAS_QOS 0 \
+    CONFIG.FREQ_HZ 100000000 \
+  ] [get_bd_intf_ports DMA_AXI]
+
+  connect_bd_intf_net [get_bd_intf_pins axi_interconnect/S02_AXI] [get_bd_intf_ports DMA_AXI]
 
   # # Create Address Mapping
   assign_bd_address [get_bd_addr_segs {axi_uart/S_AXI/Reg }]
@@ -156,12 +186,16 @@ proc create_root_design { parentCell } {
 
   set_property offset 0x00011FF00000 [get_bd_addr_segs {s_axi/SEG_axi_uart_Reg}]
   set_property offset 0x00011FF00000 [get_bd_addr_segs {jtag_axi/Data/SEG_axi_uart_Reg}]
+  set_property offset 0x00011FF00000 [get_bd_addr_segs {DMA_AXI/SEG_axi_uart_Reg}]
 
   set_property offset 0x000000000000 [get_bd_addr_segs {s_axi/SEG_DDR4_AXI_Reg}]
   set_property range 4G [get_bd_addr_segs {s_axi/SEG_DDR4_AXI_Reg}]
 
   set_property offset 0x000000000000 [get_bd_addr_segs {jtag_axi/Data/SEG_DDR4_AXI_Reg}]
   set_property range 4G [get_bd_addr_segs {jtag_axi/Data/SEG_DDR4_AXI_Reg}]
+
+  set_property offset 0x000000000000 [get_bd_addr_segs {DMA_AXI/SEG_DDR4_AXI_Reg}]
+  set_property range 4G [get_bd_addr_segs {DMA_AXI/SEG_DDR4_AXI_Reg}]
 
   
 

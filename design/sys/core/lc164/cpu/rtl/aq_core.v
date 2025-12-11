@@ -14,7 +14,6 @@ limitations under the License.
 */
 
 // &Depend("cpu_cfig.h"); @23
-
 // &ModuleBeg; @25
 module aq_core (
   // &Ports, @26
@@ -27,6 +26,7 @@ module aq_core (
   input    wire           biu_cp0_ss_int,
   input    wire           biu_cp0_st_int,
   input    wire  [7  :0]  ext_interrupt,
+  input    wire           xdma_stall,
   input    wire           biu_ifu_arready,
   input    wire  [127:0]  biu_ifu_rdata,
   input    wire           biu_ifu_rid,
@@ -265,6 +265,15 @@ module aq_core (
   output   wire           rtu_pad_halted,
   output   wire           rtu_pad_retire,
   output   wire  [63 :0]  rtu_pad_retire_pc,
+  `CSRRegState_out
+  `GRegState_out
+  `TLBEvent_out(0)
+  `TLBEvent_out(1)
+  `LoadEvent_out(0)
+  `StoreEvent_out(0)
+  `InstrCommit_out(0)
+  `ExcpEvent_out
+  `FPRegState_out
   output   wire           rtu_yy_xx_dbgon,
   output   wire           rtu_yy_xx_expt_int,
   output   wire  [14 :0]  rtu_yy_xx_expt_vec,
@@ -588,7 +597,9 @@ wire    [3  :0]  lsu_vlsu_st_offset;
 wire    [1  :0]  lsu_vlsu_st_sew;                 
 wire    [1  :0]  lsu_vlsu_st_size;                
 wire             lsu_vlsu_vl_update;              
-wire    [6  :0]  lsu_vlsu_vl_upval;               
+wire    [6  :0]  lsu_vlsu_vl_upval;          
+wire    [63 :0]  csrtimer_value;     
+wire    [63 :0]  csrestat_value;
 wire    [63 :0]  rtu_cp0_epc;                     
 wire             rtu_cp0_exit_debug;              
 wire    [4  :0]  rtu_cp0_fflags;                  
@@ -744,6 +755,7 @@ aq_ifu_top  x_aq_ifu_top (
   .biu_ifu_rlast                (biu_ifu_rlast               ),
   .biu_ifu_rresp                (biu_ifu_rresp               ),
   .biu_ifu_rvalid               (biu_ifu_rvalid              ),
+  `TLBEvent_connect(0)
   .cp0_ifu_bht_en               (cp0_ifu_bht_en              ),
   .cp0_ifu_bht_inv              (cp0_ifu_bht_inv             ),
   .cp0_ifu_btb_clr              (cp0_ifu_btb_clr             ),
@@ -865,6 +877,8 @@ aq_idu_top  x_aq_idu_top (
   .cp0_idu_fs                   (cp0_idu_fs                  ),
   .cp0_idu_icg_en               (cp0_idu_icg_en              ),
   .cp0_idu_issue_stall          (cp0_idu_issue_stall         ),
+  .xdma_stall                   (xdma_stall                  ),
+  `GRegState_connect
   .cp0_idu_ucme                 (cp0_idu_ucme                ),
   .cp0_idu_vill                 (cp0_idu_vill                ),
   .cp0_idu_vl_zero              (cp0_idu_vl_zero             ),
@@ -1013,6 +1027,7 @@ aq_vidu_top  x_aq_vidu_top (
   .cp0_yy_clk_en                    (cp0_yy_clk_en                   ),
   .cpurst_b                         (cpurst_b                        ),
   .forever_cpuclk                   (forever_cpuclk                  ),
+  `FPRegState_connect
   .idu_vidu_ex1_fp_dp_sel           (idu_vidu_ex1_fp_dp_sel          ),
   .idu_vidu_ex1_fp_gateclk_sel      (idu_vidu_ex1_fp_gateclk_sel     ),
   .idu_vidu_ex1_fp_sel              (idu_vidu_ex1_fp_sel             ),
@@ -1320,6 +1335,9 @@ aq_lsu_top  x_aq_lsu_top (
   .biu_lsu_stb_wready           (biu_lsu_stb_wready          ),
   .biu_lsu_vb_awready           (biu_lsu_vb_awready          ),
   .biu_lsu_vb_wready            (biu_lsu_vb_wready           ),
+  `TLBEvent_connect(1)
+  `LoadEvent_connect(0)
+  `StoreEvent_connect(0)
   .cp0_lsu_amr                  (cp0_lsu_amr                 ),
   .cp0_lsu_dcache_en            (cp0_lsu_dcache_en           ),
   .cp0_lsu_dcache_pref_dist     (cp0_lsu_dcache_pref_dist    ),
@@ -1579,6 +1597,9 @@ aq_cp0_top  x_aq_cp0_top (
   .cp0_idu_vsetvl_dis_stall     (cp0_idu_vsetvl_dis_stall    ),
   .cp0_idu_vsew                 (cp0_idu_vsew                ),
   .cp0_idu_vstart               (cp0_idu_vstart              ),
+  `CSRRegState_connect
+  .csrtimer_value               (csrtimer_value              ),
+  .csrestat_value               (csrestat_value              ),
   .cp0_ifu_bht_en               (cp0_ifu_bht_en              ),
   .cp0_ifu_bht_inv              (cp0_ifu_bht_inv             ),
   .cp0_ifu_btb_clr              (cp0_ifu_btb_clr             ),
@@ -1785,6 +1806,10 @@ aq_rtu_top  x_aq_rtu_top (
   .cp0_rtu_ex1_wb_dp             (cp0_rtu_ex1_wb_dp            ),
   .cp0_rtu_ex1_wb_preg           (cp0_rtu_ex1_wb_preg          ),
   .cp0_rtu_ex1_wb_vld            (cp0_rtu_ex1_wb_vld           ),
+  `InstrCommit_connect(0)
+  `ExcpEvent_connect
+  .csrtimer_value                (csrtimer_value               ),
+  .csrestat_value                (csrestat_value               ),
   .cp0_rtu_fence_idle            (cp0_rtu_fence_idle           ),
   .cp0_rtu_icg_en                (cp0_rtu_icg_en               ),
   .cp0_rtu_in_lpmd               (cp0_rtu_in_lpmd              ),

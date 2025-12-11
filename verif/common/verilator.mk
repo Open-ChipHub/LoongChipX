@@ -56,6 +56,7 @@ OBJCACHE	  ?= $(shell command -v ccache >/dev/null 2>&1; if [ $$? -eq 0 ]; then 
 WAVE          ?= FST
 CONFIG        ?= $(VERIF_DIR)/config/config.hello
 PROFILE       ?= 0
+HARDWARE 	  ?= 0
 
 # Generate makefile dependencies (not shown as complicates the Makefile)
 #VERILATOR_FLAGS += -MMD
@@ -169,8 +170,15 @@ CXX_SRC :=  $(COMMON_DIR)/memory/memorysim_check.cpp   \
 			$(COMMON_DIR)/vcsrc/ram.cpp                \
 			$(COMMON_DIR)/vcsrc/rand64.cpp             \
 			$(COMMON_DIR)/vcsrc/axi.cpp                \
-			$(COMMON_DIR)/vcsrc/sim_config.cpp         \
-			$(COMMON_DIR)/sim_main.cpp
+			$(COMMON_DIR)/vcsrc/sim_config.cpp         
+			
+
+ifeq ("$(HARDWARE)", "1")
+	CXXFLAGS += -DDIFF_HARDWARE
+	CXX_SRC += $(DIFFTEST_DIR)/hard_main.cpp
+else
+	CXX_SRC += $(COMMON_DIR)/sim_main.cpp
+endif
 
 CXXFLAGS += -I$(COMMON_DIR)/memory -I$(COMMON_DIR)/vcsrc/include -I$(COMMON_DIR)/softfpu
 

@@ -59,4 +59,5 @@ void SimConfig::setup(Config& config){
     restore_checkpoint = config.get_value_or_bool("restore_checkpoint", false);
     checkpoint_path = config.get_value_or_cstr("checkpoint_path", "");
     checkpoint_cycles = config.get_value_or_else("checkpoint_cycles", 0);
+    image_path = config.get_value_or_cstr("image_path", "");
 }

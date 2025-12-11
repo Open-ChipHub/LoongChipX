@@ -47,6 +47,7 @@ module aq_vidu_top (
   input    wire           vpu_vidu_wbt_fp_wb1_vld,
   input    wire           lsu_vlsu_st_stall,
   input    wire  [63 :0]  cp0_vidu_fcsr,
+  `FPRegState_out
   output   wire           vidu_cp0_vid_fof_vld,
   output   wire  [7  :0]  vidu_dtu_debug_info,
   output   wire           vidu_idu_fp_full,
@@ -282,6 +283,7 @@ aq_vidu_vid_gpr_fp  x_aq_vidu_vid_gpr_fp (
   .gpr_fp_dp_src0_data (gpr_fp_dp_src0_data),
   .gpr_fp_dp_src1_data (gpr_fp_dp_src1_data),
   .gpr_fp_dp_src2_data (gpr_fp_dp_src2_data),
+  `FPRegState_connect
   .pad_yy_icg_scan_en  (pad_yy_icg_scan_en ),
   .vpu_vidu_fp_wb_data (vpu_vidu_fp_wb_data),
   .vpu_vidu_fp_wb_reg  (vpu_vidu_fp_wb_reg ),

@@ -47,6 +47,7 @@ public:
     uint64_t fastforward_cycles;
     std::string checkpoint_path;
     uint64_t checkpoint_cycles;
+    std::string image_path;
 
     void setup(Config& config);
     void setup_dir(Config& config);

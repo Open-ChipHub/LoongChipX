@@ -2,6 +2,7 @@
 #include "common.h"
 
 Difftest** difftest = NULL;
+extern long long inst_total;
 
 int DiffManage::init_difftest() {
     difftest = new Difftest*[NUM_CORES];
@@ -28,6 +29,14 @@ int DiffManage::difftest_state() {
 }
 
 int DiffManage::do_step(vluint64_t &main_time) {
+    if (proxy_snapshot && inst_total - last_snapshot_time >= snapshot_dist) {
+        if (proxy_buffer_init || difftest[0]->first_commit) {
+            difftest[0]->get_proxy()->save_checkpoint("snapshot.ckpt", proxy_snapshot_buffer[proxy_buffer_index], true);
+            last_snapshot_time = inst_total;
+            proxy_buffer_index = (proxy_buffer_index + 1) % 3;
+            proxy_buffer_init = true;
+        }
+    }
     int ret = 0;
     for (int i = 0; i < NUM_CORES; ++i) {
         ret = difftest[i]->step(main_time);
@@ -71,11 +80,21 @@ uint64_t DiffManage::get_fastforward_cycle() {
 }
 
 void DiffManage::save_checkpoint(const char* path) {
-    difftest[0]->get_proxy()->save_checkpoint(path);
+    if (proxy_snapshot && proxy_buffer_init) {
+        proxy_buffer_index = proxy_buffer_index == 0 ? 2 : proxy_buffer_index - 1;
+        difftest[0]->get_proxy()->restore_checkpoint(path, proxy_snapshot_buffer[proxy_buffer_index], true);
+    }
+    difftest[0]->get_proxy()->save_checkpoint(path, NULL, false);
 }
 
 void DiffManage::restore_checkpoint(const char* path) {
-    difftest[0]->get_proxy()->restore_checkpoint(path);
+    difftest[0]->get_proxy()->restore_checkpoint(path, NULL, false);
+}
+
+void DiffManage::write_csr_ref2dut() {
+    for (int i = 0; i < NUM_CORES; ++i) {
+        difftest[i]->write_csr_ref2dut();
+    }
 }
 
 DiffManage::~DiffManage() {

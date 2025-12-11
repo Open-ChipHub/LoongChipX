@@ -34,6 +34,7 @@ module aq_idu_id_gpr (
   output   reg   [63:0]  gpr_dp_src1_data,
   output   reg   [63:0]  gpr_dp_src2_data,
   output   reg           gpr_dp_srcc_data,
+  `GRegState_out
   output   wire  [7 :0]  idu_vidu_fcc
 ); 
 
@@ -946,6 +947,42 @@ end
 //                   Check DiffTest
 //==========================================================
 `ifdef CHECK_DIFFTEST
+`ifdef DIFF_HARDWARE
+  assign dma_GRegState_gpr_0 = 64'b0;
+  assign dma_GRegState_gpr_1 = read_data_1[63:0];
+  assign dma_GRegState_gpr_0 = 64'b0;
+  assign dma_GRegState_gpr_1 = read_data_1[63:0];
+  assign dma_GRegState_gpr_2 = read_data_2[63:0];
+  assign dma_GRegState_gpr_3 = read_data_3[63:0];
+  assign dma_GRegState_gpr_4 = read_data_4[63:0];
+  assign dma_GRegState_gpr_5 = read_data_5[63:0];
+  assign dma_GRegState_gpr_6 = read_data_6[63:0];
+  assign dma_GRegState_gpr_7 = read_data_7[63:0];
+  assign dma_GRegState_gpr_8 = read_data_8[63:0];
+  assign dma_GRegState_gpr_9 = read_data_9[63:0];
+  assign dma_GRegState_gpr_10 = read_data_10[63:0];
+  assign dma_GRegState_gpr_11 = read_data_11[63:0];
+  assign dma_GRegState_gpr_12 = read_data_12[63:0];
+  assign dma_GRegState_gpr_13 = read_data_13[63:0];
+  assign dma_GRegState_gpr_14 = read_data_14[63:0];
+  assign dma_GRegState_gpr_15 = read_data_15[63:0];
+  assign dma_GRegState_gpr_16 = read_data_16[63:0];
+  assign dma_GRegState_gpr_17 = read_data_17[63:0];
+  assign dma_GRegState_gpr_18 = read_data_18[63:0];
+  assign dma_GRegState_gpr_19 = read_data_19[63:0];
+  assign dma_GRegState_gpr_20 = read_data_20[63:0];
+  assign dma_GRegState_gpr_21 = read_data_21[63:0];
+  assign dma_GRegState_gpr_22 = read_data_22[63:0];
+  assign dma_GRegState_gpr_23 = read_data_23[63:0];
+  assign dma_GRegState_gpr_24 = read_data_24[63:0];
+  assign dma_GRegState_gpr_25 = read_data_25[63:0];
+  assign dma_GRegState_gpr_26 = read_data_26[63:0];
+  assign dma_GRegState_gpr_27 = read_data_27[63:0];
+  assign dma_GRegState_gpr_28 = read_data_28[63:0];
+  assign dma_GRegState_gpr_29 = read_data_29[63:0];
+  assign dma_GRegState_gpr_30 = read_data_30[63:0];
+  assign dma_GRegState_gpr_31 = read_data_31[63:0];
+`else
 DifftestGRegState DifftestGRegState(
     .clock              (forever_cpuclk     ),
     .coreid             ('0                 ),
@@ -982,6 +1019,7 @@ DifftestGRegState DifftestGRegState(
     .gpr_30             (read_data_30[63:0] ),
     .gpr_31             (read_data_31[63:0] )
 );
+`endif
 `endif
 
 `ifdef DIFF_FASTFORWARD

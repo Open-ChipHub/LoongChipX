@@ -110,6 +110,9 @@ module aq_lsu_top (
   input    wire  [4  :0]  vlsu_lsu_src2_reg,
   input    wire  [63 :0]  vlsu_lsu_wdata,
   input    wire           vlsu_xx_no_op,
+  `TLBEvent_out(1)
+  `LoadEvent_out(0)
+  `StoreEvent_out(0)
   output   wire  [63 :0]  da_xx_fwd_data,
   output   wire  [5  :0]  da_xx_fwd_dst_reg,
   output   wire           da_xx_fwd_vld,
@@ -694,6 +697,7 @@ aq_lsu_ag  x_aq_lsu_ag (
   .ag_dc_ca                    (ag_dc_ca                   ),
   .ag_dc_data_shift            (ag_dc_data_shift           ),
   .ag_dc_dest_reg              (ag_dc_dest_reg             ),
+  `TLBEvent_connect(1)
   .ag_dc_expt_vld              (ag_dc_expt_vld             ),
   .ag_dc_func                  (ag_dc_func                 ),
   .ag_dc_hint_size             (ag_dc_hint_size            ),
@@ -825,6 +829,7 @@ aq_lsu_dc  x_aq_lsu_dc (
   .ag_dc_buf                   (ag_dc_buf                  ),
   .ag_dc_bytes_vld             (ag_dc_bytes_vld            ),
   .ag_dc_ca                    (ag_dc_ca                   ),
+  `LoadEvent_connect(0)
   .ag_dc_data_shift            (ag_dc_data_shift           ),
   .ag_dc_dest_reg              (ag_dc_dest_reg             ),
   .ag_dc_expt_vld              (ag_dc_expt_vld             ),
@@ -1284,6 +1289,7 @@ aq_lsu_stb  x_aq_lsu_stb (
   .cp0_lsu_fence_req        (cp0_lsu_fence_req       ),
   .cp0_lsu_icg_en           (cp0_lsu_icg_en          ),
   .cp0_lsu_sync_req         (cp0_lsu_sync_req        ),
+  `StoreEvent_connect(0)
   .cpurst_b                 (cpurst_b                ),
   .da_stb_amo_src_id        (da_stb_amo_src_id       ),
   .dc_stb_alct              (dc_stb_alct             ),

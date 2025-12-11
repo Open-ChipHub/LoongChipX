@@ -79,10 +79,10 @@ EmuProxy::EmuProxy(int coreid) {
     get_store = (bool (*)(store_data_t*))dlsym(handle, "loong64_difftest_get_store");
     check_and_assert(get_store);
 
-    save_checkpoint = (void (*)(const char*))dlsym(handle, "loong64_difftest_save_checkpoint");
+    save_checkpoint = (void (*)(const char*, uint64_t*, bool))dlsym(handle, "loong64_difftest_save_checkpoint");
     check_and_assert(save_checkpoint);
 
-    restore_checkpoint = (void (*)(const char*))dlsym(handle, "loong64_difftest_restore_checkpoint");
+    restore_checkpoint = (void (*)(const char*, uint64_t*, bool))dlsym(handle, "loong64_difftest_restore_checkpoint");
     check_and_assert(restore_checkpoint);
 
     check_paddr = (void (*)(uint64_t, uint32_t, uint64_t*, uint32_t*))dlsym(handle, "loong64_difftest_check_paddr");

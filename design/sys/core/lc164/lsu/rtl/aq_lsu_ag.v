@@ -71,6 +71,7 @@ module aq_lsu_ag (
   input    wire          mmu_lsu_so,
   input    wire          pad_yy_icg_scan_en,
   input    wire          rtu_yy_xx_flush,
+  `TLBEvent_out(1)
   output   wire  [13:0]  ag_arb_data_idx,
   output   wire          ag_arb_data_req,
   output   wire  [3 :0]  ag_arb_data_way,
@@ -1588,6 +1589,14 @@ assign ag_dbginfo[7:0] = {ag_req_buffer_src2_depd,ag_pipe_func[3:0],vsplit_no_op
 // &ModuleEnd; @1246
 
 `ifdef CHECK_DIFFTEST
+`ifdef DIFF_HARDWARE
+  assign dma_TLBEvent_valid_1 = mmu_lsu_pa_vld;
+  assign dma_TLBEvent_index_1 = 8'b1;
+  assign dma_TLBEvent_source_1 = ag_pipe_inst_st;
+  assign dma_TLBEvent_vpn_1 = ag_pipe_addr[63:0];
+  assign dma_TLBEvent_ppn_1 = {24'b0, ag_pipe_pa[39:0]};
+  assign dma_TLBEvent_exception_1 = {17'b0, ag_pipe_expt_vec[14:0]};
+`else
   DifftestTLBEvent DifftestTLBEvent(
     .clock(forever_cpuclk),
     .coreid('0),
@@ -1598,6 +1607,7 @@ assign ag_dbginfo[7:0] = {ag_req_buffer_src2_depd,ag_pipe_func[3:0],vsplit_no_op
     .ppn({24'b0, ag_pipe_pa[39:0]}),
     .exception({17'b0, ag_pipe_expt_vec[14:0]})
   );
+`endif
 `endif
 
 endmodule

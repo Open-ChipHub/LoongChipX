@@ -170,6 +170,9 @@ module aq_cp0_regs (
   output   wire           regs_iui_csr_inv,
   output   wire           regs_iui_mcins_stall,
   output   wire           regs_iui_mcor_stall,
+  `CSRRegState_out
+  output   wire  [63 :0]  csrtimer_value,
+  output   wire  [63 :0]  csrestat_value,
   output   wire  [63 :0]  regs_iui_era,
   output   wire  [63 :0]  regs_iui_mepc,
   output   wire  [1  :0]  regs_iui_pm,
@@ -398,7 +401,6 @@ wire    [63 :0]  csrprmd_value;
 wire    [63 :0]  csreuen_value;
 wire    [63 :0]  csrmisc_value;
 wire    [63 :0]  csrecfg_value;
-wire    [63 :0]  csrestat_value;
 wire    [63 :0]  csrera_value;
 wire    [63 :0]  csrbadv_value;
 wire    [63 :0]  csrbadi_value;
@@ -1658,6 +1660,7 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .mtval_value              (mtval_value             ),
   .mtvec_local_en           (mtvec_local_en          ),
   
+  `CSRRegState_connect
   .ext_interrupt            (ext_interrupt           ),
   .arch_ctrl_local_en       (arch_ctrl_local_en      ),
   .crmd_local_en            (crmd_local_en           ),
@@ -1718,6 +1721,7 @@ aq_cp0_trap_csr  x_aq_cp0_trap_csr (
   .fcsr3_local_en           (fcsr3_local_en          ),
   .iui_regs_csr_cpucfg_op   (iui_regs_csr_cpucfg_op  ),
 
+  .csrtimer_value           (csrtimer_value[63:0]    ),
   .csrarch_value            (csrarch_value[63:0]     ),
   .csrcrmd_value            (csrcrmd_value[63:0]     ),
   .csrprmd_value            (csrprmd_value[63:0]     ),

@@ -72,6 +72,7 @@ module labCore (
   input    wire           pad_yy_scan_rst_b,
   input    wire           pll_cpu_clk,
   input    wire  [7  :0]  ext_interrupt,
+  input    wire           xdma_stall,
   output   wire  [39 :0]  biu_pad_araddr,
   output   wire  [1  :0]  biu_pad_arburst,
   output   wire  [3  :0]  biu_pad_arcache,

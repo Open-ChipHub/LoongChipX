@@ -49,6 +49,7 @@ module aq_ifu_icache (
   input    wire           pcgen_icache_chgflw_vld,
   input    wire  [33 :0]  pcgen_icache_seq_tag,
   input    wire  [63 :0]  pcgen_icache_va,
+  `TLBEvent_out(0)
   output   wire           icache_btb_grant,
   output   wire           icache_ctrl_stall,
   output   wire           icache_ctrl_inv_fsm_idle,
@@ -1293,6 +1294,14 @@ assign ifu_yy_xx_no_op        = ref_fsm_idle && pf_fsm_idle;
       exception = 32'd0;
     end
   end
+`ifdef DIFF_HARDWARE
+    assign dma_TLBEvent_valid_0 = mmu_ifu_pa_vld && icache_rd_vld;
+    assign dma_TLBEvent_source_0 = 8'b10;
+    assign dma_TLBEvent_index_0 = 8'b0;
+    assign dma_TLBEvent_vpn_0 = icache_rd_addr[63:0];
+    assign dma_TLBEvent_ppn_0 = {24'b0, icache_pa[39:0]};
+    assign dma_TLBEvent_exception_0 = exception;
+`else
   DifftestTLBEvent DifftestTLBEvent(
     .clock(forever_cpuclk),
     .coreid('0),
@@ -1303,6 +1312,7 @@ assign ifu_yy_xx_no_op        = ref_fsm_idle && pf_fsm_idle;
     .ppn({24'b0, icache_pa[39:0]}),
     .exception(exception)
   );
+`endif
 `endif
 endmodule
 

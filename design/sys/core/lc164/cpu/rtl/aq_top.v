@@ -38,6 +38,7 @@ module aq_top (
   input    wire           biu_lsu_vb_wready,
   input    wire  [63 :0]  clint_cpuio_time,
   input    wire  [7  :0]  ext_interrupt,
+  input    wire           xdma_stall,
   input    wire           cpurst_b,
   input    wire           forever_cpuclk,
   input    wire  [2  :0]  pad_biu_coreid,
@@ -63,6 +64,15 @@ module aq_top (
   input    wire  [63 :0]  tdt_dm_dtu_wdata,
   input    wire  [1  :0]  tdt_dm_dtu_wr_flg,
   input    wire           tdt_dm_dtu_wr_vld,
+  `CSRRegState_out
+  `GRegState_out
+  `TLBEvent_out(0)
+  `TLBEvent_out(1)
+  `LoadEvent_out(0)
+  `StoreEvent_out(0)
+  `InstrCommit_out(0)
+  `ExcpEvent_out
+  `FPRegState_out
   output   wire           cp0_biu_icg_en,
   output   wire  [1  :0]  cpuio_sysio_lpmd_b,
   output   wire           dtu_tdt_dm_halted,
@@ -336,6 +346,16 @@ aq_core  x_aq_core (
   .biu_cp0_ss_int                (biu_cp0_ss_int               ),
   .biu_cp0_st_int                (biu_cp0_st_int               ),
   .ext_interrupt                 (ext_interrupt                ),
+  .xdma_stall                    (xdma_stall                   ),
+  `CSRRegState_connect
+  `GRegState_connect
+  `TLBEvent_connect(0)
+  `TLBEvent_connect(1)
+  `LoadEvent_connect(0)
+  `StoreEvent_connect(0)
+  `InstrCommit_connect(0)
+  `ExcpEvent_connect
+  `FPRegState_connect
   .biu_ifu_arready               (biu_ifu_arready              ),
   .biu_ifu_rdata                 (biu_ifu_rdata                ),
   .biu_ifu_rid                   (biu_ifu_rid                  ),

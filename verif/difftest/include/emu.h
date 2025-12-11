@@ -6,6 +6,7 @@
 #include "diff_manage.h"
 #include "common.h"
 #include "lightsss.h"
+#include "xdma.h"
 
 static const int status_cause        = 0xff;
 static const int status_trace_err    = 0x700;
@@ -58,7 +59,7 @@ public:
     void init_ram(uint8_t* ram, uint64_t size);
 
     /* do init work such as init_difftest, init_nemuproxy */
-    void init_emu(vluint64_t* main_time);
+    void init_emu(vluint64_t* main_time, uint64_t snapshot_dist=0, bool proxy_snapshot=false);
     void init_random_vlog(const char *path, const char *file_in);
     void set_need_wakeup(){
         need_wakeup=true;
@@ -77,6 +78,10 @@ public:
     }//Obtain the time in milliseconds.
     /* difftest execute one step to compare dut and ref */
     int process();
+#ifdef DIFF_HARDWARE
+    XDMA* xdma;
+    int hard_process(std::vector<addr_map_t> addr_maps);
+#endif
     /* used by slice */
     void close();
     void fastforward(uint64_t cycles);

@@ -1,5 +1,5 @@
 set project $::env(PROJECT)
-
+set xdma $::env(XILINX_XDMA)
 # for test
 # set project_part xcvu19p-fsva3824-2-e
 
@@ -77,7 +77,13 @@ if {$::env(BOARD) eq "vcu129"} {
       "../../ip/amd/xlnx_ddr4_reset/xlnx_ddr4_reset.srcs/sources_1/ip/xlnx_ddr4_reset/xlnx_ddr4_reset.xci" \
       "../../ip/amd/xlnx_ddr4/xlnx_ddr4.srcs/sources_1/ip/xlnx_ddr4/xlnx_ddr4.xci" \
       "../../ip/amd/xlnx_vio/xlnx_vio.srcs/sources_1/ip/xlnx_vio/xlnx_vio.xci" \
+      "../../ip/amd/xlnx_xdma_reset/xlnx_xdma_reset.srcs/sources_1/ip/xlnx_xdma_reset/xlnx_xdma_reset.xci" \
+      "../../ip/amd/xlnx_xdma_fifo/xlnx_xdma_fifo.srcs/sources_1/ip/xlnx_xdma_fifo/xlnx_xdma_fifo.xci" \
    }
+}
+
+if {$xdma} {
+   set_property verilog_define {CHECK_DIFFTEST CONFIG_DIFFTEST DIFF_HARDWARE} [current_fileset]
 }
 
 set_property top $TOP_NAME [current_fileset]
@@ -133,13 +139,21 @@ set BD_NAME xlnx_bd_soc
 if {$::env(BOARD) eq "axvu13p"} {
       ## add block design
       source ../../ip/amd/$BD_NAME/config/run.tcl
+      config_ip_cache -use_cache_location ./$project.srcs/sources_1/bd/$BD_NAME/ip
       make_wrapper -files [get_files \
                             ./$project.srcs/sources_1/bd/$BD_NAME/$BD_NAME.bd] -top
-      add_files -norecurse ./$project.gen/sources_1/bd/$BD_NAME/hdl/${BD_NAME}_wrapper.v
+      add_files -norecurse ./$project.srcs/sources_1/bd/$BD_NAME/hdl/${BD_NAME}_wrapper.v
       ## generation 
       generate_target all [get_files  ./$project.srcs/sources_1/bd/$BD_NAME/$BD_NAME.bd]
       export_ip_user_files -of_objects [get_files ./$project.srcs/sources_1/bd/$BD_NAME/$BD_NAME.bd] -no_script -sync -force -quiet
       create_ip_run [get_files -of_objects [get_fileset sources_1] ./$project.srcs/sources_1/bd/$BD_NAME/$BD_NAME.bd]
+
+
+      config_ip_cache -use_cache_location ../../ip/amd/xlnx_bd_xdma/xlnx_bd_xdma.srcs/sources_1/bd/xlnx_bd_xdma/ip
+      add_files ../../ip/amd/xlnx_bd_xdma/xlnx_bd_xdma.srcs/sources_1/bd/xlnx_bd_xdma/xlnx_bd_xdma.bd
+      make_wrapper -files [get_files \
+                            ../../ip/amd/xlnx_bd_xdma/xlnx_bd_xdma.srcs/sources_1/bd/xlnx_bd_xdma/xlnx_bd_xdma.bd] -top
+      add_files -norecurse ../../ip/amd/xlnx_bd_xdma/xlnx_bd_xdma.srcs/sources_1/bd/xlnx_bd_xdma/hdl/xlnx_bd_xdma_wrapper.v
 }
 
 

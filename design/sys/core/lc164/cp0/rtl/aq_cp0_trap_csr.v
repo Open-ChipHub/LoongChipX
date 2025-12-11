@@ -159,6 +159,10 @@ module aq_cp0_trap_csr (
   output   wire  [63:0]  mtvec_value,
 
   // LoongArch
+`ifdef DIFF_HARDWARE
+  `CSRRegState_out
+`endif
+  output   wire  [63:0]  csrtimer_value,
   output   wire  [63:0]  csrarch_value,
   output   wire  [63:0]  csrcrmd_value,
   output   wire  [63:0]  csrprmd_value,
@@ -367,7 +371,6 @@ wire            vxsat_local_en;
 wire    [1 :0]  xs;                      
 
 wire    [63:0]  mtval_upd_data;
-wire    [63:0]  csrtimer_value;
 wire    [63:0]  cpcsr_value;
 wire    [63:0]  cpcsr_crmd_value;
 
@@ -3364,6 +3367,35 @@ assign cp0_hpcp_int_off_vld = int_off_vld;
 //==========================================================
 
 `ifdef CHECK_DIFFTEST
+`ifdef DIFF_HARDWARE
+  assign dma_CSRRegState_crmd = csrcrmd_value[63:0];
+  assign dma_CSRRegState_prmd = csrprmd_value[63:0];
+  assign dma_CSRRegState_euen = csreuen_value[63:0];
+  assign dma_CSRRegState_ecfg = csrecfg_value[63:0];
+  assign dma_CSRRegState_estat = csrestat_value[63:0];
+  assign dma_CSRRegState_era = csrera_value[63:0];
+  assign dma_CSRRegState_badv = csrbadv_value[63:0];
+  assign dma_CSRRegState_eentry = csreentry_value[63:0];
+  assign dma_CSRRegState_tlbidx = csrtlbidx_value[63:0];
+  assign dma_CSRRegState_tlbehi = 64'b0;
+  assign dma_CSRRegState_tlbelo0 = 64'b0;
+  assign dma_CSRRegState_tlbelo1 = 64'b0;
+  assign dma_CSRRegState_asid = csrasid_value[63:0];
+  assign dma_CSRRegState_pgdl = csrpgdl_value[63:0];
+  assign dma_CSRRegState_pgdh = csrpgdh_value[63:0];
+  assign dma_CSRRegState_save0 = csrsave0_value[63:0];
+  assign dma_CSRRegState_save1 = csrsave1_value[63:0];
+  assign dma_CSRRegState_save2 = csrsave2_value[63:0];
+  assign dma_CSRRegState_save3 = csrsave3_value[63:0];
+  assign dma_CSRRegState_tid = csrtid_value[63:0];
+  assign dma_CSRRegState_tcfg = csrtcfg_value[63:0];
+  assign dma_CSRRegState_tval = csrtval_value[63:0];
+  assign dma_CSRRegState_ticlr = csrticlr_value[63:0];
+  assign dma_CSRRegState_llbctl = 64'b0;
+  assign dma_CSRRegState_tlbrentry = 64'b0;
+  assign dma_CSRRegState_dmw0 = csrdmw0_value[63:0];
+  assign dma_CSRRegState_dmw1 = csrdmw1_value[63:0];
+`else
 DifftestCSRRegState DifftestCSRRegState(
     .clock              (regs_clk               ),
     .coreid             ('0                     ),
@@ -3395,6 +3427,7 @@ DifftestCSRRegState DifftestCSRRegState(
     .dmw0               (csrdmw0_value[63:0]    ),
     .dmw1               (csrdmw1_value[63:0]    )
 );
+`endif
 `endif
 
 `ifdef DIFF_FASTFORWARD

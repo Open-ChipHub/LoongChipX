@@ -80,6 +80,7 @@ module aq_ifu_top (
   input    wire           rtu_ifu_dbg_mask,
   input    wire           rtu_ifu_flush_fe,
   input    wire           rtu_yy_xx_dbgon,
+  `TLBEvent_out(0)
   output   wire  [39 :0]  ifu_biu_araddr,
   output   wire  [1  :0]  ifu_biu_arburst,
   output   wire  [3  :0]  ifu_biu_arcache,
@@ -331,6 +332,7 @@ aq_ifu_icache  x_aq_ifu_icache (
   .cp0_ifu_icache_read_req      (cp0_ifu_icache_read_req     ),
   .cp0_ifu_icache_read_tag      (cp0_ifu_icache_read_tag     ),
   .cp0_ifu_icache_read_way      (cp0_ifu_icache_read_way     ),
+  `TLBEvent_connect(0)
   .cp0_ifu_icg_en               (cp0_ifu_icg_en              ),
   .cp0_ifu_iwpe                 (cp0_ifu_iwpe                ),
   .cp0_ifu_lpmd_req             (cp0_ifu_lpmd_req            ),

@@ -5,6 +5,7 @@ std::chrono::nanoseconds emu_nano_seconds = std::chrono::nanoseconds(0);
 
 extern FILE* trace_out;
 extern FILE* uart_out;
+extern FILE* diff_out;
 
 // not compare estat
 static const int DIFFTEST_NR_GREG   = 32;
@@ -64,6 +65,13 @@ int Difftest::step(vluint64_t &main_time) {
 #endif
         return STATE_END;
     }
+
+#ifdef LOG_DIFF
+    if(dut.commit[0].valid || dut.excp.excp_valid || dut.load[0].valid || 
+        dut.store[0].valid) {
+        fwrite(&dut, sizeof(difftest_core_state_t), 1, diff_out);
+    }
+#endif
 
     while (idx_commit < DIFFTEST_COMMIT_WIDTH && dut.commit[idx_commit].valid) {
         inst_total += 1;
@@ -178,12 +186,6 @@ int Difftest::step(vluint64_t &main_time) {
     estat_last = dut.csr.estat;
 
     if(idx_commit > 0) dut.csr.cur_pc = dut.commit[idx_commit - 1].pc;
-
-    /// only for debug print
-    if (dut.commit[0].valid && (dut.commit[0].pc == 0x90000000015d0200)) {
-        printf("Exception 0\n");
-        debug = 1;
-    }
 
     // uint64_t cur_pc = proxy->get_cur_pc();
     // if (dut.commit[0].pc != cur_pc){
@@ -380,7 +382,7 @@ extern void *get_img_start();
 void Difftest::do_first_instr_commit() {
     if (dut.commit[0].valid && dut.commit[0].pc == FIRST_INST_ADDRESS) {
         printf("The first instruction of core %d has commited. Difftest enabled.\n", coreid);
-
+        first_commit = true;
 #if 0
         assert(!get_img_start());
         proxy->memcpy(0x0, get_img_start(), EMU_RAM_SIZE, DIFFTEST_TO_REF);
@@ -646,6 +648,7 @@ bool do_check_inst_rdtime(uint32_t inst) {
 }
 
 Difftest::Difftest(int coreid): coreid(coreid) {
+    memset(&dut, 0, sizeof(difftest_core_state_t));
     proxy = new DIFF_PROXY(coreid);
     state = new DiffState;
 }

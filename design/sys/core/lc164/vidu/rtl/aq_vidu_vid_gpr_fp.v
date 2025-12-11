@@ -28,6 +28,7 @@ module aq_vidu_vid_gpr_fp (
   input    wire          vpu_vidu_fp_wb_vld,
   input    wire  [63:0]  cp0_vidu_fcsr,
   input    wire  [7 :0]  idu_vidu_fcc,
+  `FPRegState_out
   output   reg   [63:0]  gpr_fp_dp_src0_data,
   output   reg   [63:0]  gpr_fp_dp_src1_data,
   output   reg   [63:0]  gpr_fp_dp_src2_data
@@ -845,6 +846,42 @@ end
 //                   Check DiffTest
 //==========================================================
 `ifdef CHECK_DIFFTEST
+`ifdef DIFF_HARDWARE
+  assign dma_FPRegState_fpr_0 = read_data_0[63:0];
+  assign dma_FPRegState_fpr_1 = read_data_1[63:0];
+  assign dma_FPRegState_fpr_2 = read_data_2[63:0];
+  assign dma_FPRegState_fpr_3 = read_data_3[63:0];
+  assign dma_FPRegState_fpr_4 = read_data_4[63:0];
+  assign dma_FPRegState_fpr_5 = read_data_5[63:0];
+  assign dma_FPRegState_fpr_6 = read_data_6[63:0];
+  assign dma_FPRegState_fpr_7 = read_data_7[63:0];
+  assign dma_FPRegState_fpr_8 = read_data_8[63:0];
+  assign dma_FPRegState_fpr_9 = read_data_9[63:0];
+  assign dma_FPRegState_fpr_10 = read_data_10[63:0];
+  assign dma_FPRegState_fpr_11 = read_data_11[63:0];
+  assign dma_FPRegState_fpr_12 = read_data_12[63:0];
+  assign dma_FPRegState_fpr_13 = read_data_13[63:0];
+  assign dma_FPRegState_fpr_14 = read_data_14[63:0];
+  assign dma_FPRegState_fpr_15 = read_data_15[63:0];
+  assign dma_FPRegState_fpr_16 = read_data_16[63:0];
+  assign dma_FPRegState_fpr_17 = read_data_17[63:0];
+  assign dma_FPRegState_fpr_18 = read_data_18[63:0];
+  assign dma_FPRegState_fpr_19 = read_data_19[63:0];
+  assign dma_FPRegState_fpr_20 = read_data_20[63:0];
+  assign dma_FPRegState_fpr_21 = read_data_21[63:0];
+  assign dma_FPRegState_fpr_22 = read_data_22[63:0];
+  assign dma_FPRegState_fpr_23 = read_data_23[63:0];
+  assign dma_FPRegState_fpr_24 = read_data_24[63:0];
+  assign dma_FPRegState_fpr_25 = read_data_25[63:0];
+  assign dma_FPRegState_fpr_26 = read_data_26[63:0];
+  assign dma_FPRegState_fpr_27 = read_data_27[63:0];
+  assign dma_FPRegState_fpr_28 = read_data_28[63:0];
+  assign dma_FPRegState_fpr_29 = read_data_29[63:0];
+  assign dma_FPRegState_fpr_30 = read_data_30[63:0];
+  assign dma_FPRegState_fpr_31 = read_data_31[63:0];
+  assign dma_FPRegState_fccr = idu_vidu_fcc[7:0];
+  assign dma_FPRegState_fcsr0 = cp0_vidu_fcsr[31:0];
+`else
 DifftestFPRegState DifftestFPRegState (
     .clock              (forever_cpuclk     ),
     .coreid             ('0                 ),
@@ -883,6 +920,7 @@ DifftestFPRegState DifftestFPRegState (
     .fpr_30             (read_data_30[63:0] ),
     .fpr_31             (read_data_31[63:0] )
 );
+`endif
 `endif
 
 `ifdef DIFF_FASTFORWARD

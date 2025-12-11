@@ -357,8 +357,8 @@ int main(int argc, char** argv, char** env) {
     auto now = std::chrono::system_clock::now();
 
 #ifdef CONFIG_DIFFTEST
-    const char simu_trace_file[] = "./simu_trace.txt";
-    const char uart_output_file[] = "./uart_output.txt";
+    const char simu_trace_file[] = "/simu_trace.txt";
+    const char uart_output_file[] = "/uart_output.txt";
     const char ram_file[] = "ram.dat";
     const char data_vlog_file[] = "data.vlog";
 
@@ -367,7 +367,7 @@ int main(int argc, char** argv, char** env) {
         difftest_ref_so = const_cast<char*>(diff_so);
     }
 
-    emulator = new Emulator(Top, "./", simu_trace_file, uart_output_file, ram_file, data_vlog_file);
+    emulator = new Emulator(Top, sim_cfg.real_log_dir.c_str(), simu_trace_file, uart_output_file, ram_file, data_vlog_file);
     emulator->init_emu(&sim_cycles);
 
     uint8_t* emulator_ram = (uint8_t*)mmap(nullptr, (2ull << 32), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);

@@ -76,7 +76,7 @@
     input [31:0] instr,
     input        skip,
     input        is_TLBFILL,
-    input [ 4:0] TLBFILL_index,
+    input [ 7:0] TLBFILL_index,
     input        is_CNTinst,
     input [63:0] timer_64_value,
     input        wen,
@@ -129,7 +129,7 @@ endmodule
     input        clock,
     input [ 7:0] coreid,
     input        valid,
-    input [ 2:0] code,
+    input [ 7:0] code,
     input [63:0] pc,
     input [63:0] cycleCnt,
     input [63:0] instrCnt
@@ -164,7 +164,7 @@ endmodule
 endmodule
 
 // DifftestLoadEvent
-`DIFFTEST_DPIC_FUNC_DECL(LoadEvent) (
+`DIFFTEST_DPIC_FUNC_DECL(LoadEvent)(
     `DPIC_ARG_BYTE coreid,
     `DPIC_ARG_BYTE index,
     `DPIC_ARG_BYTE valid,

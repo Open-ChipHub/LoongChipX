@@ -45,8 +45,8 @@ public:
     uint64_t (*get_prev_pc)(void);
     int  (*check_end)();
     bool (*get_store)(store_data_t* store_data);
-    void (*save_checkpoint)(const char* path);
-    void (*restore_checkpoint)(const char* path);
+    void (*save_checkpoint)(const char* path, uint64_t* buf, bool tobuf);
+    void (*restore_checkpoint)(const char* path, uint64_t* buf, bool frombuf);
     void (*check_paddr)(uint64_t vaddr, uint32_t source, uint64_t* paddr, uint32_t* exception);
     void (*print_store)();
 };

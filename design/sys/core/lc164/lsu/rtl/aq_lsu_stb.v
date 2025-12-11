@@ -71,6 +71,7 @@ module aq_lsu_stb (
   input    wire  [63 :0]  vlsu_lsu_fwd_data,
   input    wire  [4  :0]  vlsu_lsu_fwd_dest_reg,
   input    wire           vlsu_lsu_fwd_vld,
+  `StoreEvent_out(0)
   output   wire  [39 :0]  lsu_biu_stb_awaddr,
   output   wire  [1  :0]  lsu_biu_stb_awburst,
   output   wire  [3  :0]  lsu_biu_stb_awcache,
@@ -1554,6 +1555,12 @@ aq_lsu_stb_entry  x_aq_lsu_stb_entry_3 (
     end
 
     assign diff_valid = |(diff_data_valid & diff_ptr_vec);
+`ifdef DIFF_HARDWARE
+    assign dma_StoreEvent_valid_0 = diff_valid;
+    assign dma_StoreEvent_storePAddr_0 = {24'b0, diff_data_o[111 -: 40]};
+    assign dma_StoreEvent_storeData_0 = diff_data_o[8 +: 64];
+    assign dma_StoreEvent_storeMask_0 = diff_data_o[7:0];
+`else
     DifftestStoreEvent DifftestStoreEvent(
       .clock        (forever_cpuclk        ),
       .coreid       (8'b0                  ),
@@ -1563,6 +1570,7 @@ aq_lsu_stb_entry  x_aq_lsu_stb_entry_3 (
       .storeData    (diff_data_o[8 +: 64]  ),
       .storeMask    (diff_data_o[7:0]      )
     );
+`endif
 `endif
 
 endmodule

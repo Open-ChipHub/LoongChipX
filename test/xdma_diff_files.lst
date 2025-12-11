@@ -1,0 +1,4 @@
+${LCX_HOME}/design/soc/rtl/xdma_diff.v
+${LCX_HOME}/test/xlnx_xdma_fifo.v
+${LCX_HOME}/test/xdma_diff_top.v
++incdir+${LCX_HOME}/design/sys/core/lc164/cpu/rtl/

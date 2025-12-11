@@ -148,6 +148,7 @@ module aq_lsu_dc (
   input    wire           vlsu_lsu_src2_depd,
   input    wire  [4  :0]  vlsu_lsu_src2_reg,
   input    wire  [63 :0]  vlsu_lsu_wdata,
+  `LoadEvent_out(0)
   output   wire  [4  :0]  da_amo_alu_func,
   output   wire  [1  :0]  da_amo_alu_size,
   output   wire  [63 :0]  da_amo_alu_src0,
@@ -1446,6 +1447,11 @@ end
             diff_load_addr_n[39:0] <= diff_load_addr[39:0];
         end
     end
+`ifdef DIFF_HARDWARE
+    assign dma_LoadEvent_valid_0 = {7'b0, diff_load_wb_n};
+    assign dma_LoadEvent_paddr_0 = {24'b0, diff_load_addr_n[39:0]};
+    assign dma_LoadEvent_vaddr_0 = 64'b0;
+`else
     DifftestLoadEvent DifftestLoadEvent(
         .clock(forever_cpuclk),
         .coreid(8'b0),
@@ -1454,6 +1460,7 @@ end
         .paddr({24'b0, diff_load_addr_n[39:0]}),
         .vaddr(64'b0)
     );
+`endif
 `endif
 
 

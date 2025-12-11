@@ -52,6 +52,8 @@ typedef struct {
     uint64_t instrCnt = 0;
 } trap_event_t;
 
+#define TRAP_EVENT_SIZE 26
+
 typedef struct {
     uint8_t excp_valid = 0;
     uint8_t eret;
@@ -60,6 +62,8 @@ typedef struct {
     uint64_t exceptionPC;
     uint64_t exceptionInst;
 } excp_event_t;
+
+#define EXCP_EVENT_SIZE 34
 
 typedef struct {
     uint8_t valid = 0;
@@ -77,12 +81,18 @@ typedef struct {
     uint64_t csr_data;
 } instr_commit_t;
 
+#define INSTR_COMMIT_SIZE 44
+#define INSTR_COMMIT_OFFSET EXCP_EVENT_SIZE
+
 typedef struct {
     uint64_t gpr[32];
     uint64_t fpr[32];
     uint64_t fccr;
     uint64_t fcsr0;
 } arch_greg_state_t;
+
+#define ARCH_GREG_STATE_SIZE 528
+#define ARCH_GREG_STATE_OFFSET (INSTR_COMMIT_OFFSET + INSTR_COMMIT_SIZE * DIFFTEST_COMMIT_WIDTH)
 
 typedef struct __attribute__((packed)) {
     uint64_t crmd;
@@ -98,6 +108,11 @@ typedef struct __attribute__((packed)) {
     uint64_t estat;
     uint64_t cur_pc;
 } arch_csr_state_t;
+
+#define ARCH_CSR_STATE_SIZE 216
+#define ARCH_CSR_STATE_OFFSET (ARCH_GREG_STATE_OFFSET + ARCH_GREG_STATE_SIZE)
+
+
 
 typedef struct __attribute__((packed)) {
     uint64_t cntc;
@@ -118,11 +133,20 @@ typedef struct {
     uint8_t  mask;
 } store_event_t;
 
+#define STORE_EVENT_SIZE 18
+#define STORE_EVENT_OFFSET (ARCH_CSR_STATE_OFFSET + ARCH_CSR_STATE_SIZE)
+
+
+
 typedef struct {
     uint8_t valid = 0;
     uint64_t paddr;
     uint64_t vaddr;
 } load_event_t;
+
+#define LOAD_EVENT_SIZE 17
+#define LOAD_EVENT_OFFSET (STORE_EVENT_OFFSET + STORE_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH)
+
 
 typedef struct {
     uint8_t valid = 0;
@@ -131,6 +155,10 @@ typedef struct {
     uint64_t ppn;
     uint32_t exception;
 } tlb_event_t;
+
+#define TLB_EVENT_SIZE 22
+#define TLB_EVENT_OFFSET (LOAD_EVENT_OFFSET + LOAD_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH)
+
 
 typedef struct {
     trap_event_t trap;
@@ -142,6 +170,8 @@ typedef struct {
     load_event_t load[DIFFTEST_COMMIT_WIDTH];
     tlb_event_t tlb[2];
 } difftest_core_state_t;
+
+#define DIFFTEST_CORE_STATE_SIZE (TRAP_EVENT_SIZE + EXCP_EVENT_SIZE + INSTR_COMMIT_SIZE * DIFFTEST_COMMIT_WIDTH + ARCH_GREG_STATE_SIZE + ARCH_CSR_STATE_SIZE + STORE_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH + LOAD_EVENT_SIZE * DIFFTEST_COMMIT_WIDTH + TLB_EVENT_SIZE * 2)
 
 class DiffState {
 public:
@@ -227,6 +257,7 @@ public:
     uint64_t _fastforward_cycles = 0;
     uint64_t _fastforward_pc = 0;
     uint64_t _fastforward_timer = 0;
+    bool first_commit = false;
     /* Trigger a difftest checking produre */
     int step(vluint64_t& main_time);
 
@@ -284,13 +315,17 @@ public:
     inline DIFF_PROXY* get_proxy() {
         return proxy;
     }
-    uint64_t get_ref_csr(int csr_idx) {
+    inline uint64_t get_ref_csr(int csr_idx) {
         uint64_t data;
         proxy->csrcpy_idx(csr_idx, &data, 0xffffffffffffffffULL, REF_TO_DUT);
         return data;
     }
     void init_ram(uint8_t* ram) {
         proxy->init(ram);
+    }
+    inline void write_csr_ref2dut() {
+        proxy->csrcpy(&ref.csr.crmd, REF_TO_DUT);
+        memcpy(&dut.csr, &ref.csr, sizeof(arch_csr_state_t));
     }
     Difftest(int coreid);
     ~Difftest();
